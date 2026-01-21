@@ -1,0 +1,7 @@
+{
+  "name": "eResit",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

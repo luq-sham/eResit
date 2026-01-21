@@ -1,0 +1,113 @@
+$spacing-scale: (
+   0: 0,
+   2: 2px,
+   4: 4px,
+   6: 6px,
+   8: 8px,
+   10: 10px,
+   12: 12px,
+   14: 14px,
+   16: 16px,
+   18: 18px,
+   20: 20px,
+   24: 24px,
+   32: 32px,
+   40: 40px,
+   48: 48px
+);
+
+
+// Padding
+@each $key, $value in $spacing-scale {
+   .p-#{$key} {
+      padding: $value !important;
+   }
+
+   .pt-#{$key} {
+      padding-top: $value !important;
+   }
+
+   .pb-#{$key} {
+      padding-bottom: $value !important;
+   }
+
+   .ps-#{$key} {
+      padding-left: $value !important;
+   }
+
+   .pe-#{$key} {
+      padding-right: $value !important;
+   }
+
+   .px-#{$key} {
+      padding-left: $value !important;
+      padding-right: $value !important;
+   }
+
+   .py-#{$key} {
+      padding-top: $value !important;
+      padding-bottom: $value !important;
+   }
+}
+
+
+// Margin
+@each $key, $value in $spacing-scale {
+   .m-#{$key} {
+      margin: $value !important;
+   }
+
+   .mt-#{$key} {
+      margin-top: $value !important;
+   }
+
+   .mb-#{$key} {
+      margin-bottom: $value !important;
+   }
+
+   .ms-#{$key} {
+      margin-left: $value !important;
+   }
+
+   .me-#{$key} {
+      margin-right: $value !important;
+   }
+
+   .mx-#{$key} {
+      margin-left: $value !important;
+      margin-right: $value !important;
+   }
+
+   .my-#{$key} {
+      margin-top: $value !important;
+      margin-bottom: $value !important;
+   }
+}
+
+.m-auto {
+   margin: auto !important;
+}
+
+.ms-auto {
+   margin-left: auto !important;
+}
+
+.me-auto {
+   margin-right: auto !important;
+}
+
+
+// Gap
+@each $key, $value in $spacing-scale {
+   .gap-#{$key} {
+      gap: $value !important;
+   }
+
+   .row-gap-#{$key} {
+      row-gap: $value !important;
+   }
+
+   .col-gap-#{$key} {
+      column-gap: $value !important;
+   }
+}
