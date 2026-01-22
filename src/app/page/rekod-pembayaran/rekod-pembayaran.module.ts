@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { MenuUtamaPageRoutingModule } from './menu-utama-routing.module';
+import { RekodPembayaranPageRoutingModule } from './rekod-pembayaran-routing.module';
 
-import { MenuUtamaPage } from './menu-utama.page';
+import { RekodPembayaranPage } from './rekod-pembayaran.page';
 import { ComponentModule } from 'src/app/components/component-module';
 
 @NgModule({
@@ -15,8 +15,8 @@ import { ComponentModule } from 'src/app/components/component-module';
     FormsModule,
     IonicModule,
     ComponentModule,
-    MenuUtamaPageRoutingModule
+    RekodPembayaranPageRoutingModule
   ],
-  declarations: [MenuUtamaPage]
+  declarations: [RekodPembayaranPage]
 })
-export class MenuUtamaPageModule { }
+export class RekodPembayaranPageModule { }

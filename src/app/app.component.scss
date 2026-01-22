@@ -2,9 +2,7 @@ ion-menu {
   width: 270px;
   border: var(--background);
 
-  ion-content {
-    --background: var(--ion-color-teal-blue);
-  }
+  ion-content {}
 
   @media(max-width: 993px) {
     width: 100%;
@@ -17,47 +15,30 @@ ion-menu {
   border-radius: 50%;
   object-fit: cover;
 
-  @media(max-width: 993px) {
+  @media(max-width: 991px) {
     width: 100px;
     height: 100px;
   }
 }
 
-ion-list {
-  background: var(--ion-color-teal-blue);
-}
+ion-list {}
 
 ion-item {
-  --background: var(--ion-color-teal-blue);
-  color: var(--ion-color-background);
 
-  ion-icon {
-    color: var(--ion-color-background);
-  }
+  ion-icon {}
 
-  &:hover {
-    --background: rgba(255, 255, 255, 0.1); // subtle hover effect
-    --color: var(--ion-color-background);
-  }
+  &:hover {}
 
   &.selected {
-    --background: var(--ion-color-background);
 
-    ion-icon {
-      color: var(--ion-color-teal-blue);
-    }
+    ion-icon {}
 
-    ion-text {
-      color: var(--ion-color-teal-blue);
-    }
+    ion-text {}
   }
 
   &.danger {
-    --background: var(--ion-color-danger);
 
     ion-icon,
-    ion-text {
-      color: var(--ion-color-background);
-    }
+    ion-text {}
   }
 }

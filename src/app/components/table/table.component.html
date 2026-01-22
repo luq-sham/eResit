@@ -1,0 +1,75 @@
+<div>
+  <div class="table-header" *ngIf="hasTableTitle">
+    <ion-text>{{tableTitle}}</ion-text>
+  </div>
+  <!-- Table Header -->
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th *ngIf="showBilangan" class="col-bil ion-text-center">Bil.</th>
+          <th *ngFor="let header of tableHeader">{{ header.label }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="tableData.length === 0">
+          <td class="ion-text-center" [attr.colspan]="tableHeader.length + (showBilangan ? 1 : 0)">
+            <span class="italic">Tiada Data Dijumpai</span> 
+          </td>
+        </tr>
+
+        <tr *ngFor="let item of tableData; let i = index">
+          <!-- Bilangan column -->
+          <td *ngIf="showBilangan" class="ion-text-center">{{ i + 1 }}</td>
+
+          <!-- Data columns -->
+          <ng-container *ngFor="let header of tableHeader">
+            <ng-container [ngSwitch]="header.type">
+
+              <!-- Display type -->
+              <td *ngSwitchCase="'display'">{{ item[header.dataParam] }}</td>
+
+              <!-- Date type -->
+              <td *ngSwitchCase="'date'">{{ item[header.dataParam] | date:'dd/MM/yyyy' }}</td>
+
+              <!-- Buttons type -->
+              <td *ngSwitchCase="'buttons'">
+                <ion-button size="small">Edit</ion-button>
+                <ion-button size="small" >Delete</ion-button>
+              </td>
+
+            </ng-container>
+          </ng-container>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination Footer -->
+  <div class="table-footer">
+    <ion-row class="ion-align-items-center ion-justify-content-center pagination-controls">
+
+      <ion-button fill="clear" size="small" [disabled]="currentPage === 1">
+        <ion-icon name="play-back" ></ion-icon>
+      </ion-button>
+
+      <ion-button fill="clear" size="small" [disabled]="currentPage === 1">
+        <ion-icon name="chevron-back" ></ion-icon>
+      </ion-button>
+
+      <ion-text class="body-fs px-2">
+        Page {{ currentPage }} of {{ totalPages }}
+      </ion-text>
+
+      <ion-button fill="clear" size="small" [disabled]="currentPage === totalPages">
+        <ion-icon name="chevron-forward" ></ion-icon>
+      </ion-button>
+
+      <ion-button fill="clear" size="small" [disabled]="currentPage === totalPages">
+        <ion-icon name="play-forward" ></ion-icon>
+      </ion-button>
+
+    </ion-row>
+  </div>
+
+</div>

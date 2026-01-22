@@ -4,16 +4,16 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'folder/inbox',
+    redirectTo: 'menu-utama',
     pathMatch: 'full'
-  },
-  {
-    path: 'folder/:id',
-    loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
   },
   {
     path: 'menu-utama',
     loadChildren: () => import('./page/menu-utama/menu-utama.module').then( m => m.MenuUtamaPageModule)
+  },
+  {
+    path: 'rekod-pembayaran',
+    loadChildren: () => import('./page/rekod-pembayaran/rekod-pembayaran.module').then( m => m.RekodPembayaranPageModule)
   }
 ];
 

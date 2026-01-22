@@ -1,0 +1,133 @@
+$border-width-scale: (
+    0: 0,
+    1: 1px,
+    2: 2px,
+    3: 3px,
+    4: 4px
+);
+
+:root {
+    --border-light: var(--school-border-light);
+    --border-default: #D1D5DB;
+    --border-dark: var(--school-border-dark);
+    --border-primary: var(--ion-color-primary);
+    --border-success: var(--ion-color-success);
+    --border-warning: var(--ion-color-warning);
+    --border-danger: var(--ion-color-danger);
+}
+
+
+@each $key, $value in $border-width-scale {
+    .border-#{$key} {
+        border: $value solid var(--border-default) !important;
+    }
+
+    .border-t-#{$key} {
+        border-top: $value solid var(--border-default) !important;
+    }
+
+    .border-b-#{$key} {
+        border-bottom: $value solid var(--border-default) !important;
+    }
+
+    .border-s-#{$key} {
+        border-left: $value solid var(--border-default) !important;
+    }
+
+    .border-e-#{$key} {
+        border-right: $value solid var(--border-default) !important;
+    }
+}
+
+
+.border-light {
+    border-color: var(--border-light) !important;
+}
+
+.border-default {
+    border-color: var(--border-default) !important;
+}
+
+.border-dark {
+    border-color: var(--border-dark) !important;
+}
+
+.border-primary {
+    border-color: var(--border-primary) !important;
+}
+
+.border-success {
+    border-color: var(--border-success) !important;
+}
+
+.border-warning {
+    border-color: var(--border-warning) !important;
+}
+
+.border-danger {
+    border-color: var(--border-danger) !important;
+}
+
+
+.border-t-primary {
+    border-top-color: var(--border-primary) !important;
+}
+
+.border-b-primary {
+    border-bottom-color: var(--border-primary) !important;
+}
+
+.border-t-success {
+    border-top-color: var(--border-success) !important;
+}
+
+.border-b-success {
+    border-bottom-color: var(--border-success) !important;
+}
+
+
+.border-solid {
+    border-style: solid !important;
+}
+
+.border-dashed {
+    border-style: dashed !important;
+}
+
+.border-dotted {
+    border-style: dotted !important;
+}
+
+.border-double {
+    border-style: double !important;
+}
+
+
+.border-none {
+    border: none !important;
+}
+
+.border-t-none {
+    border-top: none !important;
+}
+
+.border-b-none {
+    border-bottom: none !important;
+}
+
+.border-s-none {
+    border-left: none !important;
+}
+
+.border-e-none {
+    border-right: none !important;
+}
+
+
+.card-border {
+    border: 1px solid var(--border-light);
+}
+
+.table-row-divider {
+    border-bottom: 1px solid var(--border-light);
+}
