@@ -1,0 +1,49 @@
+<!-- <ion-header class="ion-no-border">
+  <ion-toolbar class="white-toolbar"> -->
+<!-- <ion-title class="ion-text-start">Notification</ion-title> -->
+
+<!-- <ion-buttons slot="end">
+      <ion-button (click)="dismiss()" color="medium" class="close-btn">
+        <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header> -->
+
+<div class="content-wrapper ion-text-center white-content">
+
+  <div class="icon-container">
+    <div class="pulse-ring" [ngClass]="alertType"></div>
+    <ng-container [ngSwitch]="alertType">
+      <ion-icon name="alert-circle" color="warning" *ngSwitchCase="'warning'"></ion-icon>
+      <ion-icon name="checkmark-circle" color="success" *ngSwitchCase="'success'"></ion-icon>
+      <ion-icon name="close-circle" color="danger" *ngSwitchCase="'danger'"></ion-icon>
+    </ng-container>
+  </div>
+
+  <h2 class="alert-title">{{header||'Attention Needed'}}</h2>
+
+  <div class="message-box" [innerHTML]="message">
+  </div>
+
+</div>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar class="white-toolbar">
+    <ion-row class="ion-padding-horizontal ion-padding-bottom">
+
+      <ion-col [size]="hasConfirm?6:12">
+        <ion-button expand="block" fill="outline" color="medium" class="action-btn" (click)="dismiss()">
+          {{cancelBtn||'Cancel'}}
+        </ion-button>
+      </ion-col>
+
+      <ion-col size="6" *ngIf="hasConfirm">
+        <ion-button expand="block" fill="solid" color="primary" class="action-btn" (click)="confirm()">
+          {{confirmBtn||'Confirm'}}
+        </ion-button>
+      </ion-col>
+
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

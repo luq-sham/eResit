@@ -4,13 +4,15 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { HeaderComponent } from './header/header.component';
 import { TableComponent } from './table/table.component';
+import { AlertModalComponent } from './alert-modal/alert-modal.component';
 
 
 
 @NgModule({
   declarations: [
     HeaderComponent,
-    TableComponent
+    TableComponent,
+    AlertModalComponent,
   ],
   imports: [
     CommonModule,
@@ -19,7 +21,8 @@ import { TableComponent } from './table/table.component';
   ],
   exports: [
     HeaderComponent,
-    TableComponent
+    TableComponent,
+    AlertModalComponent,
   ]
 })
 export class ComponentModule { }

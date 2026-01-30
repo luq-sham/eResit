@@ -1,0 +1,63 @@
+.form-card {
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    background: #ffffff;
+    --padding-start: 16px;
+    --padding-end: 16px;
+}
+
+.icon-badge {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    font-size: 20px;
+}
+
+.icon-badge.primary {
+    background: rgba(56, 128, 255, 0.1);
+    color: var(--ion-color-primary);
+}
+
+.icon-badge.accent {
+    background: rgba(82, 96, 255, 0.1);
+    color: var(--ion-color-secondary);
+}
+
+.custom-input-item {
+    --background: #f8f9fa;
+    --border-radius: 8px;
+    --padding-start: 12px;
+    margin-bottom: 12px;
+    border: 1px solid #e9ecef;
+}
+
+.summary-box {
+    background: #f1f3f5;
+    border-radius: 12px;
+    padding: 16px 24px;
+    border-left: 4px solid var(--ion-color-primary);
+}
+
+.total-amount {
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.item-row {
+    border-bottom: 1px dashed #dee2e6;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+}
+
+.letter-spacing {
+    letter-spacing: 0.05em;
+}
+
+.text-muted {
+    color: #6c757d;
+    font-size: 0.9rem;
+}

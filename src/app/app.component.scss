@@ -1,8 +1,10 @@
 ion-menu {
   width: 270px;
-  border: var(--background);
+  border: var(--ion-color-second-main);
 
-  ion-content {}
+  ion-content {
+    --background: var(--ion-color-main);
+  }
 
   @media(max-width: 993px) {
     width: 100%;
@@ -21,24 +23,41 @@ ion-menu {
   }
 }
 
-ion-list {}
+ion-list {
+  background: var(--ion-color-main);
+}
 
 ion-item {
+  --background: var(--ion-color-main);
 
-  ion-icon {}
+  ion-icon {
+    color: var(--ion-color-second-main);
+  }
 
-  &:hover {}
+  ion-text {
+    color: var(--ion-color-second-main);
+
+  }
+
 
   &.selected {
+    --background: var(--ion-color-second-main);
 
-    ion-icon {}
+    ion-icon {
+      color: var(--ion-color-main);
+    }
 
-    ion-text {}
+    ion-text {
+      color: var(--ion-color-main);
+
+    }
   }
 
   &.danger {
 
     ion-icon,
-    ion-text {}
+    ion-text {
+      color: var(--ion-color-light);
+    }
   }
 }

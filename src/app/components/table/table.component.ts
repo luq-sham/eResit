@@ -22,4 +22,30 @@ export class TableComponent implements OnInit {
 
   ngOnInit() { }
 
+  getBadgeColor(item: any) {
+    switch (item) {
+      case 'Paid':
+        return 'var(--ion-color-success)'
+      case 'Pending':
+        return 'var(--ion-color-warning)'
+      case 'Failed':
+        return 'var(--ion-color-danger)'
+      default:
+        return 'var(--ion-color-success)'
+    }
+  }
+
+
+  onEdit(item: any) {
+
+  }
+
+  onDelete(item: any) {
+
+  }
+
+  changePage(page: any) {
+
+  }
+
 }

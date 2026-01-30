@@ -1,13 +1,139 @@
 <ion-content>
   <app-header [title]="'Rekod Pembayaran'" [showBackBtn]="true"></app-header>
 
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <ion-card>
-          <ion-card-content></ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <div class="main-container ion-padding">
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col>
+          <header class="page-title-section ion-margin-bottom ion-padding-horizontal">
+            <ion-text color="dark">
+              <h1 class="fw-bold">Borang Maklumat Pembayaran</h1>
+              <p class="text-muted">Sila lengkapkan butiran pembayaran di bawah.</p>
+            </ion-text>
+          </header>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-grid fixed>
+      <ion-card class="form-card">
+        <ion-card-header>
+          <div class="d-flex align-items-center">
+            <div class="icon-badge primary">
+              <ion-icon name="person-outline"></ion-icon>
+            </div>
+            <ion-card-title class="fw-bold">Maklumat Pelajar</ion-card-title>
+          </div>
+        </ion-card-header>
+
+        <ion-card-content>
+          <ion-row class="input-form-row">
+            <ion-col sizeLg="6" size="12">
+              <ion-label class="form-label required">Nama Pelajar</ion-label>
+              <ion-input class="form-control" placeholder="Nama penuh pelajar"></ion-input>
+            </ion-col>
+
+            <ion-col sizeLg="6" size="12">
+              <ion-label class="form-label required">Kelas</ion-label>
+              <ion-input class="form-control" placeholder="Contoh: 5 Amanah"></ion-input>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="form-card ion-margin-top">
+        <ion-card-header>
+          <ion-row class="ion-align-items-center ion-no-padding">
+            <ion-col class="d-flex align-items-center">
+              <div class="icon-badge accent">
+                <ion-icon name="card-outline"></ion-icon>
+              </div>
+              <ion-card-title class="fw-bold">Maklumat Pembayaran</ion-card-title>
+            </ion-col>
+            <ion-col class="ion-text-end">
+              <ion-button size="small" fill="outline" color="secondary" (click)="addItem()" class="add-btn">
+                <ion-icon slot="start" name="add-outline"></ion-icon>
+                Tambah
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-card-header>
+
+        <ion-card-content>
+          <div class="items-list-container">
+            <ng-container *ngFor="let item of items; let i = index">
+              <ion-row class="input-form-row item-row">
+                <ion-col sizeMd="8" size="12">
+                  <ion-label class="form-label">Butiran</ion-label>
+                  <ion-input class="form-control" placeholder="Contoh: Yuran PIBG"
+                    [(ngModel)]="item.butiran"></ion-input>
+                </ion-col>
+
+                <ion-col sizeMd="3" size="12">
+                  <ion-label class="form-label">Jumlah (RM)</ion-label>
+                  <ion-input class="form-control" type="number" placeholder="0.00"
+                    [(ngModel)]="item.jumlah"></ion-input>
+                </ion-col>
+
+                <ion-col sizeMd="1" size="12" class="d-flex align-items-center justify-content-center">
+                  <ion-button fill="clear" color="danger" (click)="removeItem(i)" class="mt-24">
+                    <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ng-container>
+          </div>
+
+          <div class="summary-box ion-margin-vertical">
+            <ion-row class="ion-align-items-center">
+              <ion-col class="ion-text-end">
+                <ion-text color="medium" class="ion-text-uppercase fw-semibold letter-spacing">
+                  Jumlah Keseluruhan
+                </ion-text>
+              </ion-col>
+              <ion-col size="auto" class="ion-text-end">
+                <ion-text color="dark" class="total-amount">
+                  RM {{ getTotal() | number:'1.2-2' }}
+                </ion-text>
+              </ion-col>
+            </ion-row>
+          </div>
+
+          <ion-row class="input-form-row">
+            <ion-col sizeLg="6" size="12">
+              <ion-label class="form-label required">Jenis Pembayaran</ion-label>
+              <ion-select class="form-control" placeholder="Pilih kaedah"
+                [interfaceOptions]="{ header: 'Pilih Kaedah Pembayaran' }">
+                <ion-select-option value="tunai">Tunai</ion-select-option>
+                <ion-select-option value="online">Online Banking / FPX</ion-select-option>
+              </ion-select>
+            </ion-col>
+
+            <ion-col sizeLg="6" size="12">
+              <ion-label class="form-label required">Tarikh Pembayaran</ion-label>
+              <ion-input readonly id="datePopover" class="form-control" placeholder="Pilih tarikh"
+                [value]="tarikhBayaran | date:'dd/MM/yyyy'">
+              </ion-input>
+
+              <ion-popover trigger="datePopover" showBackdrop="false">
+                <ng-template>
+                  <ion-datetime presentation="date" [min]="minDate" [max]="maxDate"
+                    (ionChange)="tarikhBayaran = $event.detail.value"></ion-datetime>
+                </ng-template>
+              </ion-popover>
+            </ion-col>
+          </ion-row>
+
+          <div class="ion-padding-top ion-text-end">
+            <ion-button color="accent">
+              <div class="d-flex align-items-center">
+                <ion-icon name="save" slot="start" color="light"></ion-icon>
+                <ion-text class="ps-8" color="light">Simpan Pembayaran</ion-text>
+              </div>
+            </ion-button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ion-grid>
+  </div>
 </ion-content>

@@ -15,9 +15,11 @@ export class TabelService {
     switch (module) {
       case 'main-menu':
         return [
-          { label: 'Nama', type: 'display', dataParam: 'test' },
-          { label: 'Tarikh', type: 'date', dataParam: 'tarikh' },
-          { label: 'Status', type: 'display', dataParam: 'test' }
+          { label: 'Nama Pelajar', type: 'display', dataParam: 'namaPelajar' },
+          { label: 'Tarikh Pembayaran', type: 'date', dataParam: 'tarikhBayaran' },
+          { label: 'Jenis Pembayaran', type: 'display', dataParam: 'jenisBayaran' },
+          { label: 'Jumlah Pembayaan (RM)', type: 'currency', dataParam: 'jumlahBayaran' },
+          { label: 'Status', type: 'badge', dataParam: 'status' }
         ]
 
       // Default

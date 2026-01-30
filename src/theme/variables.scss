@@ -1,2 +1,96 @@
-// For information on how to create your own theme, please refer to:
-// https://ionicframework.com/docs/theming/
+.form-header {
+    color: #000;
+    margin-bottom: 12px;
+
+    ion-col {
+        display: flex;
+        align-items: center;
+    }
+
+    .form-header-text {
+        font-family: 'Roboto-SemiBold';
+        font-size: 16px;
+        margin-left: 12px;
+    }
+
+    ion-icon {
+        font-size: 23px;
+    }
+}
+
+.input-form-row {
+    .form-label {
+        font-family: 'Roboto-SemiBold';
+        color: #000;
+        font-size: 14px;
+        margin-bottom: 12px;
+        white-space: normal;
+    }
+
+    .form-control {
+        position: relative;
+        display: block;
+        width: 100%;
+
+        --padding-top: 10px !important;
+        --padding-bottom: 10px !important;
+        --padding-start: 6px !important;
+        --padding-end: 6px !important;
+
+        border: 1px solid gray;
+        border-radius: 4px;
+        transition:
+            border-color 0.15s ease-in-out,
+            background-color 0.15s ease-in-out;
+
+        margin-top: 6px;
+        --color: var(--ion-color-dark) !important;
+
+        --highlight-color: none !important;
+
+        font-size: var(--body-font-size) !important;
+        min-height: 30px !important;
+
+        &:focus,
+        &.has-focus,
+        &.select-expanded {
+            box-shadow: none;
+            --highlight-color-focused: transparent !important;
+        }
+
+        &.input-disabled {
+            background: rgb(211, 211, 211);
+            font-family: 'Roboto-SemiBold';
+        }
+
+        ion-icon {
+            color: #000;
+            font-size: 16px;
+        }
+    }
+
+    ion-select.form-control {
+        display: flex !important;
+
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: normal !important;
+
+        &::part(icon) {
+            margin-left: auto;
+            position: absolute;
+            right: 10px;
+        }
+
+        &::part(text) {
+            min-height: 17px;
+            line-height: 17px;
+        }
+    }
+
+    .required::before {
+        content: "* ";
+        color: red;
+        font-size: 0.9em;
+    }
+}

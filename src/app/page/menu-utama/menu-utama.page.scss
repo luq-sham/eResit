@@ -1,4 +1,206 @@
-.icon-border {
-    padding: 12px;
-    border-radius: 50%;
+/* Global Layout */
+.bg-light {
+    --background: #f4f6f8;
+}
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 40px;
+}
+
+/* Welcome Header */
+.welcome-header {
+    margin-bottom: 10px;
+
+    .welcome-title {
+        margin: 0;
+        font-size: 1.75rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: var(--ion-color-dark);
+    }
+
+    .welcome-subtitle {
+        margin: 4px 0 0;
+        font-size: 0.95rem;
+        color: var(--ion-color-medium);
+        font-weight: 500;
+    }
+}
+
+/* Section Headers */
+.section-wrapper {
+    margin-top: 24px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+
+    .section-title {
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--ion-color-medium);
+    }
+}
+
+/* Modern Stat Cards */
+.stat-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+
+    /* Left Accent Border */
+    &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: currentColor;
+        /* Inherits from class logic below */
+    }
+
+    /* Dynamic Accent Colors */
+    &.accent-primary {
+        color: var(--ion-color-primary);
+    }
+
+    &.accent-secondary {
+        color: var(--ion-color-secondary);
+    }
+
+    &.accent-tertiary {
+        color: var(--ion-color-tertiary);
+    }
+
+    &.accent-success {
+        color: var(--ion-color-success);
+    }
+
+    &.accent-warning {
+        color: var(--ion-color-warning);
+    }
+
+    &.accent-danger {
+        color: var(--ion-color-danger);
+    }
+
+    &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+    }
+
+    .stat-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+    }
+
+    .stat-text {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .stat-label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--ion-color-medium);
+        margin-bottom: 4px;
+    }
+
+    .stat-value {
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: var(--ion-color-dark);
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+    }
+
+    .stat-icon {
+        font-size: 28px;
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: rgba(0, 0, 0, 0.03);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* Action Tiles (Quick Links) */
+.action-tile {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 16px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 1px solid #eef2f6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+
+    &:active {
+        background: #f8fafc;
+    }
+
+    .tile-icon-box {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        background: var(--ion-color-accent, #e0f2f1);
+        /* Light tint of accent */
+        color: var(--ion-color-light, var(--ion-color-primary));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        margin-bottom: 10px;
+        transition: transform 0.2s ease;
+    }
+
+    .tile-label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--ion-color-dark);
+        line-height: 1.3;
+    }
+
+    &:hover {
+        border-color: var(--ion-color-primary);
+
+        .tile-icon-box {
+            transform: scale(1.1);
+            background: var(--ion-color-primary);
+            color: #ffffff;
+        }
+    }
+}
+
+/* Table Wrapper Consistency */
+app-table {
+    display: block;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border-radius: 16px;
 }
