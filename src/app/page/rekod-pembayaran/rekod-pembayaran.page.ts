@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController } from '@ionic/angular';
-import { AlertService } from 'src/app/components/alert-modal/service/alert-service';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import * as moment from 'moment';
+import { AlertService } from 'src/app/components/alert-modal/service/alert-service';
 
 @Component({
   selector: 'app-rekod-pembayaran',
@@ -11,42 +11,65 @@ import * as moment from 'moment';
 })
 export class RekodPembayaranPage implements OnInit {
 
-  minDate: string = moment().subtract(1, 'month').format('YYYY-MM-DD');
-  maxDate: string = moment().add(1, 'year').format('YYYY-MM-DD');
-
-  tarikhBayaran: any
+  paymentForm!: FormGroup;
+  minDate = moment().subtract(1, 'month').format('YYYY-MM-DD');
+  maxDate = moment().add(1, 'year').format('YYYY-MM-DD');
 
   constructor(
+    private fb: FormBuilder,
     private alertService: AlertService
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.paymentForm = this.fb.group({
+      namaPelajar: ['', Validators.required],
+      kelas: ['', Validators.required],
+      jenisBayaran: ['', Validators.required],
+      tarikhBayaran: ['', Validators.required],
+      detailsBayaran: this.fb.array([this.createItem()])
+    });
   }
 
-  items = [
-    { butiran: '', jumlah: null }
-  ];
-
-  addItem() {
-    this.items.push({ butiran: '', jumlah: null });
+  createItem(): FormGroup {
+    return this.fb.group({
+      butiran: ['', Validators.required],
+      jumlah: [null, [Validators.required, Validators.min(0)]]
+    });
   }
 
-  removeItem(index: number) {
-    if (this.items.length == 1) {
-      this.alertService.dangerAlert('Perhatian', 'Sila isi sekurang-kurangnya satu(1) butiran maklumat pembayaran diisi.', 'Tutup')
-      return
+  get items(): FormArray {
+    return this.paymentForm.get('detailsBayaran') as FormArray;
+  }
+
+  addItem(): void {
+    this.items.push(this.createItem());
+  }
+
+  removeItem(index: number): void {
+    if (this.items.length === 1) {
+      this.alertService.warningAlert(
+        'Perhatian',
+        'Sila isi sekurang-kurangnya satu (1) butiran maklumat pembayaran.',
+        'Tutup'
+      );
+      return;
     }
-    this.items.splice(index, 1);
+    this.items.removeAt(index);
   }
 
   getTotal(): number {
-    return this.items.reduce((total, item) => {
-      return total + (Number(item.jumlah) || 0);
-    }, 0);
+    return this.items.controls.reduce(
+      (total, item) => total + (+item.get('jumlah')?.value || 0),
+      0
+    );
   }
 
-  check(event: any) {
-    console.log(event);
+  onSimpan(): void {
+    this.paymentForm.markAllAsTouched();
+    let param = this.paymentForm.getRawValue()
+
+    param.jumlahBayaran = this.getTotal()
+    console.log(param);
   }
 
 }

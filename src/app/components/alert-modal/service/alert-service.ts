@@ -49,4 +49,17 @@ export class AlertService {
     const data = await alert.onDidDismiss();
     return data?.data;
   }
+
+  async apiErrorAlert() {
+    const alert = await this.modalCtrl.create({
+      component: AlertModalComponent,
+      componentProps: { header: 'Perhatian', message: 'Ralat berlaku semasa memproses data. Sila cuba lagi.<br><small>Jika masalah berterusan, hubungi bahagian sokongan pelanggan untuk bantuan lanjut.</small>', cancelBtn: 'tutup', alertType: 'danger', hasConfirm: false },
+      backdropDismiss: false,
+      cssClass: 'alert-modal auto-height'
+    })
+
+    await alert.present();
+    const data = await alert.onDidDismiss();
+    return data?.data;
+  }
 }

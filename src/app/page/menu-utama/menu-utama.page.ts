@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { TabelService } from 'src/app/components/table/service/tabel-service';
 import localeMs from '@angular/common/locales/ms';
 import { registerLocaleData } from '@angular/common';
+import { ApiService } from 'src/app/services/api-service';
+import { AlertService } from 'src/app/components/alert-modal/service/alert-service';
 
 registerLocaleData(localeMs, 'ms-MY');
 
@@ -38,51 +40,32 @@ export class MenuUtamaPage implements OnInit {
   currentPage: any = 1
   totalPages: any = 10
   tableData: any[] = [
-    // {
-    //   namaPelajar: 'Aiman',
-    //   jenisBayaran: 'Online',
-    //   tarikhBayaran: new Date('2025-01-12'),
-    //   jumlahBayaran: 300,
-    //   status: 'Paid'
-    // },
-    // {
-    //   namaPelajar: 'Siti Aminah',
-    //   jenisBayaran: 'Cash',
-    //   tarikhBayaran: new Date('2025-01-15'),
-    //   jumlahBayaran: 250,
-    //   status: 'Pending'
-    // },
-    // {
-    //   namaPelajar: 'Muhammad Iqbal',
-    //   jenisBayaran: 'Online',
-    //   tarikhBayaran: new Date('2025-01-18'),
-    //   jumlahBayaran: 400,
-    //   status: 'Paid'
-    // },
-    // {
-    //   namaPelajar: 'Nur Aisyah',
-    //   jenisBayaran: 'Transfer Bank',
-    //   tarikhBayaran: new Date('2025-01-20'),
-    //   jumlahBayaran: 350,
-    //   status: 'Failed'
-    // },
-    // {
-    //   namaPelajar: 'Daniel',
-    //   jenisBayaran: 'Cash',
-    //   tarikhBayaran: new Date('2025-01-22'),
-    //   jumlahBayaran: 200,
-    //   status: 'Paid'
-    // }
   ];
   tableHeader: any
 
   constructor(
     private tableHeaderService: TabelService,
-    private router: Router
+    private router: Router,
+    private apiService: ApiService,
+    private alertService: AlertService
   ) { }
 
   ngOnInit() {
     this.initTableHeader()
+    this.initData()
+  }
+
+  initData() {
+    this.apiService.getCardValue().subscribe({
+      next: (res) => {
+        this.cardConfig[0].count = res.return_value_set_1.bilanganBayaran
+        this.cardConfig[2].count = res.return_value_set_1.jumlahBayaran
+      },
+      error: (res) => {
+        this.alertService.apiErrorAlert()
+
+      }
+    })
   }
 
   initTableHeader() {
