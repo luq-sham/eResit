@@ -27,9 +27,7 @@ export class AlertModalComponent implements OnInit {
   }
 
   confirm() {
-    this.modalCtrl.dismiss({
-      'role': 'confirm'
-    });
+    this.modalCtrl.dismiss(true, 'confirm');
   }
 
   ngOnInit() {

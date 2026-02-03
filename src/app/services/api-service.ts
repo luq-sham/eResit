@@ -19,4 +19,14 @@ export class ApiService {
     return this.http.get(url);
   }
 
+  getPaymentDetails(data?: any): Observable<any> {
+    const url = this.apiUrl + 'api/payments?page=' + data;
+    return this.http.get(url);
+  }
+
+  postAddPayments(data: any): Observable<any> {
+    const url = this.apiUrl + 'api/postAddPayments';
+    return this.http.post(url, data);
+  }
+
 }

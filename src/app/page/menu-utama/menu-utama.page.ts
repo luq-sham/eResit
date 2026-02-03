@@ -5,6 +5,7 @@ import localeMs from '@angular/common/locales/ms';
 import { registerLocaleData } from '@angular/common';
 import { ApiService } from 'src/app/services/api-service';
 import { AlertService } from 'src/app/components/alert-modal/service/alert-service';
+import { LoadingService } from 'src/app/services/loading-service';
 
 registerLocaleData(localeMs, 'ms-MY');
 
@@ -22,7 +23,7 @@ export interface menuConfig {
   standalone: false
 })
 
-export class MenuUtamaPage implements OnInit {
+export class MenuUtamaPage {
 
   menuConfig: menuConfig[] = [
     { title: 'Rekod Pembayaran', icon: 'calculator', url: 'rekod-pembayaran', color: '' },
@@ -37,25 +38,34 @@ export class MenuUtamaPage implements OnInit {
 
   today: Date = new Date();
 
-  currentPage: any = 1
-  totalPages: any = 10
-  tableData: any[] = [
-  ];
+  paging = { currentPage: 1, totalPages: 10, record: 5 }
+  tableData: any[] = [];
   tableHeader: any
 
   constructor(
     private tableHeaderService: TabelService,
     private router: Router,
     private apiService: ApiService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private loadingService: LoadingService
   ) { }
 
   ngOnInit() {
     this.initTableHeader()
-    this.initData()
   }
 
-  initData() {
+  ionViewWillEnter() {
+    this.paging = { currentPage: 1, totalPages: 10, record: 5 }
+    this.initData();
+  }
+
+  initTableHeader() {
+    this.tableHeader = this.tableHeaderService.getTableHeader('main-menu')
+  }
+
+  async initData() {
+    await this.loadingService.showDefaultMessage()
+
     this.apiService.getCardValue().subscribe({
       next: (res) => {
         this.cardConfig[0].count = res.return_value_set_1.bilanganBayaran
@@ -66,14 +76,29 @@ export class MenuUtamaPage implements OnInit {
 
       }
     })
-  }
 
-  initTableHeader() {
-    this.tableHeader = this.tableHeaderService.getTableHeader('main-menu')
+    this.apiService.getPaymentDetails(this.paging.currentPage).subscribe({
+      next: (res) => {
+        this.tableData = res.return_value_set_1
+        
+        this.paging.totalPages = res.total_pages
+        this.paging.record = res.record
+      },
+      error: (res) => {
+        this.alertService.apiErrorAlert()
+      }
+    })
+
+    await this.loadingService.dismiss()
   }
 
   onClickBtn(url: string) {
     this.router.navigate([url])
+  }
+
+  onPageChange(page: number) {
+    this.paging.currentPage = page;
+    this.initData();
   }
 
 }

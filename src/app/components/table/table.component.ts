@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-table',
@@ -13,10 +13,11 @@ export class TableComponent implements OnInit {
   @Input() tableHeader: any[] = []
   @Input() tableData: any[] = []
   @Input() showBilangan: boolean = true
+  @Input() tablePaging = { currentPage: 1, record: 5, totalPages: 10 }
 
-  currentPage: any = 1
-  totalPages: any = 10
   today: Date = new Date();
+
+  @Output() pageChange = new EventEmitter<number>()
 
   constructor() { }
 
@@ -44,8 +45,18 @@ export class TableComponent implements OnInit {
 
   }
 
-  changePage(page: any) {
+  changePage(page: number) {
+    // Clamp page between 1 and totalPages
+    if (page < 1) page = 1;
+    if (page > this.tablePaging.totalPages) page = this.tablePaging.totalPages;
 
+    // Update current page
+    this.tablePaging.currentPage = page;
+
+    // Emit event to parent so API can fetch data
+    this.pageChange.emit(page);
   }
+
+
 
 }

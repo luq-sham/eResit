@@ -57,7 +57,8 @@
 
       <ion-row class="ion-margin-top">
         <ion-col size="12">
-          <app-table [tableHeader]="tableHeader" [tableData]="tableData" [tableTitle]="'Senarai Pembayaran Terkini'">
+          <app-table [tableHeader]="tableHeader" [tableData]="tableData" [tableTitle]="'Senarai Pembayaran Terkini'"
+            (pageChange)="onPageChange($event)" [tablePaging]="paging">
           </app-table>
         </ion-col>
       </ion-row>

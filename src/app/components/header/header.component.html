@@ -2,13 +2,13 @@
   <ion-row>
     <ion-col size="auto" class="d-flex align-items-center" *ngIf="!showBackBtn">
       <ion-menu-button color="main"></ion-menu-button>
-      <ion-button (click)="toggleMenu()" fill="clear"  class="ion-hide-lg-down" color="main">
+      <ion-button (click)="toggleMenu()" fill="clear" class="ion-hide-lg-down" color="main">
         <ion-icon slot="icon-only" name="menu"></ion-icon>
       </ion-button>
     </ion-col>
 
     <ion-col size="auto" class="d-flex align-items-center" *ngIf="showBackBtn">
-      <ion-back-button defaultHref="/menu-utama" color="main"></ion-back-button>
+      <ion-back-button defaultHref="/menu-utama" routerDirection="root" color="main"></ion-back-button>
     </ion-col>
 
     <ion-col size="auto" class="d-flex align-items-center">

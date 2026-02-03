@@ -50,6 +50,23 @@ export class AlertService {
     return data?.data;
   }
 
+  async confirmAlert(header: string, message: string, confirmBtn: string = 'Ya', cancelBtn: string = 'Batal', alertType: 'success' | 'warning' | 'danger' = 'warning') {
+    const alert = await this.modalCtrl.create({
+      component: AlertModalComponent,
+      componentProps: {
+        header, message, confirmBtn, cancelBtn, alertType, hasConfirm: true
+      },
+      backdropDismiss: false,
+      cssClass: 'alert-modal auto-height'
+    });
+
+    await alert.present();
+    const result = await alert.onDidDismiss();
+
+    // Expect AlertModalComponent to dismiss with true/false
+    return result?.data === true;
+  }
+
   async apiErrorAlert() {
     const alert = await this.modalCtrl.create({
       component: AlertModalComponent,

@@ -19,7 +19,7 @@ export class TabelService {
           { label: 'Tarikh Pembayaran', type: 'date', dataParam: 'tarikhBayaran' },
           { label: 'Jenis Pembayaran', type: 'display', dataParam: 'jenisBayaran' },
           { label: 'Jumlah Pembayaan (RM)', type: 'currency', dataParam: 'jumlahBayaran' },
-          { label: 'Status', type: 'badge', dataParam: 'status' }
+          // { label: 'Status', type: 'badge', dataParam: 'status' }
         ]
 
       // Default

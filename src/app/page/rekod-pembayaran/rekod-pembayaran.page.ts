@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { AlertService } from 'src/app/components/alert-modal/service/alert-service';
+import { ApiService } from 'src/app/services/api-service';
+import { LoadingService } from 'src/app/services/loading-service';
 
 @Component({
   selector: 'app-rekod-pembayaran',
@@ -17,7 +19,9 @@ export class RekodPembayaranPage implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private apiService: ApiService,
+    private loadingService: LoadingService
   ) { }
 
   ngOnInit(): void {
@@ -64,12 +68,31 @@ export class RekodPembayaranPage implements OnInit {
     );
   }
 
-  onSimpan(): void {
-    this.paymentForm.markAllAsTouched();
-    let param = this.paymentForm.getRawValue()
+  async onSimpan() {
 
-    param.jumlahBayaran = this.getTotal()
-    console.log(param);
+    if (this.paymentForm.valid) {
+      let confirm = await this.alertService.confirmAlert('Perhatian', 'Adakah anda pasti untuk menghantar rekod ini?', 'Ya', 'Tidak')
+      if (confirm) {
+        this.paymentForm.markAllAsTouched();
+        let param = this.paymentForm.getRawValue()
+        param.jumlahBayaran = this.getTotal()
+
+
+        await this.loadingService.showDefaultMessage()
+        this.apiService.postAddPayments(param).subscribe({
+          next: async (res) => {
+            await this.loadingService.dismiss()
+            this.alertService.confirmAlert('Berjaya', 'Maklumat pembayaran telah disimpan', 'Tutup', 'Kembali ke Menu Utama', 'success')
+          },
+          error: (err) => {
+
+          }
+        })
+      }
+      // console.log(param);
+    } else {
+      this.alertService.warningAlert('Perhatian', 'Sila pastikan semua maklumat telah diisi dengan lengkap sebelum hantar.', 'Tutup')
+    }
   }
 
 }
