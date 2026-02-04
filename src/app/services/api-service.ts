@@ -20,7 +20,12 @@ export class ApiService {
   }
 
   getPaymentDetails(data?: any): Observable<any> {
-    const url = this.apiUrl + 'api/payments?page=' + data;
+    const url = this.apiUrl + 'api/getPaymentDetails?page=' + data.page + '&record=' + data.record;
+    return this.http.get(url);
+  }
+
+  getPaymentDetailsFiltered(data?: any): Observable<any> {
+    const url = this.apiUrl + 'api/getPaymentDetails?page=' + data.page + '&record=' + data.record + '&search=' + data.search;
     return this.http.get(url);
   }
 

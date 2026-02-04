@@ -1,5 +1,5 @@
 <ion-content>
-  <app-header [title]="'Menu Utama'"></app-header>
+  <!-- <app-header [title]="'Menu Utama'"></app-header> -->
 
   <div class="dashboard-container">
 
@@ -58,7 +58,8 @@
       <ion-row class="ion-margin-top">
         <ion-col size="12">
           <app-table [tableHeader]="tableHeader" [tableData]="tableData" [tableTitle]="'Senarai Pembayaran Terkini'"
-            (pageChange)="onPageChange($event)" [tablePaging]="paging">
+            [tablePaging]="paging" [showPaging]="false" (pageChange)="onPageChange($event)"
+            (recordChange)="onRecordChange($event)">
           </app-table>
         </ion-col>
       </ion-row>

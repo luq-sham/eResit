@@ -14,6 +14,10 @@ const routes: Routes = [
   {
     path: 'rekod-pembayaran',
     loadChildren: () => import('./page/rekod-pembayaran/rekod-pembayaran.module').then( m => m.RekodPembayaranPageModule)
+  },
+  {
+    path: 'jana-resit',
+    loadChildren: () => import('./page/jana-resit/jana-resit.module').then( m => m.JanaResitPageModule)
   }
 ];
 

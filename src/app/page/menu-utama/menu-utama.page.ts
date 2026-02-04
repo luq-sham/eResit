@@ -1,46 +1,46 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { TabelService } from 'src/app/components/table/service/tabel-service';
-import localeMs from '@angular/common/locales/ms';
 import { registerLocaleData } from '@angular/common';
+import localeMs from '@angular/common/locales/ms';
+
+import { TabelService } from 'src/app/components/table/service/tabel-service';
 import { ApiService } from 'src/app/services/api-service';
 import { AlertService } from 'src/app/components/alert-modal/service/alert-service';
 import { LoadingService } from 'src/app/services/loading-service';
 
 registerLocaleData(localeMs, 'ms-MY');
 
-export interface menuConfig {
-  title: string,
-  icon: string,
-  url: string,
-  color?: string,
+export interface MenuConfig {
+  title: string;
+  icon: string;
+  url: string;
+  color?: string;
 }
 
 @Component({
   selector: 'app-menu-utama',
   templateUrl: './menu-utama.page.html',
   styleUrls: ['./menu-utama.page.scss'],
-  standalone: false
+  standalone: false,
 })
-
 export class MenuUtamaPage {
+  today = new Date();
 
-  menuConfig: menuConfig[] = [
-    { title: 'Rekod Pembayaran', icon: 'calculator', url: 'rekod-pembayaran', color: '' },
-    { title: 'Jana Resit Pembayaran', icon: 'print', url: '', color: '' },
-  ]
+  menuConfig: MenuConfig[] = [
+    { title: 'Rekod Pembayaran', icon: 'calculator', url: 'rekod-pembayaran' },
+    { title: 'Jana Resit Pembayaran', icon: 'print', url: 'jana-resit' },
+  ];
 
   cardConfig = [
     { icon: 'file-tray-full', title: 'Bilangan Pembayaran', count: 0, type: 'display' },
     { icon: 'document-text', title: 'Bilangan Resit Dijana', count: 0, type: 'display', iconColor: 'warning' },
     { icon: 'cash', title: 'Jumlah Pembayaran', count: 0, type: 'currency', iconColor: 'success' },
-  ]
+  ];
 
-  today: Date = new Date();
+  paging = { currentPage: 1, record: 10, totalPages: 10 };
 
-  paging = { currentPage: 1, totalPages: 10, record: 5 }
+  tableHeader: any;
   tableData: any[] = [];
-  tableHeader: any
 
   constructor(
     private tableHeaderService: TabelService,
@@ -51,54 +51,63 @@ export class MenuUtamaPage {
   ) { }
 
   ngOnInit() {
-    this.initTableHeader()
+    this.loadTableHeader();
   }
 
   ionViewWillEnter() {
-    this.paging = { currentPage: 1, totalPages: 10, record: 5 }
-    this.initData();
+    this.resetPaging();
+    this.loadData();
   }
 
-  initTableHeader() {
-    this.tableHeader = this.tableHeaderService.getTableHeader('main-menu')
+  loadTableHeader() {
+    this.tableHeader = this.tableHeaderService.getTableHeader('main-menu');
   }
 
-  async initData() {
-    await this.loadingService.showDefaultMessage()
+  async loadData() {
+    await this.loadingService.showDefaultMessage();
 
+    this.loadCardData();
+    this.loadTableData();
+
+    await this.loadingService.dismiss();
+  }
+
+  loadCardData() {
     this.apiService.getCardValue().subscribe({
-      next: (res) => {
-        this.cardConfig[0].count = res.return_value_set_1.bilanganBayaran
-        this.cardConfig[2].count = res.return_value_set_1.jumlahBayaran
+      next: ({ return_value_set_1 }) => {
+        this.cardConfig[0].count = return_value_set_1.bilanganBayaran;
+        this.cardConfig[2].count = return_value_set_1.jumlahBayaran;
       },
-      error: (res) => {
-        this.alertService.apiErrorAlert()
+      error: () => this.alertService.apiErrorAlert(),
+    });
+  }
 
-      }
-    })
-
-    this.apiService.getPaymentDetails(this.paging.currentPage).subscribe({
+  loadTableData() {
+    this.apiService.getPaymentDetails({ page: this.paging.currentPage, record: this.paging.record }).subscribe({
       next: (res) => {
-        this.tableData = res.return_value_set_1
-        
-        this.paging.totalPages = res.total_pages
-        this.paging.record = res.record
+        this.tableData = res.return_value_set_1;
+        this.paging.totalPages = res.total_pages;
       },
-      error: (res) => {
-        this.alertService.apiErrorAlert()
-      }
-    })
-
-    await this.loadingService.dismiss()
+      error: () => this.alertService.apiErrorAlert(),
+    });
   }
 
   onClickBtn(url: string) {
-    this.router.navigate([url])
+    this.router.navigate([url]);
   }
 
   onPageChange(page: number) {
     this.paging.currentPage = page;
-    this.initData();
+    this.loadTableData();
   }
 
+  onRecordChange(record: number) {
+    this.paging.record = record;
+    this.paging.currentPage = 1;
+    this.loadTableData();
+  }
+
+  private resetPaging() {
+    this.paging.currentPage = 1;
+  }
 }

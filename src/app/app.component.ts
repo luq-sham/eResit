@@ -9,14 +9,15 @@ import { MenuController } from '@ionic/angular';
 export class AppComponent implements OnInit {
   public appPages = [
     { title: 'Menu Utama', url: '/menu-utama', icon: 'newspaper' },
-    { title: 'Maklumat Pelajar', url: '/pelajar', icon: 'people' },
+    { title: 'Senarai Pelajar', url: '/pelajar', icon: 'people' },
+    { title: 'Senarai Kelas', url: '/pelajar', icon: 'easel' },
   ];
   
   constructor(
-    // private menu: MenuController
+    private menu: MenuController
   ) { }
 
   ngOnInit() {
-    // this.menu.enable(false)
+    this.menu.enable(false)
   }
 }
