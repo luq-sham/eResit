@@ -13,6 +13,7 @@ import { ResitService } from './service/resit-service';
 })
 export class JanaResitPage implements OnInit {
 
+  category: any = 1
   searchText: string = '';
   tableHeader: any;
   tableData: any[] = [];
@@ -39,7 +40,8 @@ export class JanaResitPage implements OnInit {
     const params = {
       page: this.tablePaging.currentPage,
       record: this.tablePaging.record,
-      search: this.searchText
+      search: this.searchText,
+      category: this.category
     };
 
     this.apiService.getPaymentDetailsFiltered(params).subscribe({
@@ -64,6 +66,7 @@ export class JanaResitPage implements OnInit {
 
   // -------------------- SEARCH --------------------
   onSearch() {
+    this.tablePaging.currentPage = 1;
     this.initData()
   }
 
