@@ -35,4 +35,22 @@ ion-modal.auto-height {
     @media (min-height: 768px) {
         --height: 400px;
     }
+
+    &::part(backdrop) {
+        --backdrop-opacity: 0.4; // default Ionic feel
+    }
+}
+
+.lihat-pembayaran-modal {
+    --width: 55vw;
+    --height: 75vh;
+    --background: var(--ion-color-light) !important;
+
+    @media (max-width: 768px) {
+        --width: 90vw;
+    }
+
+    @media (max-height: 768px) {
+        --height: 400px;
+    }
 }

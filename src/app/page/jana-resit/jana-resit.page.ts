@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { AlertService } from 'src/app/components/alert-modal/service/alert-service';
 import { TabelService } from 'src/app/components/table/service/tabel-service';
 import { ApiService } from 'src/app/services/api-service';
-import { ResitService } from './service/resit-service';
+import { LoadingService } from 'src/app/services/loading-service';
+import { ModalController } from '@ionic/angular';
+import { ModalLihatPembayaranComponent } from 'src/app/components/modal-lihat-pembayaran/modal-lihat-pembayaran.component';
 
 
 @Component({
@@ -23,7 +25,8 @@ export class JanaResitPage implements OnInit {
     private tableService: TabelService,
     private apiService: ApiService,
     private alertService: AlertService,
-    private resitService: ResitService
+    private modalCtrl: ModalController,
+    private loadingService: LoadingService
   ) { }
 
   ngOnInit() {
@@ -36,7 +39,8 @@ export class JanaResitPage implements OnInit {
     this.tableHeader = this.tableService.getTableHeader('jana-resit');
   }
 
-  initData() {
+  async initData() {
+    await this.loadingService.showDefaultMessage()
     const params = {
       page: this.tablePaging.currentPage,
       record: this.tablePaging.record,
@@ -45,11 +49,15 @@ export class JanaResitPage implements OnInit {
     };
 
     this.apiService.getPaymentDetailsFiltered(params).subscribe({
-      next: (res) => {
+      next: async (res) => {
         this.tableData = res.return_value_set_1;
         this.tablePaging.totalPages = res.total_pages;
+        await this.loadingService.dismiss()
       },
-      error: () => this.alertService.apiErrorAlert()
+      error: async () => {
+        this.alertService.apiErrorAlert();
+        await this.loadingService.dismiss()
+      }
     });
   }
 
@@ -76,7 +84,14 @@ export class JanaResitPage implements OnInit {
 
   // -------------------- PDF PRINT --------------------
   async onPrint(item: any) {
-    this.resitService.generateReceipt(item)
+    const modal = await this.modalCtrl.create({
+      component: ModalLihatPembayaranComponent,
+      componentProps: { data: item },
+      backdropDismiss: false,
+      cssClass: 'lihat-pembayaran-modal'
+    })
+
+    await modal.present()
   }
 
 }

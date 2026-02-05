@@ -77,15 +77,27 @@ export class RekodPembayaranPage implements OnInit {
         let param = this.paymentForm.getRawValue()
         param.jumlahBayaran = this.getTotal()
 
+        param.namaPelajar = param.namaPelajar?.toLowerCase() || '';
+        param.kelas = param.kelas?.toLowerCase() || '';
+        param.jenisBayaran = param.jenisBayaran?.toLowerCase() || '';
+
+        param.detailsBayaran = param.detailsBayaran.map((item: any) => ({
+          butiran: item.butiran?.toLowerCase() || '',
+          jumlah: item.jumlah || 0
+        }));
 
         await this.loadingService.showDefaultMessage()
         this.apiService.postAddPayments(param).subscribe({
           next: async (res) => {
             await this.loadingService.dismiss()
-            this.alertService.confirmAlert('Berjaya', 'Maklumat pembayaran telah disimpan', 'Tutup', 'Kembali ke Menu Utama', 'success')
+            const respon = await this.alertService.confirmAlert('Berjaya', 'Maklumat pembayaran telah disimpan', 'Tutup', 'Kembali ke Menu Utama', 'success')
+            if (!respon) {
+              window.location.href = '/menu-utama'
+            }
           },
-          error: (err) => {
-
+          error: async (err) => {
+            await this.loadingService.dismiss()
+            this.alertService.apiErrorAlert
           }
         })
       }

@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { HeaderComponent } from './header/header.component';
 import { TableComponent } from './table/table.component';
 import { AlertModalComponent } from './alert-modal/alert-modal.component';
+import { ModalLihatPembayaranComponent } from './modal-lihat-pembayaran/modal-lihat-pembayaran.component';
 
 
 
@@ -13,6 +14,7 @@ import { AlertModalComponent } from './alert-modal/alert-modal.component';
     HeaderComponent,
     TableComponent,
     AlertModalComponent,
+    ModalLihatPembayaranComponent,
   ],
   imports: [
     CommonModule,
@@ -24,6 +26,7 @@ import { AlertModalComponent } from './alert-modal/alert-modal.component';
     HeaderComponent,
     TableComponent,
     AlertModalComponent,
+    ModalLihatPembayaranComponent,
   ]
 })
 export class ComponentModule { }

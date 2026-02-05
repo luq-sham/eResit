@@ -29,6 +29,7 @@ export class MenuUtamaPage {
   menuConfig: MenuConfig[] = [
     { title: 'Rekod Pembayaran', icon: 'calculator', url: 'rekod-pembayaran' },
     { title: 'Jana Resit Pembayaran', icon: 'print', url: 'jana-resit' },
+    { title: 'Kemaskini Pembayaran', icon: 'folder-open', url: '' },
   ];
 
   cardConfig = [
@@ -37,7 +38,7 @@ export class MenuUtamaPage {
     { icon: 'cash', title: 'Jumlah Pembayaran', count: 0, type: 'currency', iconColor: 'success' },
   ];
 
-  paging = { currentPage: 1, record: 10, totalPages: 10 };
+  paging = { currentPage: 1, record: 5, totalPages: 10 };
 
   tableHeader: any;
   tableData: any[] = [];
@@ -93,6 +94,10 @@ export class MenuUtamaPage {
   }
 
   onClickBtn(url: string) {
+    if (url.length < 1) {
+      this.alertService.warningAlert('Makluman', 'Perkhidmatan ini masih dalam proses pembangunan dan belum tersedia buat masa ini.','Tutup')
+      return
+    }
     this.router.navigate([url]);
   }
 

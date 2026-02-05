@@ -18,7 +18,7 @@
         style="background: #f4f5f8; border-radius: 12px;">
         <!-- Category Select -->
         <ion-col size="12" size-md="3">
-          <ion-select [(ngModel)]="category" interface="popover" class="w-100">
+          <ion-select [(ngModel)]="category" interface="popover" class="w-100" labelPlacement="stacked">
             <ion-select-option [value]="1">Nama Pelajar</ion-select-option>
             <ion-select-option [value]="2">Kelas</ion-select-option>
           </ion-select>
@@ -26,14 +26,15 @@
 
         <!-- Search Input -->
         <ion-col size="12" size-md="7">
-          <ion-input [(ngModel)]="searchText" placeholder="Carian..." clear-input (keyup.enter)="onSearch()">
+          <ion-input [(ngModel)]="searchText" placeholder="Carian..." clear-input (keyup.enter)="onSearch()"
+            labelPlacement="stacked">
             <ion-icon slot="start" name="search-outline" color="medium"></ion-icon>
           </ion-input>
         </ion-col>
 
         <!-- Search Button -->
         <ion-col size="12" size-md="2">
-          <ion-button expand="block" color="primary" (click)="onSearch()" style="--border-radius: 10px;">
+          <ion-button expand="block" color="main" (click)="onSearch()" style="--border-radius: 10px;">
             <ion-icon name="search" class=""></ion-icon>
           </ion-button>
         </ion-col>

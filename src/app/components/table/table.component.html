@@ -38,28 +38,46 @@
           <ng-container *ngFor="let header of tableHeader">
             <ng-container [ngSwitch]="header.type">
               <td *ngSwitchCase="'display'" [style.text-align]="header.align || 'left'">
-                <span class="text-truncate" [title]="item[header.dataParam]">
+                <span class="text-truncate" [ngClass]="header?.class || ''" [title]="item[header.dataParam]">
                   {{ item[header.dataParam] || '-' }}
                 </span>
               </td>
 
               <td *ngSwitchCase="'date'">
-                {{ item[header.dataParam] | date: 'dd/MM/yyyy' }}
+                <ion-text [ngClass]="header?.class || ''">
+                  {{ item[header.dataParam] | date: 'dd/MM/yyyy' }}
+                </ion-text>
+              </td>
+
+              <td *ngSwitchCase="'datetime'">
+                <ion-text [ngClass]="header?.class || ''">
+                  {{ item[header.dataParam] | date: 'dd/MM/yyyy hh:mm a' }}
+                </ion-text>
               </td>
 
               <td *ngSwitchCase="'currency'" class="font-mono">
-                {{ item[header.dataParam] | currency: 'RM ' }}
+                <ion-text [ngClass]="header?.class || ''">
+                  {{ item[header.dataParam] | currency: 'RM ' }}
+                </ion-text>
               </td>
 
               <td *ngSwitchCase="'badge'">
                 <div class="status-pill" [style.background]="
                     getBadgeColor(item[header.dataParam])
                   ">
-                  {{ item[header.dataParam] }}
+                  <ion-text [ngClass]="header?.class || ''">
+                    {{ item[header.dataParam] }}
+                  </ion-text>
                 </div>
               </td>
 
-              <td *ngSwitchCase="'buttons'" class="actions-cell">
+              <td *ngSwitchCase="'buttons'">
+                <ion-button size="small" [color]="header?.color" (click)="onClickBtn(item)">
+                  <ion-text [color]="header?.colorText">{{header?.btnLabel}}</ion-text>
+                </ion-button>
+              </td>
+
+              <td *ngSwitchCase="'buttons-action'" class="actions-cell">
                 <ion-button fill="clear" size="small" color="primary" (click)="onEdit(item)">
                   <ion-icon slot="icon-only" name="create-outline"></ion-icon>
                 </ion-button>
@@ -75,7 +93,7 @@
     </table>
   </div>
 
-  <div class="table-footer"  *ngIf="showPaging">
+  <div class="table-footer" *ngIf="showPaging">
     <div class="pagination-info">
       <ion-text color="medium">
         <ion-select [value]="tablePaging.record" (ionChange)="onRecordChange($event.detail.value)" interface="popover">

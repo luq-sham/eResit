@@ -115,9 +115,9 @@ tbody {
 .text-truncate {
     display: block;
     max-width: 250px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    // white-space: nowrap;
+    // overflow: hidden;
+    // text-overflow: ellipsis;
 }
 
 .font-mono {

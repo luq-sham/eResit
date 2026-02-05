@@ -2,153 +2,241 @@ import { Injectable } from '@angular/core';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 
-// Setup pdfMake fonts
-const vfs = (pdfFonts as any).pdfMake ? (pdfFonts as any).pdfMake.vfs : (pdfFonts as any).vfs;
+const vfs = (pdfFonts as any).pdfMake
+  ? (pdfFonts as any).pdfMake.vfs
+  : (pdfFonts as any).vfs;
+
 (pdfMake as any).vfs = vfs;
 
 @Injectable({
   providedIn: 'root',
 })
 export class ResitService {
-  private primaryColor = '#1a3a5f'; // Professional Navy
-  private secondaryColor = '#f8f9fa'; // Light Gray Background
+
+  private colors = {
+    primary: '#1E3A8A',
+    accent: '#3B82F6',
+    text: '#1F2937',
+    lightGray: '#F3F4F6',
+    white: '#FFFFFF',
+    border: '#E5E7EB'
+  };
 
   async generateReceipt(item: any) {
-    const logo = await this.getBase64ImageFromURL('assets/receipt-icon.ico');
+    const logo = await this.getBase64ImageFromURL('assets/logo-default.png');
 
-    const receiptRows = item.detailsBayaran.map((detail: any) => [
-      { text: detail.butiran || 'Yuran Sekolah', style: 'tableData' },
-      { text: `RM ${detail.jumlah?.toFixed(2) || '0.00'}`, alignment: 'right', style: 'tableData' }
+    const totalAmount = item.detailsBayaran.reduce(
+      (acc: number, curr: any) => acc + (curr.jumlah || 0),
+      0
+    );
+
+    const receiptRows = item.detailsBayaran.map((detail: any, index: number) => [
+      { text: (index + 1).toString(), style: 'tableCell', alignment: 'center' },
+      { text: (detail.butiran || 'Yuran Sekolah').toUpperCase(), style: 'tableCell' },
+      { text: `RM ${detail.jumlah?.toFixed(2) || '0.00'}`, alignment: 'right', style: 'tableCell' }
     ]);
 
     const documentDefinition: any = {
       pageSize: 'A4',
-      pageMargins: [40, 40, 40, 40],
+      pageMargins: [40, 60, 40, 60],
+      watermark: { text: 'RASMI', color: 'blue', opacity: 0.05, bold: true, italics: false },
       content: [
-        this.getSchoolHeader(item, logo),
-        { canvas: [{ type: 'line', x1: 0, y1: 10, x2: 515, y2: 10, lineWidth: 1.5, lineColor: this.primaryColor }] },
+        this.getHeaderSection(item, logo),
         { text: '\n' },
-        this.getStudentInfoSection(item),
-        { text: 'BUTIRAN PEMBAYARAN', style: 'sectionTitle' },
-        this.getFeeDetailsTable(receiptRows),
-        this.getSummarySection(item),
-        this.getFooter()
+        this.getStudentDetails(item),
+        { text: '\n' },
+        this.getTableSection(receiptRows, totalAmount),
+        { text: '\n' },
+        this.getSummarySection(totalAmount),
+        this.getFooterSection(item)
       ],
-      styles: this.getPdfStyles()
+      styles: this.getPdfStyles(),
+      defaultStyle: {
+        font: 'Roboto',
+        fontSize: 10,
+        color: this.colors.text
+      }
     };
 
     pdfMake.createPdf(documentDefinition).open();
   }
 
-  private getSchoolHeader(item: any, logo: any) {
+  private getHeaderSection(item: any, logo: any) {
     return {
-      columns: [
-        { image: logo, fit: [60, 60], width: 'auto' },
+      stack: [
         {
-          stack: [
-            { text: 'SMK CYBERJAYA HIGH SCHOOL', style: 'schoolName' },
-            { text: 'Persiaran Bestari, 63000 Cyberjaya, Selangor', style: 'schoolSub' },
-            { text: 'Tel: 03-12345678 | Email: admin@school.edu.my', style: 'schoolSub' }
-          ],
-          margin: [15, 5, 0, 0],
-          width: '*'
+          table: {
+            widths: [60, '*', 150],
+            body: [[
+              {
+                image: logo,
+                fit: [65, 65],
+                alignment: 'left',
+                border: [false, false, false, false]
+              },
+              {
+                stack: [
+                  { text: '{{NAMA SEKOLAH}}', style: 'companyName' },
+                  { text: '{{ALAMAT SEKOLAH}}', style: 'companyAddress' },
+                  { text: 'Tel: {{NO. TELEFON SEKOLAH}}  |  Email: {{EMAIL SEKOLAH}}', style: 'companyAddress' }
+                ],
+                margin: [10, 5, 0, 0],
+                alignment: 'left',
+                valign: 'middle',
+                border: [false, false, false, false]
+              },
+              {
+                stack: [
+                  { text: 'RESIT RASMI', style: 'receiptTitle', alignment: 'right' },
+                  {
+                    text: [
+                      { text: 'NO. RESIT: ', bold: true, color: '#6B7280', fontSize: 9 },
+                      { text: item.id ? 'RES-' + item.id.substring(0, 8).toUpperCase() : 'N/A', bold: true, fontSize: 10 }
+                    ],
+                    alignment: 'right'
+                  },
+                  {
+                    text: [
+                      { text: 'TARIKH: ', bold: true, color: '#6B7280', fontSize: 9 },
+                      { text: new Date().toLocaleDateString('en-GB'), bold: true, fontSize: 10 }
+                    ],
+                    alignment: 'right',
+                    margin: [0, 2, 0, 0]
+                  }
+                ],
+                margin: [10, 5, 0, 0],
+                alignment: 'right',
+                valign: 'middle',
+                border: [false, false, false, false]
+              }
+            ]]
+          },
+          layout: 'noBorders'
         },
         {
-          stack: [
-            { text: 'RESIT RASMI', style: 'mainHeader' },
-            { text: (item.id ? 'RES-' + item.id.substring(0, 8).toUpperCase() : 'N/A'), style: 'receiptNo' },
-            { text: `TARIKH: ${new Date().toLocaleDateString('en-GB')}`, fontSize: 9 }
+          canvas: [
+            { type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 2, lineColor: this.colors.primary }
           ],
-          alignment: 'right',
-          width: 150
+          margin: [0, 10, 0, 10]
         }
       ]
     };
   }
 
-  private getStudentInfoSection(item: any) {
+  private getStudentDetails(item: any) {
     return {
-      style: 'infoBox',
+      style: 'infoContainer',
       table: {
-        widths: ['15%', '35%', '15%', '35%'],
+        widths: ['20%', 'auto', '35%', '20%', 'auto', '35%'],
         body: [
           [
-            { text: 'NAMA', style: 'infoLabel' },
-            { text: (item.namaPelajar || 'N/A').toUpperCase(), style: 'infoValue' },
-            { text: 'KELAS', style: 'infoLabel' },
-            { text: (item.kelas || 'N/A').toUpperCase(), style: 'infoValue' }
+            { text: 'NAMA', style: 'label' },
+            { text: ':', style: 'label' },
+            { text: (item.namaPelajar || '-').toUpperCase(), style: 'value' },
+            { text: 'KELAS', style: 'label' },
+            { text: ':', style: 'label' },
+            { text: (item.kelas || '-').toUpperCase(), style: 'value' }
           ],
           [
-            { text: 'TARIKH', style: 'infoLabel' },
-            { text: item.tarikhBayaran ? new Date(item.tarikhBayaran).toLocaleDateString('en-GB') : 'N/A', style: 'infoValue' },
-            { text: 'MOD', style: 'infoLabel' },
-            { text: (item.jenisBayaran || 'TUNAI').toUpperCase(), style: 'infoValue' }
+            { text: 'TARIKH BAYARAN', style: 'label' },
+            { text: ':', style: 'label' },
+            { text: new Date(item.tarikhBayaran).toLocaleDateString('en-GB') || '-', style: 'value' },
+            { text: 'KAEDAH BAYARAN', style: 'label' },
+            { text: ':', style: 'label' },
+            { text: (item.jenisBayaran || 'TUNAI').toUpperCase(), style: 'value' }
           ]
         ]
       },
-      layout: 'noBorders'
+      layout: {
+        hLineWidth: () => 0,
+        vLineWidth: () => 0,
+        paddingTop: () => 5,
+        paddingBottom: () => 5
+      }
     };
   }
 
-  private getFeeDetailsTable(rows: any[]) {
+  private getTableSection(rows: any[], total: number) {
     return {
       table: {
         headerRows: 1,
-        widths: ['*', 120],
+        widths: [30, '*', 100],
         body: [
           [
-            { text: 'PERKARA', style: 'tableHeader' },
+            { text: 'NO', style: 'tableHeader', alignment: 'center' },
+            { text: 'KETERANGAN BAYARAN', style: 'tableHeader' },
             { text: 'JUMLAH (RM)', style: 'tableHeader', alignment: 'right' }
           ],
-          ...rows
+          ...rows,
+          [
+            { text: '', border: [false, false, false, false] },
+            { text: 'JUMLAH KESELURUHAN', style: 'totalLabel', alignment: 'right', border: [false, false, false, false] },
+            { text: `RM ${total.toFixed(2)}`, style: 'totalValue', alignment: 'right', border: [false, false, false, false] }
+          ]
         ]
       },
       layout: {
-        fillColor: (rowIndex: number) => (rowIndex % 2 === 0 && rowIndex !== 0) ? this.secondaryColor : null,
-        hLineWidth: (i: number, node: any) => (i === 0 || i === 1 || i === node.table.body.length) ? 1 : 0.5,
-        hLineColor: (i: number) => (i === 0 || i === 1) ? this.primaryColor : '#e0e0e0',
+        fillColor: (rowIndex: number) => {
+          if (rowIndex === 0) return this.colors.primary;
+          if (rowIndex === rows.length + 1) return this.colors.lightGray;
+          return rowIndex % 2 === 0 ? '#F9FAFB' : null;
+        },
+        hLineWidth: (i: number, node: any) =>
+          i === 0 || i === 1 || i === node.table.body.length - 1 ? 0 : 1,
         vLineWidth: () => 0,
+        hLineColor: '#E5E7EB',
         paddingTop: () => 8,
         paddingBottom: () => 8
       }
     };
   }
 
-  private getSummarySection(item: any) {
-    const totalAmount = item.jumlahBayaran || 0;
+  private getSummarySection(totalAmount: number) {
     return {
-      margin: [0, 15, 0, 0],
-      columns: [
-        { text: `Jumlah Ringgit: ${this.numberToMalayWords(totalAmount)}`, style: 'amountWords', width: '*' },
+      stack: [
         {
-          width: 180,
-          table: {
-            widths: ['*', 'auto'],
-            body: [
-              [
-                { text: 'JUMLAH BAYARAN', bold: true, fontSize: 11, margin: [0, 5, 0, 5], color: '#000' },
-                { text: `RM ${totalAmount.toFixed(2)}`, style: 'totalAmount', color: '#000' }
-              ]
-            ]
-          },
-          layout: {
-            // fillColor: this.primaryColor,
-            hLineWidth: () => 0,
-            vLineWidth: () => 0
-          }
+          text: `Ringgit Malaysia: ${this.numberToMalayWords(totalAmount)}`,
+          style: 'amountWords',
+          alignment: 'right'
         }
       ]
     };
   }
 
-  private getFooter() {
+  private getFooterSection(item: any) {
     return {
+      margin: [0, 40, 0, 0],
       stack: [
-        { text: '\n\n' },
-        { canvas: [{ type: 'line', x1: 0, y1: 10, x2: 515, y2: 10, lineWidth: 0.5, lineColor: '#bdc3c7' }] },
         {
-          text: 'Resit ini dijana oleh komputer dan tidak memerlukan tandatangan basah.\nSila simpan resit ini sebagai bukti pembayaran.',
-          style: 'footerText'
+          columns: [
+            {
+              stack: [
+                { text: 'NOTA PENTING:', fontSize: 8, bold: true, color: this.colors.primary },
+                { text: '1. Resit ini adalah cetakan komputer, tandatangan tidak diperlukan.', fontSize: 8, color: '#6B7280' },
+                { text: '2. Sila simpan resit ini sebagai bukti pembayaran yang sah.', fontSize: 8, color: '#6B7280' },
+                { text: '3. Sebarang pertanyaan sila hubungi pejabat sekolah.', fontSize: 8, color: '#6B7280' }
+              ],
+              width: '*'
+            },
+            {
+              // Signature Line (Optional placeholder)
+              stack: [
+                { text: 'Disediakan Oleh:', fontSize: 8, color: '#6B7280', margin: [0, 0, 0, 10] },
+                { text: 'T.T', fontSize: 8, color: '#6B7280', margin: [0, 0, 0, 5] },
+                { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 100, y2: 0, lineWidth: 0.5, lineColor: '#9CA3AF' }] },
+                { text: '{{JAWATAN PENGESAH}}', fontSize: 8, bold: true, margin: [0, 5, 0, 0] }
+              ],
+              width: '25%',
+              alignment: 'center'
+            }
+          ]
+        },
+        {
+          text: '© {{NAMA SEKOLAH}} - Generated by System',
+          fontSize: 7,
+          color: '#D1D5DB',
+          alignment: 'center',
+          margin: [0, 30, 0, 0]
         }
       ]
     };
@@ -156,26 +244,25 @@ export class ResitService {
 
   private getPdfStyles() {
     return {
-      schoolName: { fontSize: 14, bold: true, color: this.primaryColor },
-      schoolSub: { fontSize: 8, color: '#555' },
-      mainHeader: { fontSize: 18, bold: true, color: this.primaryColor, letterSpacing: 1 },
-      receiptNo: { fontSize: 11, bold: true, color: '#c0392b', margin: [0, 2, 0, 2] },
-      sectionTitle: { fontSize: 10, bold: true, color: this.primaryColor, margin: [0, 15, 0, 5] },
-      infoBox: { margin: [0, 5, 0, 15] },
-      infoLabel: { fontSize: 8, color: '#7f8c8d', bold: true },
-      infoValue: { fontSize: 9, bold: true, color: '#2c3e50' },
-      tableHeader: { bold: true, fontSize: 9, color: 'white', fillColor: this.primaryColor, margin: [5, 4, 5, 4] },
-      tableData: { fontSize: 9, margin: [5, 2, 5, 2] },
-      amountWords: { fontSize: 8, italics: true, color: '#444', margin: [0, 10, 0, 0] },
-      totalAmount: { fontSize: 12, bold: true, margin: [0, 5, 5, 5], alignment: 'right' },
-      footerText: { fontSize: 8, color: '#95a5a6', italics: true, alignment: 'center', margin: [0, 10, 0, 0] }
+      companyName: { fontSize: 16, bold: true, color: this.colors.primary, margin: [0, 0, 0, 2] },
+      companyAddress: { fontSize: 9, color: '#4B5563' },
+      receiptTitle: { fontSize: 16, bold: true, color: this.colors.primary },
+      infoContainer: { margin: [0, 5, 0, 5] },
+      label: { fontSize: 9, color: '#6B7280', bold: true },
+      value: { fontSize: 10, color: '#111827', bold: true },
+      tableHeader: { fontSize: 9, bold: true, color: 'white', margin: [0, 5, 0, 5] },
+      tableCell: { fontSize: 10, color: '#374151', margin: [0, 5, 0, 5] },
+      totalLabel: { fontSize: 10, bold: true, color: this.colors.primary, margin: [0, 10, 0, 0] },
+      totalValue: { fontSize: 14, bold: true, color: this.colors.primary, margin: [0, 8, 0, 0] },
+      amountWords: { fontSize: 9, italics: true, bold: true, color: '#4B5563', margin: [0, 5, 0, 0] }
     };
   }
 
   private getBase64ImageFromURL(url: string): Promise<string> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       const img = new Image();
       img.setAttribute('crossOrigin', 'anonymous');
+
       img.onload = () => {
         const canvas = document.createElement('canvas');
         canvas.width = img.width;
@@ -184,7 +271,11 @@ export class ResitService {
         ctx?.drawImage(img, 0, 0);
         resolve(canvas.toDataURL('image/png'));
       };
-      img.onerror = reject;
+
+      img.onerror = () => {
+        resolve('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=');
+      };
+
       img.src = url;
     });
   }
@@ -211,7 +302,6 @@ export class ResitService {
 
     let result = terbilang(ringgit) + 'RINGGIT ';
     if (sen > 0) result += 'DAN ' + terbilang(sen) + 'SEN ';
-
     return result + 'SAHAJA';
   }
 }

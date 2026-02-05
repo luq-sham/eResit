@@ -47,6 +47,10 @@ export class TableComponent implements OnInit {
 
   onDelete(item: any) { }
 
+  onClickBtn(item: any) {
+    this.onButtonClick.emit(item)
+  }
+
   changePage(page: number) {
     const totalPages = this.tablePaging.totalPages;
 

@@ -1,0 +1,131 @@
+$border-color: #e0e0e0;
+$primary-color: var(--ion-color-primary);
+
+.receipt-card {
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    margin: 0;
+}
+
+.card-section {
+    padding: 20px;
+}
+
+.student-section {
+    background: #fafafa;
+    border-radius: 16px 16px 0 0;
+}
+
+.student-avatar {
+    background: rgba(var(--ion-color-primary-rgb), 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.label-muted {
+    font-size: 0.75rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+}
+
+.sub-text {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.fw-bold {
+    font-weight: 700;
+}
+
+.mb-1 {
+    margin-bottom: 4px;
+}
+
+.mb-3 {
+    margin-bottom: 12px;
+}
+
+.info-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+    color: #333;
+
+    ion-icon {
+        color: $primary-color;
+    }
+}
+
+.date-text {
+    font-weight: 600;
+    color: #333;
+}
+
+.item-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+}
+
+.item-name {
+    width: 70%;
+    padding-right: 10px;
+    color: #333;
+}
+
+.item-price {
+    font-weight: 600;
+    color: #000;
+}
+
+.total-row {
+    padding: 0 20px 25px;
+    margin-bottom: 0;
+}
+
+.total-label {
+    font-size: 1.5rem;
+    font-family: 'Roboto-SemiBold';
+    color: var(--ion-color-success);
+}
+
+.total-amount {
+    font-size: 1.5rem;
+    font-family: 'Roboto-SemiBold';
+    color: var(--ion-color-success);
+}
+
+.dashed-divider {
+    position: relative;
+    margin: 0 20px;
+    border-bottom: 2px dashed $border-color;
+
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        top: -9px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #f4f5f8;
+    }
+
+    &::before {
+        left: -28px;
+    }
+
+    &::after {
+        right: -28px;
+    }
+}
+
+.solid-divider {
+    border-bottom: 1px solid $border-color;
+}

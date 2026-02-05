@@ -1,0 +1,88 @@
+<ion-content color="light">
+  <ion-grid class="ion-padding-vertical">
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="8">
+
+        <div class="ion-text-center ion-margin-bottom">
+          <ion-text color="dark">
+            <h2 class="fw-bold">Ringkasan Bayaran</h2>
+          </ion-text>
+          <ion-text color="medium">
+            <p class="fs-small">Sila semak butiran di bawah</p>
+          </ion-text>
+        </div>
+
+        <ion-card class="receipt-card">
+
+          <div class="card-section student-section">
+            <ion-item lines="none">
+              <ion-avatar slot="start" class="student-avatar">
+                <ion-icon name="person" size="large" color="primary"></ion-icon>
+              </ion-avatar>
+              <ion-label>
+                <p class="label-muted">Maklumat Pelajar</p>
+                <h3>{{ data?.namaPelajar || '-' | uppercase}}</h3>
+                <p class="sub-text">{{ data?.kelas || '-' | titlecase}}</p>
+              </ion-label>
+            </ion-item>
+          </div>
+
+          <div class="dashed-divider"></div>
+
+          <div class="card-section">
+            <ion-row>
+              <ion-col size="6">
+                <p class="label-muted mb-1">Kaedah Bayaran</p>
+                <div class="info-badge">
+                  <ion-icon name="card-outline"></ion-icon>
+                  <span>{{ data?.jenisBayaran || '-' | titlecase}}</span>
+                </div>
+              </ion-col>
+              <ion-col size="6" class="ion-text-end">
+                <p class="label-muted mb-1">Tarikh</p>
+                <div class="date-text">
+                  {{ data?.tarikhBayaran | date:'dd MMM yyyy' }}
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+
+          <div class="solid-divider"></div>
+
+          <div class="card-section item-list">
+            <p class="label-muted mb-3">Butiran Pembayaran</p>
+
+            <div class="item-row" *ngFor="let item of data?.detailsBayaran">
+              <span class="item-name">{{ item?.butiran | titlecase }}</span>
+              <span class="item-price">{{ item?.jumlah | currency:'RM ' }}</span>
+            </div>
+          </div>
+
+          <div class="total-section">
+            <div class="dashed-divider mb-12"></div>
+            <div class="item-row total-row">
+              <span class="total-label">JUMLAH BAYARAN</span>
+              <span class="total-amount">
+                {{ data?.jumlahBayaran | currency:'RM ' }}
+              </span>
+            </div>
+          </div>
+
+        </ion-card>
+
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="ion-justify-content-center mt-16">
+      <ion-col size="8">
+        <ion-button expand="block" color="success" (click)="onJana()">
+          <ion-text color="light" class="fw-semibold">Jana Resit</ion-text>
+        </ion-button>
+
+        <ion-button fill="outline" expand="block" color="secondary" (click)="onTutup()">
+          <ion-text class="fw-semibold">Tutup</ion-text>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
