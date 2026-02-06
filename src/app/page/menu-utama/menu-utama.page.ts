@@ -7,6 +7,7 @@ import { TabelService } from 'src/app/components/table/service/tabel-service';
 import { ApiService } from 'src/app/services/api-service';
 import { AlertService } from 'src/app/components/alert-modal/service/alert-service';
 import { LoadingService } from 'src/app/services/loading-service';
+import { firstValueFrom } from 'rxjs';
 
 registerLocaleData(localeMs, 'ms-MY');
 
@@ -74,34 +75,39 @@ export class MenuUtamaPage {
   }
 
   async loadCardData() {
-    this.apiService.getCardValue().subscribe({
-      next: ({ return_value_set_1 }) => {
-        this.cardConfig[0].count = return_value_set_1.bilanganBayaran;
-        this.cardConfig[2].count = return_value_set_1.jumlahBayaran;
-      },
-      error: () => this.alertService.apiErrorAlert(),
-    });
+    try {
+      const res: any = await firstValueFrom(this.apiService.getCardValue());
+
+      this.cardConfig[0].count = res.return_value_set_1.bilanganBayaran;
+      this.cardConfig[2].count = res.return_value_set_1.jumlahBayaran;
+    } catch {
+      this.alertService.apiErrorAlert();
+    }
   }
 
   async loadTableData() {
-    this.apiService.getPaymentDetails({ page: this.paging.currentPage, record: this.paging.record }).subscribe({
-      next: (res) => {
-        this.tableData = res.return_value_set_1;
-        
-        this.tableData = res.return_value_set_1.map((item: any) => {
-          const total = item.detailsBayaran.reduce(
-            (acc: number, curr: any) => acc + (curr.jumlah || 0),
-            0
-          );
+    try {
+      const param = {
+        page: this.paging.currentPage,
+        record: this.paging.record
+      };
 
-          return { ...item, total };
-        });
+      const res: any = await firstValueFrom(this.apiService.getPaymentDetails(param));
 
-        this.paging.totalPages = res.total_pages;
-      },
-      error: () => this.alertService.apiErrorAlert(),
-    });
+      this.tableData = res.return_value_set_1.map((item: any) => {
+        const total = item.detailsBayaran.reduce(
+          (acc: number, curr: any) => acc + (curr.jumlah || 0),
+          0
+        );
+        return { ...item, total };
+      });
+
+      this.paging.totalPages = res.total_pages;
+    } catch {
+      this.alertService.apiErrorAlert();
+    }
   }
+
 
   onClickBtn(url: string) {
     if (url.length < 1) {
