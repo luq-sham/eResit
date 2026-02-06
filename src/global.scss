@@ -42,3 +42,14 @@
 @import 'theme/color-library.scss';
 @import 'theme/border-library.scss';
 @import 'theme/modal-library.scss';
+
+html,
+body {
+    height: 100%;
+    background: #e9eaef;
+    /* same as your page background */
+}
+
+ion-content {
+    --background: #e9eaef;
+}
