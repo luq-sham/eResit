@@ -12,13 +12,18 @@ import { AlertService } from '../alert-modal/service/alert-service';
 export class ModalLihatPembayaranComponent implements OnInit {
 
   data: any
+  total: any
   constructor(
     private resitService: ResitService,
     private modalCtrl: ModalController,
     private alertService: AlertService
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.total = this.data.detailsBayaran.reduce(
+      (acc: number, curr: any) => acc + (curr.jumlah || 0), 0
+    );
+  }
 
   async onJana() {
     const res = await this.alertService.confirmAlert('Perhatian', 'Adakah anda pasti untuk menjana resit bagi pembayaran ini?', 'YA', 'TIDAK', 'warning')

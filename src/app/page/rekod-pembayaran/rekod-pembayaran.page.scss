@@ -15,15 +15,8 @@
     justify-content: center;
     margin-right: 12px;
     font-size: 20px;
-}
 
-.icon-badge.primary {
     background: rgba(56, 128, 255, 0.1);
-    color: var(--ion-color-primary);
-}
-
-.icon-badge.accent {
-    background: rgba(82, 96, 255, 0.1);
     color: var(--ion-color-secondary);
 }
 
@@ -39,7 +32,7 @@
     background: #f1f3f5;
     border-radius: 12px;
     padding: 16px 24px;
-    border-left: 4px solid var(--ion-color-primary);
+    border-left: 4px solid var(--ion-color-tertiary);
 }
 
 .total-amount {

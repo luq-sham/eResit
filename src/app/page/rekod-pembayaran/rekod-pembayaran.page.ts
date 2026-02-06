@@ -19,12 +19,16 @@ export class RekodPembayaranPage implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private alertService: AlertService,
-    private apiService: ApiService,
-    private loadingService: LoadingService
+    private alert: AlertService,
+    private api: ApiService,
+    private loader: LoadingService
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.initForm();
+  }
+
+  initForm() {
     this.paymentForm = this.fb.group({
       namaPelajar: ['', Validators.required],
       kelas: ['', Validators.required],
@@ -45,17 +49,13 @@ export class RekodPembayaranPage implements OnInit {
     return this.paymentForm.get('detailsBayaran') as FormArray;
   }
 
-  addItem(): void {
+  addItem() {
     this.items.push(this.createItem());
   }
 
-  removeItem(index: number): void {
+  removeItem(index: number) {
     if (this.items.length === 1) {
-      this.alertService.warningAlert(
-        'Perhatian',
-        'Sila isi sekurang-kurangnya satu (1) butiran maklumat pembayaran.',
-        'Tutup'
-      );
+      this.alert.warningAlert('Perhatian', 'Sila isi sekurang-kurangnya satu (1) butiran maklumat pembayaran.', 'Tutup');
       return;
     }
     this.items.removeAt(index);
@@ -63,48 +63,50 @@ export class RekodPembayaranPage implements OnInit {
 
   getTotal(): number {
     return this.items.controls.reduce(
-      (total, item) => total + (+item.get('jumlah')?.value || 0),
-      0
+      (total, item) => total + (+item.get('jumlah')?.value || 0), 0
     );
   }
 
-  async onSimpan() {
-
-    if (this.paymentForm.valid) {
-      let confirm = await this.alertService.confirmAlert('Perhatian', 'Adakah anda pasti untuk menghantar rekod ini?', 'Ya', 'Tidak')
-      if (confirm) {
-        this.paymentForm.markAllAsTouched();
-        let param = this.paymentForm.getRawValue()
-        param.jumlahBayaran = this.getTotal()
-
-        param.namaPelajar = param.namaPelajar?.toLowerCase() || '';
-        param.kelas = param.kelas?.toLowerCase() || '';
-        param.jenisBayaran = param.jenisBayaran?.toLowerCase() || '';
-
-        param.detailsBayaran = param.detailsBayaran.map((item: any) => ({
-          butiran: item.butiran?.toLowerCase() || '',
-          jumlah: item.jumlah || 0
-        }));
-
-        await this.loadingService.showDefaultMessage()
-        this.apiService.postAddPayments(param).subscribe({
-          next: async (res) => {
-            await this.loadingService.dismiss()
-            const respon = await this.alertService.confirmAlert('Berjaya', 'Maklumat pembayaran telah disimpan', 'Tutup', 'Kembali ke Menu Utama', 'success')
-            if (!respon) {
-              window.location.href = '/menu-utama'
-            }
-          },
-          error: async (err) => {
-            await this.loadingService.dismiss()
-            this.alertService.apiErrorAlert
-          }
-        })
-      }
-      // console.log(param);
-    } else {
-      this.alertService.warningAlert('Perhatian', 'Sila pastikan semua maklumat telah diisi dengan lengkap sebelum hantar.', 'Tutup')
+  async onSimpan(): Promise<void> {
+    if (!this.paymentForm.valid) {
+      this.alert.warningAlert('Perhatian', 'Sila pastikan semua maklumat telah diisi dengan lengkap sebelum hantar.', 'Tutup');
+      return;
     }
+
+    const confirm = await this.alert.confirmAlert('Perhatian', 'Adakah anda pasti untuk menghantar rekod ini?', 'Ya', 'Tidak');
+
+    if (!confirm) return;
+
+    this.paymentForm.markAllAsTouched();
+    const param = this.buildPayload();
+
+    await this.loader.showDefaultMessage();
+
+    this.api.postAddPayments(param).subscribe({
+      next: async () => {
+        await this.loader.dismiss();
+        const back = await this.alert.confirmAlert('Berjaya', 'Maklumat pembayaran telah disimpan', 'Tutup', 'Kembali ke Menu Utama', 'success');
+        if (!back) window.location.href = '/menu-utama';
+      },
+      error: async () => {
+        await this.loader.dismiss();
+        this.alert.apiErrorAlert;
+      }
+    });
+  }
+
+  buildPayload(): any {
+    const raw = this.paymentForm.getRawValue();
+
+    return {
+      ...raw,
+      // jumlahBayaran: this.getTotal(),
+      namaPelajar: raw.namaPelajar?.toUpperCase() || '',
+      detailsBayaran: raw.detailsBayaran.map((item: any) => ({
+        butiran: item.butiran?.toUpperCase() || '',
+        jumlah: item.jumlah || 0
+      }))
+    };
   }
 
 }

@@ -1,11 +1,11 @@
 <ion-content color="light">
-  <ion-grid class="ion-padding-vertical">
+  <ion-grid class="p-18">
     <ion-row class="ion-justify-content-center">
       <ion-col size="8">
 
         <div class="ion-text-center ion-margin-bottom">
-          <ion-text color="dark">
-            <h2 class="fw-bold">Ringkasan Bayaran</h2>
+          <ion-text color="dark" class="fw-bold h2-fs">
+            Ringkasan Bayaran
           </ion-text>
           <ion-text color="medium">
             <p class="fs-small">Sila semak butiran di bawah</p>
@@ -53,7 +53,7 @@
             <p class="label-muted mb-3">Butiran Pembayaran</p>
 
             <div class="item-row" *ngFor="let item of data?.detailsBayaran">
-              <span class="item-name">{{ item?.butiran | titlecase }}</span>
+              <span class="item-name">{{ item?.butiran | uppercase }}</span>
               <span class="item-price">{{ item?.jumlah | currency:'RM ' }}</span>
             </div>
           </div>
@@ -63,7 +63,7 @@
             <div class="item-row total-row">
               <span class="total-label">JUMLAH BAYARAN</span>
               <span class="total-amount">
-                {{ data?.jumlahBayaran | currency:'RM ' }}
+                {{ total | currency:'RM ' }}
               </span>
             </div>
           </div>
@@ -75,8 +75,8 @@
 
     <ion-row class="ion-justify-content-center mt-16">
       <ion-col size="8">
-        <ion-button expand="block" color="success" (click)="onJana()">
-          <ion-text color="light" class="fw-semibold">Jana Resit</ion-text>
+        <ion-button expand="block" color="tertiary" (click)="onJana()">
+          <ion-text class="fw-semibold">Jana Resit</ion-text>
         </ion-button>
 
         <ion-button fill="outline" expand="block" color="secondary" (click)="onTutup()">

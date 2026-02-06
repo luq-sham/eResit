@@ -25,7 +25,7 @@ export class ApiService {
   }
 
   getPaymentDetailsFiltered(data?: any): Observable<any> {
-    const url = this.apiUrl + 'api/getPaymentDetails?page=' + data.page + '&record=' + data.record + '&search=' + data.search + '&category=' + data.category;
+    const url = this.apiUrl + 'api/getPaymentDetailsFiltered?page=' + data.page + '&record=' + data.record + '&search=' + data.search + '&category=' + data.category;
     return this.http.get(url);
   }
 

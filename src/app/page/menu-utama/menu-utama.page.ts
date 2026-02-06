@@ -29,7 +29,7 @@ export class MenuUtamaPage {
   menuConfig: MenuConfig[] = [
     { title: 'Rekod Pembayaran', icon: 'calculator', url: 'rekod-pembayaran' },
     { title: 'Jana Resit Pembayaran', icon: 'print', url: 'jana-resit' },
-    { title: 'Kemaskini Pembayaran', icon: 'folder-open', url: '' },
+    // { title: 'Kemaskini Pembayaran', icon: 'folder-open', url: '' },
   ];
 
   cardConfig = [
@@ -38,7 +38,7 @@ export class MenuUtamaPage {
     { icon: 'cash', title: 'Jumlah Pembayaran', count: 0, type: 'currency', iconColor: 'success' },
   ];
 
-  paging = { currentPage: 1, record: 5, totalPages: 10 };
+  paging = { currentPage: 1, record: 10, totalPages: 10 };
 
   tableHeader: any;
   tableData: any[] = [];
@@ -67,13 +67,13 @@ export class MenuUtamaPage {
   async loadData() {
     await this.loadingService.showDefaultMessage();
 
-    this.loadCardData();
-    this.loadTableData();
+    await this.loadCardData();
+    await this.loadTableData();
 
     await this.loadingService.dismiss();
   }
 
-  loadCardData() {
+  async loadCardData() {
     this.apiService.getCardValue().subscribe({
       next: ({ return_value_set_1 }) => {
         this.cardConfig[0].count = return_value_set_1.bilanganBayaran;
@@ -83,10 +83,20 @@ export class MenuUtamaPage {
     });
   }
 
-  loadTableData() {
+  async loadTableData() {
     this.apiService.getPaymentDetails({ page: this.paging.currentPage, record: this.paging.record }).subscribe({
       next: (res) => {
         this.tableData = res.return_value_set_1;
+        
+        this.tableData = res.return_value_set_1.map((item: any) => {
+          const total = item.detailsBayaran.reduce(
+            (acc: number, curr: any) => acc + (curr.jumlah || 0),
+            0
+          );
+
+          return { ...item, total };
+        });
+
         this.paging.totalPages = res.total_pages;
       },
       error: () => this.alertService.apiErrorAlert(),
@@ -95,7 +105,7 @@ export class MenuUtamaPage {
 
   onClickBtn(url: string) {
     if (url.length < 1) {
-      this.alertService.warningAlert('Makluman', 'Perkhidmatan ini masih dalam proses pembangunan dan belum tersedia buat masa ini.','Tutup')
+      this.alertService.warningAlert('Makluman', 'Perkhidmatan ini masih dalam proses pembangunan dan belum tersedia buat masa ini.', 'Tutup')
       return
     }
     this.router.navigate([url]);

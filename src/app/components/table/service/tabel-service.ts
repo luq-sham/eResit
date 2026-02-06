@@ -18,21 +18,22 @@ export class TabelService {
     switch (module) {
       case 'main-menu':
         return [
+          { label: 'Tarikh Bayaran', type: 'date', dataParam: 'tarikhBayaran' },
           { label: 'Nama Pelajar', type: 'display', dataParam: 'namaPelajar', class: 'ion-text-uppercase' },
           { label: 'Kelas', type: 'display', dataParam: 'kelas', class: 'ion-text-capitalize' },
-          { label: 'Tarikh Bayaran', type: 'date', dataParam: 'tarikhBayaran' },
+          { label: 'Jumlah Bayaran (RM)', type: 'currency', dataParam: 'total' },
           { label: 'Kaedah Bayaran', type: 'display', dataParam: 'jenisBayaran', class: 'ion-text-capitalize' },
-          { label: 'Jumlah Bayaran (RM)', type: 'currency', dataParam: 'jumlahBayaran' },
-          { label: 'Dihantar Pada', type: 'datetime', dataParam: 'created_at' }
+          // { label: 'Tarikh', type: 'datetime', dataParam: 'created_at' }
         ];
 
       case 'jana-resit':
         return [
+          { label: 'Tarikh Bayaran', type: 'date', dataParam: 'tarikhBayaran' },
           { label: 'Nama Pelajar', type: 'display', dataParam: 'namaPelajar', class: 'ion-text-uppercase' },
           { label: 'Kelas', type: 'display', dataParam: 'kelas', class: 'ion-text-capitalize' },
-          { label: 'Kaedah Bayaran', type: 'display', dataParam: 'jenisBayaran', class: 'ion-text-capitalize' },
-          { label: 'Jumlah Bayaran (RM)', type: 'currency', dataParam: 'jumlahBayaran' },
-          { label: 'Status', type: 'buttons', btnLabel: 'Lihat', color: 'accent', colorText: 'light' }
+          { label: 'Jumlah Bayaran (RM)', type: 'currency', dataParam: 'total' },
+          { label: 'Tindakan', type: 'buttons', btnLabel: 'Lihat', color: 'tertiary' }
+          // { label: 'Kaedah Bayaran', type: 'display', dataParam: 'jenisBayaran', class: 'ion-text-capitalize' },
         ];
 
       default:

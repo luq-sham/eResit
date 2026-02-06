@@ -1,132 +1,117 @@
 <div class="custom-table-card">
   <div class="table-title-bar" *ngIf="hasTableTitle">
-    <ion-text color="dark">
+    <ion-text>
       <h3>{{ tableTitle }}</h3>
     </ion-text>
   </div>
 
-  <div class="table-responsive-wrapper">
-    <table>
-      <thead>
-        <tr>
-          <th *ngIf="showBilangan" class="col-bil ion-text-center">No.</th>
-          <th *ngFor="let header of tableHeader" [style.text-align]="header.align || 'left'">
-            {{ header.label }}
-          </th>
-        </tr>
-      </thead>
+  <div class="table-card">
+    <div class="table-responsive-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th *ngIf="showBilangan" class="col-bil ion-text-center">No.</th>
+            <th *ngFor="let header of tableHeader" [style.text-align]="header.align || 'left'">
+              {{ header.label }}
+            </th>
+          </tr>
+        </thead>
 
-      <tbody>
-        <tr *ngIf="tableData.length === 0">
-          <td class="empty-state" [attr.colspan]="tableHeader.length + (showBilangan ? 1 : 0)">
-            <div class="empty-content">
-              <ion-icon name="file-tray-outline" color="medium"></ion-icon>
-              <ion-text color="medium">
-                <p>Tiada Data Dijumpai</p>
-              </ion-text>
-            </div>
-          </td>
-        </tr>
+        <tbody>
+          <tr *ngIf="tableData.length === 0">
+            <td class="empty-state" [attr.colspan]="tableHeader.length + (showBilangan ? 1 : 0)">
+              <div class="empty-content">
+                <ion-icon name="search-outline"></ion-icon>
+                <ion-text>
+                  <p>No records found</p>
+                </ion-text>
+              </div>
+            </td>
+          </tr>
 
-        <tr *ngFor="let item of tableData; let i = index">
-          <td *ngIf="showBilangan" class="ion-text-center fw-500">
-            {{
-            (tablePaging.currentPage - 1) * tablePaging.record + i + 1
-            }}.
-          </td>
+          <tr *ngFor="let item of tableData; let i = index">
+            <td *ngIf="showBilangan" class="col-bil ion-text-center">
+              {{ (tablePaging.currentPage - 1) * tablePaging.record + i + 1 }}
+            </td>
 
-          <ng-container *ngFor="let header of tableHeader">
-            <ng-container [ngSwitch]="header.type">
-              <td *ngSwitchCase="'display'" [style.text-align]="header.align || 'left'">
-                <span class="text-truncate" [ngClass]="header?.class || ''" [title]="item[header.dataParam]">
+            <ng-container *ngFor="let header of tableHeader">
+              <td [ngSwitch]="header.type" [style.text-align]="header.align || 'left'" [ngClass]="header?.class || ''">
+
+                <span *ngSwitchCase="'display'" class="text-truncate" [title]="item[header.dataParam]">
                   {{ item[header.dataParam] || '-' }}
                 </span>
-              </td>
 
-              <td *ngSwitchCase="'date'">
-                <ion-text [ngClass]="header?.class || ''">
-                  {{ item[header.dataParam] | date: 'dd/MM/yyyy' }}
+                <ion-text *ngSwitchCase="'date'" color="dark">
+                  {{ item[header.dataParam] | date:'dd MMM yyyy' }}
                 </ion-text>
-              </td>
 
-              <td *ngSwitchCase="'datetime'">
-                <ion-text [ngClass]="header?.class || ''">
-                  {{ item[header.dataParam] | date: 'dd/MM/yyyy hh:mm a' }}
+                <ion-text *ngSwitchCase="'datetime'" color="dark">
+                  {{ item[header.dataParam] | date:'dd MMM yyyy, h:mm a' }}
                 </ion-text>
-              </td>
 
-              <td *ngSwitchCase="'currency'" class="font-mono">
-                <ion-text [ngClass]="header?.class || ''">
-                  {{ item[header.dataParam] | currency: 'RM ' }}
+                <ion-text *ngSwitchCase="'currency'" class="font-mono">
+                  {{ item[header.dataParam] | currency:'RM ' }}
                 </ion-text>
-              </td>
 
-              <td *ngSwitchCase="'badge'">
-                <div class="status-pill" [style.background]="
-                    getBadgeColor(item[header.dataParam])
-                  ">
-                  <ion-text [ngClass]="header?.class || ''">
-                    {{ item[header.dataParam] }}
-                  </ion-text>
+                <div *ngSwitchCase="'badge'" class="status-pill"
+                  [style.background]="getBadgeColor(item[header.dataParam])">
+                  {{ item[header.dataParam] }}
+                </div>
+
+                <ion-button *ngSwitchCase="'buttons'" size="small" fill="solid" [color]="header?.color || 'primary'"
+                  class="ion-no-margin" (click)="onClickBtn(item)">
+                  {{ header?.btnLabel }}
+                </ion-button>
+
+                <div *ngSwitchCase="'buttons-action'" class="actions-cell">
+                  <ion-button fill="clear" size="small" color="dark" (click)="onEdit(item)">
+                    <ion-icon slot="icon-only" name="pencil-outline" style="font-size: 18px;"></ion-icon>
+                  </ion-button>
+
+                  <ion-button fill="clear" size="small" color="danger" (click)="onDelete(item)">
+                    <ion-icon slot="icon-only" name="trash-bin-outline" style="font-size: 18px;"></ion-icon>
+                  </ion-button>
                 </div>
               </td>
-
-              <td *ngSwitchCase="'buttons'">
-                <ion-button size="small" [color]="header?.color" (click)="onClickBtn(item)">
-                  <ion-text [color]="header?.colorText">{{header?.btnLabel}}</ion-text>
-                </ion-button>
-              </td>
-
-              <td *ngSwitchCase="'buttons-action'" class="actions-cell">
-                <ion-button fill="clear" size="small" color="primary" (click)="onEdit(item)">
-                  <ion-icon slot="icon-only" name="create-outline"></ion-icon>
-                </ion-button>
-
-                <ion-button fill="clear" size="small" color="danger" (click)="onDelete(item)">
-                  <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-                </ion-button>
-              </td>
             </ng-container>
-          </ng-container>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-  <div class="table-footer" *ngIf="showPaging">
-    <div class="pagination-info">
-      <ion-text color="medium">
-        <ion-select [value]="tablePaging.record" (ionChange)="onRecordChange($event.detail.value)" interface="popover">
+    <div class="table-footer" *ngIf="showPaging">
+      <div class="pagination-info">
+        <ion-select [value]="tablePaging.record" interface="popover" (ionChange)="onRecordChange($event.detail.value)">
           <ion-select-option *ngFor="let option of recordOptions" [value]="option">
             {{ option }}
           </ion-select-option>
         </ion-select>
-      </ion-text>
-    </div>
+      </div>
 
-    <div class="pagination-actions">
-      <ion-button fill="clear" size="small" [disabled]="tablePaging.currentPage === 1" (click)="changePage(1)">
-        <ion-icon slot="icon-only" name="play-back-outline"></ion-icon>
-      </ion-button>
+      <div class="pagination-actions">
+        <ion-button fill="clear" size="small" [disabled]="tablePaging.currentPage === 1" (click)="changePage(1)">
+          <ion-icon slot="icon-only" name="play-skip-back"></ion-icon>
+        </ion-button>
 
-      <ion-button fill="clear" size="small" [disabled]="tablePaging.currentPage === 1"
-        (click)="changePage(tablePaging.currentPage - 1)">
-        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
-      </ion-button>
+        <ion-button fill="clear" size="small" [disabled]="tablePaging.currentPage === 1"
+          (click)="changePage(tablePaging.currentPage - 1)">
+          <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+        </ion-button>
 
-      <span class="page-number active">
-        {{ tablePaging.currentPage }}
-      </span>
+        <div class="page-number active">
+          {{ tablePaging.currentPage }}
+        </div>
 
-      <ion-button fill="clear" size="small" [disabled]="tablePaging.currentPage === tablePaging.totalPages"
-        (click)="changePage(tablePaging.currentPage + 1)">
-        <ion-icon slot="icon-only" name="chevron-forward-outline"></ion-icon>
-      </ion-button>
+        <ion-button fill="clear" size="small" [disabled]="tablePaging.currentPage === tablePaging.totalPages"
+          (click)="changePage(tablePaging.currentPage + 1)">
+          <ion-icon slot="icon-only" name="chevron-forward-outline"></ion-icon>
+        </ion-button>
 
-      <ion-button fill="clear" size="small" [disabled]="tablePaging.currentPage === tablePaging.totalPages"
-        (click)="changePage(tablePaging.totalPages)">
-        <ion-icon slot="icon-only" name="play-forward-outline"></ion-icon>
-      </ion-button>
+        <ion-button fill="clear" size="small" [disabled]="tablePaging.currentPage === tablePaging.totalPages"
+          (click)="changePage(tablePaging.totalPages)">
+          <ion-icon slot="icon-only" name="play-skip-forward"></ion-icon>
+        </ion-button>
+      </div>
     </div>
   </div>
 </div>

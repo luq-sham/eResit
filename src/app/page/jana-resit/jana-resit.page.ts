@@ -51,6 +51,15 @@ export class JanaResitPage implements OnInit {
     this.apiService.getPaymentDetailsFiltered(params).subscribe({
       next: async (res) => {
         this.tableData = res.return_value_set_1;
+
+        this.tableData = res.return_value_set_1.map((item: any) => {
+          const total = item.detailsBayaran.reduce(
+            (acc: number, curr: any) => acc + (curr.jumlah || 0),
+            0
+          );
+          return { ...item, total };
+        });
+        
         this.tablePaging.totalPages = res.total_pages;
         await this.loadingService.dismiss()
       },
