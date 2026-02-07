@@ -43,8 +43,8 @@
 
       <ion-row>
         <ion-col>
-          <app-table [tableHeader]="tableHeader" [tableData]="tableData" [tablePaging]="tablePaging"
-            (pageChange)="onPageChange($event)" (recordChange)="onRecordChange($event)"
+          <app-table [isLoading]="isLaoding" [tableHeader]="tableHeader" [tableData]="tableData"
+            [tablePaging]="tablePaging" (pageChange)="onPageChange($event)" (recordChange)="onRecordChange($event)"
             (onButtonClick)="onClick($event)"></app-table>
         </ion-col>
       </ion-row>

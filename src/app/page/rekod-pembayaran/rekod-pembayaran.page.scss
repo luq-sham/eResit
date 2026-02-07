@@ -54,3 +54,16 @@
     color: #6c757d;
     font-size: 0.9rem;
 }
+
+.date-popover {
+    --width: auto;
+}
+
+.date-popover::part(content) {
+    width: var(--ion-popover-width, auto);
+    max-width: auto;
+}
+
+ion-datetime {
+    width: 100%;
+}

@@ -21,8 +21,21 @@
                   <span class="stat-label">{{ card.title }}</span>
                   <div class="stat-value">
                     <ng-container [ngSwitch]="card.type">
-                      <span *ngSwitchCase="'currency'">{{ card.count | currency:'RM ' }}</span>
-                      <span *ngSwitchDefault>{{ card.count }}</span>
+
+                      <ng-container *ngIf="isLoading">
+                        <ion-skeleton-text [animated]="true" style="width: 100px; height: 30px;"></ion-skeleton-text>
+                      </ng-container>
+
+                      <ng-container *ngIf="!isLoading">
+                        <span *ngSwitchCase="'currency'">
+                          {{ card.count | currency:'RM ' }}
+                        </span>
+
+                        <span *ngSwitchDefault>
+                          {{ card.count }}
+                        </span>
+                      </ng-container>
+
                     </ng-container>
                   </div>
                 </div>
@@ -57,9 +70,9 @@
 
       <ion-row class="ion-margin-top">
         <ion-col size="12">
-          <app-table [tableHeader]="tableHeader" [tableData]="tableData" [tableTitle]="'Senarai Pembayaran Terkini'"
-            [tablePaging]="paging" [showPaging]="false" (pageChange)="onPageChange($event)"
-            (recordChange)="onRecordChange($event)">
+          <app-table [isLoading]="isLoading" [tableHeader]="tableHeader" [tableData]="tableData"
+            [tableTitle]="'Senarai Pembayaran Terkini'" [tablePaging]="paging" [showPaging]="false"
+            (pageChange)="onPageChange($event)" (recordChange)="onRecordChange($event)">
           </app-table>
         </ion-col>
       </ion-row>

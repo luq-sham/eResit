@@ -21,12 +21,13 @@ export class JanaResitPage implements OnInit {
   tableData: any[] = [];
   tablePaging = { currentPage: 1, record: 10, totalPages: 1 };
 
+  isLaoding = true
+
   constructor(
     private tableService: TabelService,
     private apiService: ApiService,
     private alertService: AlertService,
     private modalCtrl: ModalController,
-    private loadingService: LoadingService
   ) { }
 
   ngOnInit() {
@@ -40,7 +41,6 @@ export class JanaResitPage implements OnInit {
   }
 
   async initData() {
-    await this.loadingService.showDefaultMessage()
     const params = {
       page: this.tablePaging.currentPage,
       record: this.tablePaging.record,
@@ -59,13 +59,13 @@ export class JanaResitPage implements OnInit {
           );
           return { ...item, total };
         });
-        
+
         this.tablePaging.totalPages = res.total_pages;
-        await this.loadingService.dismiss()
+        this.isLaoding = false
       },
       error: async () => {
+        this.isLaoding = false
         this.alertService.apiErrorAlert();
-        await this.loadingService.dismiss()
       }
     });
   }

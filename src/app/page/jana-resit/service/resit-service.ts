@@ -61,7 +61,11 @@ export class ResitService {
       }
     };
 
-    pdfMake.createPdf(documentDefinition).open();
+    const pdf = pdfMake.createPdf(documentDefinition);
+
+    pdf.open();
+
+    pdf.download()
   }
 
   private getHeaderPage(item: any) {

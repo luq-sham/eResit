@@ -9,6 +9,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class TableComponent implements OnInit {
   @Input() tableTitle: any;
   @Input() hasTableTitle = true;
+  @Input() isLoading = true;
 
   @Input() tableHeader: any[] = [];
   @Input() tableData: any[] = [];

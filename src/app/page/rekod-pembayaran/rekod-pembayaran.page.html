@@ -118,9 +118,10 @@
                   [value]="paymentForm.get('tarikhBayaran')?.value | date:'dd/MM/yyyy'">
                 </ion-input>
 
-                <ion-popover trigger="datePopover" showBackdrop="false">
+                <ion-popover trigger="datePopover" showBackdrop="false" class="date-popover">
                   <ng-template>
                     <ion-datetime presentation="date" [min]="minDate" [max]="maxDate" [showDefaultButtons]="true"
+                      [preferWheel]="true"
                       (ionChange)="paymentForm.get('tarikhBayaran')?.setValue($event.detail.value)">
                     </ion-datetime>
                   </ng-template>

@@ -18,63 +18,79 @@
         </thead>
 
         <tbody>
-          <tr *ngIf="tableData.length === 0">
-            <td class="empty-state" [attr.colspan]="tableHeader.length + (showBilangan ? 1 : 0)">
-              <div class="empty-content">
-                <ion-icon name="search-outline"></ion-icon>
-                <ion-text>
-                  <p>No records found</p>
-                </ion-text>
-              </div>
-            </td>
-          </tr>
-
-          <tr *ngFor="let item of tableData; let i = index">
-            <td *ngIf="showBilangan" class="col-bil ion-text-center">
-              {{ (tablePaging.currentPage - 1) * tablePaging.record + i + 1 }}
-            </td>
-
-            <ng-container *ngFor="let header of tableHeader">
-              <td [ngSwitch]="header.type" [style.text-align]="header.align || 'left'" [ngClass]="header?.class || ''">
-
-                <span *ngSwitchCase="'display'" class="text-truncate" [title]="item[header.dataParam]">
-                  {{ item[header.dataParam] || '-' }}
-                </span>
-
-                <ion-text *ngSwitchCase="'date'" color="dark">
-                  {{ item[header.dataParam] | date:'dd MMM yyyy' }}
-                </ion-text>
-
-                <ion-text *ngSwitchCase="'datetime'" color="dark">
-                  {{ item[header.dataParam] | date:'dd MMM yyyy, h:mm a' }}
-                </ion-text>
-
-                <ion-text *ngSwitchCase="'currency'" class="font-mono">
-                  {{ item[header.dataParam] | currency:'RM ' }}
-                </ion-text>
-
-                <div *ngSwitchCase="'badge'" class="status-pill"
-                  [style.background]="getBadgeColor(item[header.dataParam])">
-                  {{ item[header.dataParam] }}
-                </div>
-
-                <ion-button *ngSwitchCase="'buttons'" size="small" fill="solid" [color]="header?.color || 'primary'"
-                  class="ion-no-margin" (click)="onClickBtn(item)">
-                  {{ header?.btnLabel }}
-                </ion-button>
-
-                <div *ngSwitchCase="'buttons-action'" class="actions-cell">
-                  <ion-button fill="clear" size="small" color="dark" (click)="onEdit(item)">
-                    <ion-icon slot="icon-only" name="pencil-outline" style="font-size: 18px;"></ion-icon>
-                  </ion-button>
-
-                  <ion-button fill="clear" size="small" color="danger" (click)="onDelete(item)">
-                    <ion-icon slot="icon-only" name="trash-bin-outline" style="font-size: 18px;"></ion-icon>
-                  </ion-button>
+          <ng-container *ngIf="isLoading">
+            <tr>
+              <td class="loading-state" [attr.colspan]="tableHeader.length + (showBilangan ? 1 : 0)">
+                <div class="loading-content">
+                  <ion-spinner name="crescent"></ion-spinner>
+                  <ion-text>
+                    <p>Loading...</p>
+                  </ion-text>
                 </div>
               </td>
-            </ng-container>
-          </tr>
+            </tr>
+          </ng-container>
+
+          <ng-container *ngIf="!isLoading">
+            <tr *ngIf="tableData.length === 0">
+              <td class="empty-state" [attr.colspan]="tableHeader.length + (showBilangan ? 1 : 0)">
+                <div class="empty-content">
+                  <ion-icon name="search-outline"></ion-icon>
+                  <ion-text>
+                    <p>No records found</p>
+                  </ion-text>
+                </div>
+              </td>
+            </tr>
+
+            <tr *ngFor="let item of tableData; let i = index">
+              <td *ngIf="showBilangan" class="col-bil ion-text-center">
+                {{ (tablePaging.currentPage - 1) * tablePaging.record + i + 1 }}
+              </td>
+
+              <ng-container *ngFor="let header of tableHeader">
+                <td [ngSwitch]="header.type" [style.text-align]="header.align || 'left'"
+                  [ngClass]="header?.class || ''">
+
+                  <span *ngSwitchCase="'display'" class="text-truncate" [title]="item[header.dataParam]">
+                    {{ item[header.dataParam] || '-' }}
+                  </span>
+
+                  <ion-text *ngSwitchCase="'date'" color="dark">
+                    {{ item[header.dataParam] | date:'dd MMM yyyy' }}
+                  </ion-text>
+
+                  <ion-text *ngSwitchCase="'datetime'" color="dark">
+                    {{ item[header.dataParam] | date:'dd MMM yyyy, h:mm a' }}
+                  </ion-text>
+
+                  <ion-text *ngSwitchCase="'currency'" class="font-mono">
+                    {{ item[header.dataParam] | currency:'RM ' }}
+                  </ion-text>
+
+                  <div *ngSwitchCase="'badge'" class="status-pill"
+                    [style.background]="getBadgeColor(item[header.dataParam])">
+                    {{ item[header.dataParam] }}
+                  </div>
+
+                  <ion-button *ngSwitchCase="'buttons'" size="small" fill="solid" [color]="header?.color || 'primary'"
+                    class="ion-no-margin" (click)="onClickBtn(item)">
+                    {{ header?.btnLabel }}
+                  </ion-button>
+
+                  <div *ngSwitchCase="'buttons-action'" class="actions-cell">
+                    <ion-button fill="clear" size="small" color="dark" (click)="onEdit(item)">
+                      <ion-icon slot="icon-only" name="pencil-outline" style="font-size: 18px;"></ion-icon>
+                    </ion-button>
+
+                    <ion-button fill="clear" size="small" color="danger" (click)="onDelete(item)">
+                      <ion-icon slot="icon-only" name="trash-bin-outline" style="font-size: 18px;"></ion-icon>
+                    </ion-button>
+                  </div>
+                </td>
+              </ng-container>
+            </tr>
+          </ng-container>
         </tbody>
       </table>
     </div>

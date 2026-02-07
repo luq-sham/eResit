@@ -6,7 +6,6 @@ import localeMs from '@angular/common/locales/ms';
 import { TabelService } from 'src/app/components/table/service/tabel-service';
 import { ApiService } from 'src/app/services/api-service';
 import { AlertService } from 'src/app/components/alert-modal/service/alert-service';
-import { LoadingService } from 'src/app/services/loading-service';
 import { firstValueFrom } from 'rxjs';
 
 registerLocaleData(localeMs, 'ms-MY');
@@ -26,6 +25,7 @@ export interface MenuConfig {
 })
 export class MenuUtamaPage {
   today = new Date();
+  isLoading = true
 
   menuConfig: MenuConfig[] = [
     { title: 'Rekod Pembayaran', icon: 'calculator', url: 'rekod-pembayaran' },
@@ -49,7 +49,6 @@ export class MenuUtamaPage {
     private router: Router,
     private apiService: ApiService,
     private alertService: AlertService,
-    private loadingService: LoadingService
   ) { }
 
   ngOnInit() {
@@ -66,12 +65,10 @@ export class MenuUtamaPage {
   }
 
   async loadData() {
-    await this.loadingService.showDefaultMessage();
-
-    await this.loadCardData();
     await this.loadTableData();
+    await this.loadCardData();
 
-    await this.loadingService.dismiss();
+    this.isLoading = false
   }
 
   async loadCardData() {
