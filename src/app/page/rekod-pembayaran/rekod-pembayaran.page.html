@@ -104,28 +104,27 @@
 
             <ion-row class="input-form-row">
               <ion-col sizeLg="6" size="12">
-                <ion-label class="form-label required">Kaedah Pembayaran</ion-label>
-                <ion-select class="form-control" placeholder="Pilih kaedah"
-                  [interfaceOptions]="{ header: 'Pilih Kaedah Pembayaran' }" formControlName="jenisBayaran">
-                  <ion-select-option value="tunai">Tunai</ion-select-option>
-                  <ion-select-option value="online">Online Banking / FPX</ion-select-option>
-                </ion-select>
-              </ion-col>
-
-              <ion-col sizeLg="6" size="12">
                 <ion-label class="form-label required">Tarikh Pembayaran</ion-label>
-                <ion-input readonly id="datePopover" class="form-control" placeholder="Pilih tarikh"
-                  [value]="paymentForm.get('tarikhBayaran')?.value | date:'dd/MM/yyyy'">
-                </ion-input>
 
-                <ion-popover trigger="datePopover" showBackdrop="false" class="date-popover">
+                <ion-datetime-button datetime="datetime" class="mt-12"></ion-datetime-button>
+
+                <ion-modal [keepContentsMounted]="true">
                   <ng-template>
-                    <ion-datetime presentation="date" [min]="minDate" [max]="maxDate" [showDefaultButtons]="true"
-                      [preferWheel]="true"
+                    <ion-datetime id="datetime" presentation="date" [min]="minDate" [max]="maxDate"
+                      [showDefaultButtons]="true"
                       (ionChange)="paymentForm.get('tarikhBayaran')?.setValue($event.detail.value)">
                     </ion-datetime>
                   </ng-template>
-                </ion-popover>
+                </ion-modal>
+              </ion-col>
+
+              <ion-col sizeLg="6" size="12">
+                <ion-label class="form-label required">Kaedah Pembayaran</ion-label>
+                <ion-select class="form-control" placeholder="Pilih kaedah"
+                  [interfaceOptions]="{ header: 'Pilih Kaedah Pembayaran' }" formControlName="jenisBayaran">
+                  <ion-select-option value="tunai">Tunai/Kaunter</ion-select-option>
+                  <ion-select-option value="online">Online Banking / FPX</ion-select-option>
+                </ion-select>
               </ion-col>
             </ion-row>
 
