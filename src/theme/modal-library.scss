@@ -28,14 +28,10 @@ ion-modal.auto-height {
     --height: 22vh;
     --background: var(--ion-color-light) !important;
 
-    @media (max-width: 768px) {
+    @media (max-width: 1200px) {
         --width: 70vw;
     }
-
-    @media (min-height: 768px) {
-        --height: 400px;
-    }
-
+    
     &::part(backdrop) {
         --backdrop-opacity: 0.4; // default Ionic feel
     }
