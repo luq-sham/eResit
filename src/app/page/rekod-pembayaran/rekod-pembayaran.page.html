@@ -142,7 +142,7 @@
                 <ion-select class="form-control" placeholder="Pilih kaedah"
                   [interfaceOptions]="{ header: 'Pilih Kaedah Pembayaran' }" formControlName="jenisBayaran">
                   <ion-select-option value="tunai">Tunai/Kaunter</ion-select-option>
-                  <ion-select-option value="online">Online Banking / FPX</ion-select-option>
+                  <ion-select-option value="online">Bayaran atas talian</ion-select-option>
                 </ion-select>
 
                 <app-error-message *ngFor="let val of validations?.jenisBayaran"
