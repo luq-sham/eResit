@@ -29,7 +29,7 @@ ion-modal.auto-height {
     --background: var(--ion-color-light) !important;
 
     @media (max-width: 1200px) {
-        --width: 70vw;
+        --width: 90vw;
     }
     
     &::part(backdrop) {

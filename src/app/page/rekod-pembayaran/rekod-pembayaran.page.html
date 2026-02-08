@@ -139,11 +139,12 @@
 
               <ion-col sizeLg="6" size="12">
                 <ion-label class="form-label required">Kaedah Pembayaran</ion-label>
-                <ion-select class="form-control" placeholder="Pilih kaedah"
+                <ion-select class="form-control" placeholder="Pilih kaedah pembayaran"
                   [interfaceOptions]="{ header: 'Pilih Kaedah Pembayaran' }" formControlName="jenisBayaran">
-                  <ion-select-option value="tunai">Tunai/Kaunter</ion-select-option>
-                  <ion-select-option value="online">Bayaran atas talian</ion-select-option>
+                  <ion-select-option value="cash">Tunai (Kaunter)</ion-select-option>
+                  <ion-select-option value="online">Bayaran Atas Talian</ion-select-option>
                 </ion-select>
+
 
                 <app-error-message *ngFor="let val of validations?.jenisBayaran"
                   [field]="paymentForm.get('jenisBayaran')" [error]="val.error" [message]="val.message"
