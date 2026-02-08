@@ -112,7 +112,7 @@
                   <ng-template>
                     <ion-datetime id="datetime" presentation="date" [min]="minDate" [max]="maxDate"
                       [showDefaultButtons]="true"
-                      (ionChange)="paymentForm.get('tarikhBayaran')?.setValue($event.detail.value)"
+                      (ionChange)="paymentForm.get('tarikhBayaran')?.setValue($event.detail.value)" locale="en-GB"
                       [formatOptions]="{date: {day: '2-digit',month: '2-digit',year: 'numeric'}}">
                     </ion-datetime>
                   </ng-template>
