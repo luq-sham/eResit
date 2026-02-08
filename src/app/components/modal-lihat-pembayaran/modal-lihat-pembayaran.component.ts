@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { ResitService } from 'src/app/page/jana-resit/service/resit-service';
 import { AlertService } from '../alert-modal/service/alert-service';
 import { ApiService } from 'src/app/services/api-service';
+import { LoadingService } from 'src/app/services/loading-service';
 
 @Component({
   selector: 'app-modal-lihat-pembayaran',
@@ -18,7 +19,8 @@ export class ModalLihatPembayaranComponent implements OnInit {
     private resitService: ResitService,
     private modalCtrl: ModalController,
     private alertService: AlertService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private loadingService: LoadingService
   ) { }
 
   ngOnInit() {
@@ -31,15 +33,20 @@ export class ModalLihatPembayaranComponent implements OnInit {
     const res = await this.alertService.confirmAlert('Perhatian', 'Adakah anda pasti untuk menjana resit bagi pembayaran ini?', 'YA', 'TIDAK', 'warning')
 
     if (res) {
+      this.loadingService.showDefaultMessage()
       this.apiService.postCreateReceipt({ paymentID: this.data?.id }).subscribe({
         next: async (res) => {
           const receipt = res.return_value_set_1
+
           this.resitService.generateReceipt(this.data, receipt)
+          this.alertService.successAlert('Berjaya', 'Resit berjaya dijana', 'Tutup')
+          this.loadingService.dismiss()
         },
         error: (err) => {
+          this.loadingService.dismiss()
           console.log(err);
 
-          if (err.error.status_id = 2) {
+          if (err.error.status_id == 2) {
             this.alertService.dangerAlert('Perhatian', 'Resit untuk pembayaran ini telah dijana', 'Tutup')
           } else {
             this.alertService.apiErrorAlert()
