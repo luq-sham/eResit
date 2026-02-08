@@ -22,7 +22,7 @@ export class ResitService {
     border: '#E5E7EB'
   };
 
-  async generateReceipt(item: any) {
+  async generateReceipt(item: any, receiptInfo?: any) {
     const logo = await this.getBase64ImageFromURL('assets/logo-default.png');
 
     const totalAmount = item.detailsBayaran.reduce(
@@ -40,7 +40,7 @@ export class ResitService {
       pageSize: 'A4',
       pageMargins: [40, 60, 40, 60],
       // watermark: { text: 'RASMI', color: 'blue', opacity: 0.05, bold: true, italics: false },
-      header: () => this.getHeaderPage(item),
+      header: () => this.getHeaderPage(item, receiptInfo),
       footer: () => this.getFooterPage(),
 
       content: [
@@ -65,10 +65,10 @@ export class ResitService {
 
     pdf.open();
 
-    pdf.download()
+    pdf.download(`${item?.namaPelajar}-Resit.pdf`)
   }
 
-  private getHeaderPage(item: any) {
+  private getHeaderPage(item: any, receipt?: any) {
     return {
       margin: [40, 20, 40, 0],
       columns: [
@@ -76,8 +76,9 @@ export class ResitService {
           text: [
             { text: 'NO. RESIT: ', fontSize: 8, color: '#9CA3AF', bold: true },
             {
-              text: item.id
-                ? `RES-${item.id.substring(0, 8).toUpperCase()}`
+              text: item.id ?
+                // `RES-${item.id.substring(0, 8).toUpperCase()}`
+                receipt.receipt_no
                 : 'N/A',
               fontSize: 8,
               bold: true,

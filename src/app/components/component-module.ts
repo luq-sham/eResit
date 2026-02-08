@@ -6,6 +6,7 @@ import { HeaderComponent } from './header/header.component';
 import { TableComponent } from './table/table.component';
 import { AlertModalComponent } from './alert-modal/alert-modal.component';
 import { ModalLihatPembayaranComponent } from './modal-lihat-pembayaran/modal-lihat-pembayaran.component';
+import { ErrorMessageComponent } from './error-message/error-message.component';
 
 
 
@@ -15,6 +16,7 @@ import { ModalLihatPembayaranComponent } from './modal-lihat-pembayaran/modal-li
     TableComponent,
     AlertModalComponent,
     ModalLihatPembayaranComponent,
+    ErrorMessageComponent
   ],
   imports: [
     CommonModule,
@@ -27,6 +29,7 @@ import { ModalLihatPembayaranComponent } from './modal-lihat-pembayaran/modal-li
     TableComponent,
     AlertModalComponent,
     ModalLihatPembayaranComponent,
+    ErrorMessageComponent
   ]
 })
 export class ComponentModule { }

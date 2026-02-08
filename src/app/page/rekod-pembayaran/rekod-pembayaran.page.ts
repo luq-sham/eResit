@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { AlertService } from 'src/app/components/alert-modal/service/alert-service';
+import { ValidationService } from 'src/app/components/error-message/service/validation-service';
 import { ApiService } from 'src/app/services/api-service';
 import { LoadingService } from 'src/app/services/loading-service';
 
@@ -17,15 +18,20 @@ export class RekodPembayaranPage implements OnInit {
   minDate = moment().subtract(1, 'month').format('YYYY-MM-DD');
   maxDate = moment().add(1, 'year').format('YYYY-MM-DD');
 
+  validations: any
+  isSubmitted = false
+
   constructor(
     private fb: FormBuilder,
     private alert: AlertService,
     private api: ApiService,
-    private loader: LoadingService
+    private loader: LoadingService,
+    private validationService: ValidationService
   ) { }
 
   ngOnInit() {
     this.initForm();
+    this.validations = this.validationService.validations('rekod-pembayaran')
   }
 
   initForm() {
@@ -69,6 +75,7 @@ export class RekodPembayaranPage implements OnInit {
 
   async onSimpan(): Promise<void> {
     if (!this.paymentForm.valid) {
+      this.isSubmitted = true
       this.alert.warningAlert('Perhatian', 'Sila pastikan semua maklumat telah diisi dengan lengkap sebelum hantar.', 'Tutup');
       return;
     }
@@ -77,6 +84,7 @@ export class RekodPembayaranPage implements OnInit {
 
     if (!confirm) return;
 
+    this.isSubmitted = true
     this.paymentForm.markAllAsTouched();
     const param = this.buildPayload();
 

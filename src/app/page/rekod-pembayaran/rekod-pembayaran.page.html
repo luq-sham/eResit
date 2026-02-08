@@ -32,11 +32,17 @@
                 <ion-label class="form-label required">Nama Pelajar</ion-label>
                 <ion-input class="form-control" placeholder="Nama penuh pelajar"
                   formControlName="namaPelajar"></ion-input>
+
+                <app-error-message *ngFor="let val of validations?.namaPelajar" [field]="paymentForm.get('namaPelajar')"
+                  [error]="val.error" [message]="val.message" [submitted]="isSubmitted"></app-error-message>
               </ion-col>
 
               <ion-col sizeLg="6" size="12">
                 <ion-label class="form-label required">Kelas</ion-label>
                 <ion-input class="form-control" placeholder="Contoh: 5 Amanah" formControlName="kelas"></ion-input>
+
+                <app-error-message *ngFor="let val of validations?.kelas" [field]="paymentForm.get('kelas')"
+                  [error]="val.error" [message]="val.message" [submitted]="isSubmitted"></app-error-message>
               </ion-col>
             </ion-row>
           </ion-card-content>
@@ -69,12 +75,20 @@
                     <ion-label class="form-label">Butiran</ion-label>
                     <ion-input class="form-control" placeholder="Contoh: Yuran PIBG" formControlName="butiran">
                     </ion-input>
+
+                    <app-error-message *ngFor="let val of validations?.detailsBayaran.items.butiran"
+                      [field]="item.get('butiran')" [error]="val.error" [message]="val.message"
+                      [submitted]="isSubmitted"></app-error-message>
                   </ion-col>
 
                   <ion-col sizeMd="3" size="12">
                     <ion-label class="form-label">Jumlah (RM)</ion-label>
                     <ion-input class="form-control" type="number" placeholder="0.00" formControlName="jumlah">
                     </ion-input>
+
+                    <app-error-message *ngFor="let val of validations?.detailsBayaran.items.jumlah"
+                      [field]="item.get('jumlah')" [error]="val.error" [message]="val.message"
+                      [submitted]="isSubmitted"></app-error-message>
                   </ion-col>
 
                   <ion-col sizeMd="1" size="12" class="d-flex align-items-end justify-center">
@@ -117,6 +131,10 @@
                     </ion-datetime>
                   </ng-template>
                 </ion-modal>
+
+                <app-error-message *ngFor="let val of validations?.tarikhBayaran"
+                  [field]="paymentForm.get('tarikhBayaran')" [error]="val.error" [message]="val.message"
+                  [submitted]="isSubmitted"></app-error-message>
               </ion-col>
 
               <ion-col sizeLg="6" size="12">
@@ -126,7 +144,12 @@
                   <ion-select-option value="tunai">Tunai/Kaunter</ion-select-option>
                   <ion-select-option value="online">Online Banking / FPX</ion-select-option>
                 </ion-select>
+
+                <app-error-message *ngFor="let val of validations?.jenisBayaran"
+                  [field]="paymentForm.get('jenisBayaran')" [error]="val.error" [message]="val.message"
+                  [submitted]="isSubmitted"></app-error-message>
               </ion-col>
+
             </ion-row>
 
             <div class="ion-padding-top ion-text-end">

@@ -25,12 +25,17 @@ export class ApiService {
   }
 
   getPaymentDetailsFiltered(data?: any): Observable<any> {
-    const url = this.apiUrl + 'api/getPaymentDetailsFiltered?page=' + data.page + '&record=' + data.record + '&search=' + data.search + '&category=' + data.category;
+    const url = this.apiUrl + 'api/getPaymentDetailsFiltered?page=' + data.page + '&table_type=' + data.table_type + '&record=' + data.record + '&search=' + data.search + '&category=' + data.category;
     return this.http.get(url);
   }
 
   postAddPayments(data: any): Observable<any> {
     const url = this.apiUrl + 'api/postAddPayments';
+    return this.http.post(url, data);
+  }
+
+  postCreateReceipt(data: any): Observable<any> {
+    const url = this.apiUrl + 'api/postCreateReceipt';
     return this.http.post(url, data);
   }
 

@@ -76,6 +76,7 @@ export class MenuUtamaPage {
       const res: any = await firstValueFrom(this.apiService.getCardValue());
 
       this.cardConfig[0].count = res.return_value_set_1.bilanganBayaran;
+      this.cardConfig[1].count = res.return_value_set_1.bilanganResitDijana;
       this.cardConfig[2].count = res.return_value_set_1.jumlahBayaran;
     } catch {
       this.alertService.apiErrorAlert();

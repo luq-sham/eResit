@@ -25,20 +25,18 @@ export class TableComponent implements OnInit {
 
   today: Date = new Date();
   recordOptions = [5, 10, 20, 50];
+  badgeText = '';
 
 
   ngOnInit() { }
 
   getBadgeColor(status: string) {
-    switch (status) {
-      case 'Paid':
-        return 'var(--ion-color-success)';
-      case 'Pending':
-        return 'var(--ion-color-warning)';
-      case 'Failed':
-        return 'var(--ion-color-danger)';
-      default:
-        return 'var(--ion-color-success)';
+    if (status) {
+      this.badgeText = 'telah dijana'
+      return 'var(--ion-color-success)'
+    } else {
+      this.badgeText = 'belum dijana'
+      return 'var(--ion-color-warning)'
     }
   }
 

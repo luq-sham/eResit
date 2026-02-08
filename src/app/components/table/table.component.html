@@ -70,7 +70,7 @@
 
                   <div *ngSwitchCase="'badge'" class="status-pill"
                     [style.background]="getBadgeColor(item[header.dataParam])">
-                    {{ item[header.dataParam] }}
+                    {{ badgeText }}
                   </div>
 
                   <ion-button *ngSwitchCase="'buttons'" size="small" fill="solid" [color]="header?.color || 'primary'"

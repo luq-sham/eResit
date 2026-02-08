@@ -41,8 +41,11 @@ export class JanaResitPage implements OnInit {
   }
 
   async initData() {
+    this.isLaoding = true
+
     const params = {
       page: this.tablePaging.currentPage,
+      table_type: 1,
       record: this.tablePaging.record,
       search: this.searchText,
       category: this.category
@@ -101,6 +104,11 @@ export class JanaResitPage implements OnInit {
     })
 
     await modal.present()
+    const { data } = await modal.onDidDismiss()
+
+    if (data) {
+      this.initData()
+    }
   }
 
 }

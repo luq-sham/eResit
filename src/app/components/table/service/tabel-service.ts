@@ -23,7 +23,7 @@ export class TabelService {
           { label: 'Kelas', type: 'display', dataParam: 'kelas', class: 'ion-text-capitalize' },
           { label: 'Jumlah Bayaran (RM)', type: 'currency', dataParam: 'total' },
           { label: 'Kaedah Bayaran', type: 'display', dataParam: 'jenisBayaran', class: 'ion-text-capitalize' },
-          // { label: 'Tarikh', type: 'datetime', dataParam: 'created_at' }
+          { label: 'Status Resit', type: 'badge', dataParam: 'generated_receipt', class: 'ion-text-capitalize' },
         ];
 
       case 'jana-resit':
@@ -33,7 +33,6 @@ export class TabelService {
           { label: 'Kelas', type: 'display', dataParam: 'kelas', class: 'ion-text-capitalize' },
           { label: 'Jumlah Bayaran (RM)', type: 'currency', dataParam: 'total' },
           { label: 'Tindakan', type: 'buttons', btnLabel: 'Lihat', color: 'tertiary' }
-          // { label: 'Kaedah Bayaran', type: 'display', dataParam: 'jenisBayaran', class: 'ion-text-capitalize' },
         ];
 
       default:
