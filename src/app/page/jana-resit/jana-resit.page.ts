@@ -72,11 +72,13 @@ export class JanaResitPage implements OnInit {
   }
 
   onPageChange(page: number) {
+    this.isLoading = true
     this.tablePaging.currentPage = page;
     this.initData();
   }
 
   onRecordChange(record: number) {
+    this.isLoading = true
     this.tablePaging.record = record;
     this.tablePaging.currentPage = 1;
     this.initData();
@@ -84,6 +86,7 @@ export class JanaResitPage implements OnInit {
 
   // -------------------- SEARCH --------------------
   onSearch() {
+    this.isLoading = true
     this.tablePaging.currentPage = 1;
     this.initData()
   }
