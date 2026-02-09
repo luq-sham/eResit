@@ -39,11 +39,11 @@ export class ModalLihatPembayaranComponent implements OnInit {
         next: async (res) => {
           const receipt = res.return_value_set_1
 
-          this.resitService.generateReceipt(this.data, receipt)
+          await this.resitService.generateReceipt(this.data, receipt)
           this.alertService.successAlert('Berjaya', 'Resit berjaya dijana', 'Tutup').then(res => {
             this.modalCtrl.dismiss(true)
           })
-          this.loadingService.dismiss()
+          await this.loadingService.dismiss()
         },
         error: (err) => {
           this.loadingService.dismiss()
