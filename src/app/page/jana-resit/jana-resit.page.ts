@@ -108,6 +108,7 @@ export class JanaResitPage implements OnInit {
     const { data } = await modal.onDidDismiss()
 
     if (data) {
+      this.isLoading = true
       this.tablePaging.currentPage = 1;
       this.initData()
     }

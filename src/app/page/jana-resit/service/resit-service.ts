@@ -23,7 +23,7 @@ export class ResitService {
   };
 
   async generateReceipt(item: any, receiptInfo?: any, viewMode?: any) {
-    const logo = await this.getBase64ImageFromURL('assets/logo-default.png');
+    const logo = await this.getBase64ImageFromURL('assets/logo-maahad.png');
 
     const totalAmount = item.detailsBayaran.reduce(
       (acc: number, curr: any) => acc + (curr.jumlah || 0),
@@ -111,9 +111,10 @@ export class ResitService {
               },
               {
                 stack: [
-                  { text: '{{NAMA SEKOLAH}}', style: 'companyName' },
-                  { text: '{{ALAMAT SEKOLAH}}', style: 'companyAddress' },
-                  { text: 'Tel: {{NO. TELEFON SEKOLAH}}  |  Email: {{EMAIL SEKOLAH}}', style: 'companyAddress' }
+                  { text: 'MAAHAD TAHFIZ AL MAWADDAH', style: 'companyName' },
+                  { text: 'S 352 KG SRI LANGKAS, BATU 13 JLN KLANG, PUCHONG SELANGOR', style: 'companyAddress' },
+                  { text: 'Tel: 017 2340 865 / 03 8060 1840', style: 'companyAddress' },
+                  { text: 'Email: shahar0865@gmail.com / roziahbaharudin3@gmail.com', style: 'companyAddress' }
                 ],
                 margin: [10, 5, 0, 0],
                 alignment: 'left',
@@ -265,7 +266,7 @@ export class ResitService {
 
   private getFooterPage() {
     return {
-      text: '© {{NAMA SEKOLAH}} - Dijana oleh Sistem myResit Sekolah',
+      text: '© MAAHAD TAHFIZ AL MAWADDAH - Dijana oleh Sistem myResit Sekolah',
       fontSize: 7,
       color: '#838383',
       alignment: 'center',
