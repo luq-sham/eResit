@@ -41,7 +41,10 @@ export class JanaResitPage implements OnInit {
   }
 
   async initData(isFiltered?: any) {
-    if (!isFiltered) this.isLoading = true
+    if (!isFiltered) {
+      this.isLoading = true;
+      this.tablePaging.currentPage = 1;
+    }
 
     const params = {
       page: this.tablePaging.currentPage,
