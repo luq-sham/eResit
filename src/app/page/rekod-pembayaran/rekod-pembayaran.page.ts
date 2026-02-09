@@ -17,6 +17,7 @@ export class RekodPembayaranPage implements OnInit {
   paymentForm!: FormGroup;
   minDate = moment().subtract(1, 'month').format('YYYY-MM-DD');
   maxDate = moment().add(1, 'year').format('YYYY-MM-DD');
+  currentDate = moment().format('YYYY-MM-DD')
 
   validations: any
   isSubmitted = false
@@ -42,12 +43,14 @@ export class RekodPembayaranPage implements OnInit {
       tarikhBayaran: ['', Validators.required],
       detailsBayaran: this.fb.array([this.createItem()])
     });
+
+    this.paymentForm.get("tarikhBayaran")?.setValue(this.currentDate);
   }
 
   createItem(): FormGroup {
     return this.fb.group({
       butiran: ['', Validators.required],
-      jumlah: [null, [Validators.required, Validators.min(0)]]
+      jumlah: [null, [Validators.required, Validators.min(1)]]
     });
   }
 

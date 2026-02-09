@@ -22,7 +22,7 @@ export class ResitService {
     border: '#E5E7EB'
   };
 
-  async generateReceipt(item: any, receiptInfo?: any) {
+  async generateReceipt(item: any, receiptInfo?: any, viewMode?: any) {
     const logo = await this.getBase64ImageFromURL('assets/logo-default.png');
 
     const totalAmount = item.detailsBayaran.reduce(
@@ -42,9 +42,12 @@ export class ResitService {
       // watermark: { text: 'RASMI', color: 'blue', opacity: 0.05, bold: true, italics: false },
       header: () => this.getHeaderPage(item, receiptInfo),
       footer: () => this.getFooterPage(),
+      info: {
+        title: `${item?.namaPelajar.toUpperCase()}-Resit`,
+      },
 
       content: [
-        this.getHeaderSection(item, logo),
+        this.getHeaderSection(item, logo, viewMode),
         { text: '\n' },
         this.getStudentDetails(item),
         { text: '\n' },
@@ -65,7 +68,9 @@ export class ResitService {
 
     pdf.open();
 
-    pdf.download(`${item?.namaPelajar}-Resit.pdf`)
+    if (!viewMode) {
+      pdf.download(`${item?.namaPelajar}-Resit.pdf`)
+    }
   }
 
   private getHeaderPage(item: any, receipt?: any) {
@@ -91,7 +96,7 @@ export class ResitService {
     }
   }
 
-  private getHeaderSection(item: any, logo: any) {
+  private getHeaderSection(item: any, logo: any, viewMode?: any) {
     return {
       stack: [
         {
@@ -121,7 +126,7 @@ export class ResitService {
                   {
                     text: [
                       { text: 'TARIKH: ', bold: true, color: '#6B7280', fontSize: 9 },
-                      { text: new Date().toLocaleDateString('en-GB'), bold: true, fontSize: 10 }
+                      { text: viewMode ? new Date(item.receiptDate).toLocaleDateString('en-GB') : new Date().toLocaleDateString('en-GB'), bold: true, fontSize: 10 }
                     ],
                     alignment: 'right',
                     margin: [0, 2, 0, 0]

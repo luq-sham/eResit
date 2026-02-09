@@ -14,6 +14,7 @@ import { LoadingService } from 'src/app/services/loading-service';
 export class ModalLihatPembayaranComponent implements OnInit {
 
   data: any
+  isLihat: any
   total: any
   constructor(
     private resitService: ResitService,
@@ -54,6 +55,14 @@ export class ModalLihatPembayaranComponent implements OnInit {
         }
       })
     }
+  }
+
+  onLihatResit() {
+    if (this.data.generated_receipt == false) {
+      this.alertService.warningAlert("Perhatian", "Resit pembayaran ini belum dijana.", "Tutup")
+      return
+    }
+    this.resitService.generateReceipt(this.data, { receipt_no: this.data?.noReceipt }, this.isLihat)
   }
 
   onTutup() {

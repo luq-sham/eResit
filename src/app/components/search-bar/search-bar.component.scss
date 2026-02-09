@@ -1,0 +1,11 @@
+ion-select,
+ion-input {
+    --highlight-color: none !important;
+
+    &:focus,
+    &.has-focus,
+    &.select-expanded {
+        box-shadow: none;
+        --highlight-color-focused: transparent !important;
+    }
+}

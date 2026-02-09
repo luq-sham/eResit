@@ -29,7 +29,7 @@ export class ValidationService {
               ],
               jumlah: [
                 { label: 'Jumlah Bayaran', error: 'required', message: 'Sila masukkan jumlah bayaran' },
-                { label: 'Jumlah Bayaran', error: 'min', message: 'Jumlah mestilah 0 atau lebih' }
+                { label: 'Jumlah Bayaran', error: 'min', message: 'Jumlah mestilah 1 atau lebih' }
               ]
             }
           }

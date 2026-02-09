@@ -7,6 +7,7 @@ import { TableComponent } from './table/table.component';
 import { AlertModalComponent } from './alert-modal/alert-modal.component';
 import { ModalLihatPembayaranComponent } from './modal-lihat-pembayaran/modal-lihat-pembayaran.component';
 import { ErrorMessageComponent } from './error-message/error-message.component';
+import { SearchBarComponent } from './search-bar/search-bar.component';
 
 
 
@@ -16,7 +17,8 @@ import { ErrorMessageComponent } from './error-message/error-message.component';
     TableComponent,
     AlertModalComponent,
     ModalLihatPembayaranComponent,
-    ErrorMessageComponent
+    ErrorMessageComponent,
+    SearchBarComponent
   ],
   imports: [
     CommonModule,
@@ -29,7 +31,8 @@ import { ErrorMessageComponent } from './error-message/error-message.component';
     TableComponent,
     AlertModalComponent,
     ModalLihatPembayaranComponent,
-    ErrorMessageComponent
+    ErrorMessageComponent,
+    SearchBarComponent
   ]
 })
 export class ComponentModule { }

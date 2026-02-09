@@ -21,7 +21,7 @@ export class JanaResitPage implements OnInit {
   tableData: any[] = [];
   tablePaging = { currentPage: 1, record: 10, totalPages: 1 };
 
-  isLaoding = true
+  isLoading = true
 
   constructor(
     private tableService: TabelService,
@@ -40,8 +40,8 @@ export class JanaResitPage implements OnInit {
     this.tableHeader = this.tableService.getTableHeader('jana-resit');
   }
 
-  async initData() {
-    this.isLaoding = true
+  async initData(isFiltered?: any) {
+    if (!isFiltered) this.isLoading = true
 
     const params = {
       page: this.tablePaging.currentPage,
@@ -64,10 +64,10 @@ export class JanaResitPage implements OnInit {
         });
 
         this.tablePaging.totalPages = res.total_pages;
-        this.isLaoding = false
+        this.isLoading = false
       },
       error: async () => {
-        this.isLaoding = false
+        this.isLoading = false
         this.alertService.apiErrorAlert();
       }
     });

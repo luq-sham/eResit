@@ -28,9 +28,9 @@ export class MenuUtamaPage {
   isLoading = true
 
   menuConfig: MenuConfig[] = [
-    { title: 'Rekod Pembayaran', icon: 'calculator', url: 'rekod-pembayaran' },
+    { title: 'Tambah Rekod Pembayaran', icon: 'calculator', url: 'rekod-pembayaran' },
+    { title: 'Senarai Pembayaran', icon: 'folder-open', url: 'senarai-pembayaran' },
     { title: 'Jana Resit Pembayaran', icon: 'print', url: 'jana-resit' },
-    // { title: 'Kemaskini Pembayaran', icon: 'folder-open', url: '' },
   ];
 
   cardConfig = [

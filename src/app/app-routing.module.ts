@@ -18,6 +18,10 @@ const routes: Routes = [
   {
     path: 'jana-resit',
     loadChildren: () => import('./page/jana-resit/jana-resit.module').then( m => m.JanaResitPageModule)
+  },
+  {
+    path: 'senarai-pembayaran',
+    loadChildren: () => import('./page/senarai-pembayaran/senarai-pembayaran.module').then( m => m.SenaraiPembayaranPageModule)
   }
 ];
 
