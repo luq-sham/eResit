@@ -40,12 +40,7 @@ export class JanaResitPage implements OnInit {
     this.tableHeader = this.tableService.getTableHeader('jana-resit');
   }
 
-  async initData(isFiltered?: any) {
-    if (!isFiltered) {
-      this.isLoading = true;
-      this.tablePaging.currentPage = 1;
-    }
-
+  async initData() {
     const params = {
       page: this.tablePaging.currentPage,
       table_type: 1,
@@ -110,6 +105,7 @@ export class JanaResitPage implements OnInit {
     const { data } = await modal.onDidDismiss()
 
     if (data) {
+      this.tablePaging.currentPage = 1;
       this.initData()
     }
   }
