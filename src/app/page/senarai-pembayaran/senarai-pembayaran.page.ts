@@ -33,10 +33,7 @@ export class SenaraiPembayaranPage implements OnInit {
     this.initData()
   }
 
-  initData(isFiltered?: any) {
-
-    if (!isFiltered) this.isLoading = true
-
+  initData() {
     let params = {
       page: this.tablePaging.currentPage,
       table_type: 2,
@@ -72,6 +69,7 @@ export class SenaraiPembayaranPage implements OnInit {
   }
 
   onSearch(item: any) {
+    this.isLoading = true
     this.category = item.category
     this.searchText = item.searchText
 
@@ -84,6 +82,7 @@ export class SenaraiPembayaranPage implements OnInit {
   }
 
   onRecordChange(record: number) {
+    this.isLoading = true
     this.tablePaging.record = record;
     this.tablePaging.currentPage = 1;
     this.initData();

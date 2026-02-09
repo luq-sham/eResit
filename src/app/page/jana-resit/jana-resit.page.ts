@@ -61,7 +61,8 @@ export class JanaResitPage implements OnInit {
           return { ...item, total };
         });
 
-        this.tablePaging.totalPages = res.total_pages;
+        this.tablePaging.record = res.record
+        this.tablePaging.totalPages = res.total_pages
         this.isLoading = false
       },
       error: async () => {
@@ -72,7 +73,6 @@ export class JanaResitPage implements OnInit {
   }
 
   onPageChange(page: number) {
-    this.isLoading = true
     this.tablePaging.currentPage = page;
     this.initData();
   }

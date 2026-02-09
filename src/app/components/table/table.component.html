@@ -118,12 +118,14 @@
           {{ tablePaging.currentPage }}
         </div>
 
-        <ion-button fill="clear" size="small" [disabled]="tablePaging.currentPage === tablePaging.totalPages"
+        <ion-button fill="clear" size="small"
+          [disabled]="tablePaging.currentPage === tablePaging.totalPages || tablePaging.totalPages == 0"
           (click)="changePage(tablePaging.currentPage + 1)">
           <ion-icon slot="icon-only" name="chevron-forward-outline"></ion-icon>
         </ion-button>
 
-        <ion-button fill="clear" size="small" [disabled]="tablePaging.currentPage === tablePaging.totalPages"
+        <ion-button fill="clear" size="small"
+          [disabled]="tablePaging.currentPage === tablePaging.totalPages || tablePaging.totalPages == 0"
           (click)="changePage(tablePaging.totalPages)">
           <ion-icon slot="icon-only" name="play-skip-forward"></ion-icon>
         </ion-button>
