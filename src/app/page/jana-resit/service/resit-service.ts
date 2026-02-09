@@ -31,7 +31,7 @@ export class ResitService {
     );
 
     const receiptRows = item.detailsBayaran.map((detail: any, index: number) => [
-      { text: (index + 1).toString(), style: 'tableCell', alignment: 'center' },
+      { text: (index + 1).toString() + '.', style: 'tableCell', alignment: 'center' },
       { text: (detail.butiran || 'Yuran Sekolah').toUpperCase(), style: 'tableCell' },
       { text: `RM ${detail.jumlah?.toFixed(2) || '0.00'}`, alignment: 'right', style: 'tableCell' }
     ]);
@@ -54,7 +54,7 @@ export class ResitService {
         this.getTableSection(receiptRows, totalAmount),
         { text: '\n' },
         this.getSummarySection(totalAmount),
-        this.getFooterSection(item)
+        this.getFooterSection(item, viewMode)
       ],
       styles: this.getPdfStyles(),
       defaultStyle: {
@@ -111,7 +111,7 @@ export class ResitService {
               },
               {
                 stack: [
-                  { text: 'MAAHAD TAHFIZ AL MAWADDAH', style: 'companyName' },
+                  { text: 'MAAHAD TAHFIZ AL-MAWADDAH', style: 'companyName' },
                   { text: 'S 352 KG SRI LANGKAS, BATU 13 JLN KLANG, PUCHONG SELANGOR', style: 'companyAddress' },
                   { text: 'Tel: 017 2340 865 / 03 8060 1840', style: 'companyAddress' },
                   { text: 'Email: shahar0865@gmail.com / roziahbaharudin3@gmail.com', style: 'companyAddress' }
@@ -124,14 +124,6 @@ export class ResitService {
               {
                 stack: [
                   { text: 'RESIT RASMI', style: 'receiptTitle', alignment: 'right' },
-                  {
-                    text: [
-                      { text: 'TARIKH: ', bold: true, color: '#6B7280', fontSize: 9 },
-                      { text: viewMode ? new Date(item.receiptDate).toLocaleDateString('en-GB') : new Date().toLocaleDateString('en-GB'), bold: true, fontSize: 10 }
-                    ],
-                    alignment: 'right',
-                    margin: [0, 2, 0, 0]
-                  }
                 ],
                 margin: [10, 5, 0, 0],
                 alignment: 'right',
@@ -232,7 +224,7 @@ export class ResitService {
     };
   }
 
-  private getFooterSection(item: any) {
+  private getFooterSection(item: any, viewMode?: any) {
     return {
       margin: [0, 40, 0, 0],
       stack: [
@@ -248,16 +240,23 @@ export class ResitService {
               width: '*'
             },
             {
-              // Signature Line (Optional placeholder)
-              stack: [
-                { text: 'Disediakan Oleh:', fontSize: 8, color: '#6B7280', margin: [0, 0, 0, 10] },
-                { text: 'T.T', fontSize: 8, color: '#6B7280', margin: [0, 0, 0, 5] },
-                { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 100, y2: 0, lineWidth: 0.5, lineColor: '#9CA3AF' }] },
-                { text: '{{JAWATAN PENGESAH}}', fontSize: 8, bold: true, margin: [0, 5, 0, 0] }
+              text: [
+                { text: 'TARIKH RESIT DIJANA: ', bold: true, color: '#6B7280', fontSize: 8 },
+                { text: viewMode ? new Date(item.receiptDate).toLocaleDateString('en-GB') : new Date().toLocaleDateString('en-GB'), bold: true, fontSize: 10 }
               ],
-              width: '25%',
-              alignment: 'center'
+              alignment: 'right',
             }
+            // {
+            //   // Signature Line (Optional placeholder)
+            //   stack: [
+            //     { text: 'Disediakan Oleh:', fontSize: 8, color: '#6B7280', margin: [0, 0, 0, 10] },
+            //     { text: '', fontSize: 8, color: '#6B7280', margin: [0, 0, 0, 5] },
+            //     { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 100, y2: 0, lineWidth: 0.5, lineColor: '#9CA3AF' }] },
+            //     { text: 'Bendahari', fontSize: 8, bold: true, margin: [0, 5, 0, 0] }
+            //   ],
+            //   width: '25%',
+            //   alignment: 'center'
+            // }
           ]
         },
       ]
