@@ -31,7 +31,7 @@ ion-modal.auto-height {
     @media (max-width: 1200px) {
         --width: 90vw;
     }
-    
+
     &::part(backdrop) {
         --backdrop-opacity: 0.4; // default Ionic feel
     }
@@ -45,5 +45,16 @@ ion-modal.auto-height {
 
     @media (max-width: 1200px) {
         --width: 90vw;
+    }
+}
+
+.lihat-pelajar-modal {
+    --width: 45vw;
+    --height: 75vh;
+    --background: #f4f5f8 !important;
+
+    @media (max-width: 1200px) {
+        --width: 100%;
+        --height: 100vh;
     }
 }

@@ -1,0 +1,86 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="secondary">
+    <ion-title class="ion-text-center">Maklumat Pelajar</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding-vertical">
+  <ion-grid>
+    <ion-row>
+      <ion-col class="ion-text-center">
+        <ion-text class="title-fs" style="color: gray;">Sila isi semua maklumat dibawah</ion-text>
+      </ion-col>
+    </ion-row>
+
+    <form [formGroup]="form">
+      <ion-row class="input-form-row ion-padding-horizontal">
+        <ion-col size="12">
+          <ion-icon name="person" color="medium" class="body-fs me-4"></ion-icon>
+          <ion-label class="form-label required">Nama Pelajar</ion-label>
+          <ion-input type="text" class="form-control" formControlName="namaPelajar"
+            style="text-transform: uppercase;"></ion-input>
+
+          <app-error-message *ngFor="let val of validations?.namaPelajar" [field]="form.get('namaPelajar')"
+            [error]="val.error" [message]="val.message" [submitted]="isSubmitted"></app-error-message>
+        </ion-col>
+
+        <ion-col size="12">
+          <ion-icon name="id-card" color="medium" class="body-fs me-4"></ion-icon>
+          <ion-label class="form-label required">No. Kad Pengenalan (Tanpa simbol '-')</ion-label>
+          <ion-input type="text" class="form-control" formControlName="noKP"> </ion-input>
+        </ion-col>
+
+        <app-error-message *ngFor="let val of validations?.noKP" [field]="form.get('noKP')" [error]="val.error"
+          [message]="val.message" [submitted]="isSubmitted"></app-error-message>
+      </ion-row>
+
+      <ion-row class="mt-32 input-form-row ion-padding-horizontal">
+        <ion-col size="12" size-md="6">
+          <ion-icon name="man" color="medium" class="body-fs me-4"></ion-icon>
+          <ion-label class="form-label required">Nama Bapa</ion-label>
+          <ion-input type="text" class="form-control" formControlName="namaBapa"
+            style="text-transform: uppercase;"></ion-input>
+
+          <app-error-message *ngFor="let val of validations?.namaBapa" [field]="form.get('namaBapa')"
+            [error]="val.error" [message]="val.message" [submitted]="isSubmitted"></app-error-message>
+        </ion-col>
+
+        <ion-col size="12" size-md="6">
+          <ion-icon name="woman" color="medium" class="body-fs me-4"></ion-icon>
+          <ion-label class="form-label required">Nama Ibu</ion-label>
+          <ion-input type="text" class="form-control" formControlName="namaIbu"
+            style="text-transform: uppercase;"></ion-input>
+
+          <app-error-message *ngFor="let val of validations?.namaIbu" [field]="form.get('namaIbu')" [error]="val.error"
+            [message]="val.message" [submitted]="isSubmitted"></app-error-message>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="ion-margin-top input-form-row ion-padding-horizontal">
+        <ion-col size="12">
+          <ion-icon name="location" color="medium" class="body-fs me-4"></ion-icon>
+          <ion-label class="form-label required">Alamat Kediaman</ion-label>
+          <ion-textarea rows="4" auto-grow="true" class="form-control" formControlName="alamat"
+            style="text-transform: uppercase;"></ion-textarea>
+
+          <app-error-message *ngFor="let val of validations?.alamat" [field]="form.get('alamat')" [error]="val.error"
+            [message]="val.message" [submitted]="isSubmitted"></app-error-message>
+        </ion-col>
+      </ion-row>
+    </form>
+
+  </ion-grid>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button color="medium" (click)="onSimpan(false)">
+        Tutup
+      </ion-button>
+      <ion-button color="secondary" fill="solid" class="px-4" (click)="onSimpan(true)">
+        Simpan Maklumat
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

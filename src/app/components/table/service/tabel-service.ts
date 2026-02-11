@@ -45,6 +45,14 @@ export class TabelService {
           { label: 'Tindakan', type: 'buttons', btnLabel: 'Lihat', color: 'tertiary' }
         ]
 
+      case 'Senarai-pelajar':
+        return [
+          { label: 'Nama Pelajar', type: 'display', dataParam: 'namaPelajar', class: 'ion-text-uppercase' },
+          { label: 'Alamat', type: 'display', dataParam: 'alamat', class: 'ion-text-capitalize' },
+          { label: 'Nama Bapa', type: 'display', dataParam: 'namaBapa', class: 'ion-text-capitalize' },
+          { label: 'Nama Ibu', type: 'display', dataParam: 'namaIbu', class: 'ion-text-capitalize' },
+        ]
+
       default:
         return [];
     }

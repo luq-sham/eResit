@@ -10,13 +10,6 @@ import { firstValueFrom } from 'rxjs';
 
 registerLocaleData(localeMs, 'ms-MY');
 
-export interface MenuConfig {
-  title: string;
-  icon: string;
-  url: string;
-  color?: string;
-}
-
 @Component({
   selector: 'app-menu-utama',
   templateUrl: './menu-utama.page.html',
@@ -27,10 +20,22 @@ export class MenuUtamaPage {
   today = new Date();
   isLoading = true
 
-  menuConfig: MenuConfig[] = [
-    { title: 'Tambah Rekod Pembayaran', icon: 'calculator', url: 'rekod-pembayaran' },
-    { title: 'Jana Resit Pembayaran', icon: 'print', url: 'jana-resit' },
-    { title: 'Senarai Pembayaran', icon: 'folder-open', url: 'senarai-pembayaran' },
+  menuConfig = [
+    {
+      label: 'Urusan Pelajar',
+      items: [
+        { title: 'Senarai Pelajar', icon: 'people', url: 'senarai-pelajar', desc: '' },
+      ]
+    },
+    {
+      label: 'Urusan Resit',
+      items: [
+        { title: 'Tambah Rekod Pembayaran', icon: 'calculator', url: 'rekod-pembayaran', desc: '' },
+        { title: 'Jana Resit Pembayaran', icon: 'print', url: 'jana-resit', desc: '' },
+        { title: 'Senarai Pembayaran', icon: 'folder-open', url: 'senarai-pembayaran', desc: '' },
+      ]
+    },
+
   ];
 
   cardConfig = [

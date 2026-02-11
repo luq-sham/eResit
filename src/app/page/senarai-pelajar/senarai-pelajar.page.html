@@ -1,0 +1,93 @@
+<ion-content>
+  <app-header [title]="'Senarai Pelajar'" [showBackBtn]="true"></app-header>
+
+  <ion-grid class="ion-padding" fixed>
+    <ion-row>
+      <ion-col>
+        <ion-text color="dark">
+          <h1 class="fw-bold">Senarai Pejalar</h1>
+          <p class="text-muted">Berikut senarai pelajar yang dikemaskini dari sistem.</p>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col class="d-flex justify-end">
+        <ion-button color="tertiary" fill="outline" (click)="onTambah()">
+          <ion-icon slot="start" name="add"></ion-icon>
+          <ion-text class="mt-4">
+            Tambah Pelajar
+          </ion-text>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <app-search-bar (onSearchEvent)="onSearch($event)" [categoryList]="category"></app-search-bar>
+      </ion-col>
+    </ion-row>
+    <!-- 
+    <ion-row class="mt-12">
+      <ion-col>
+        <app-table [hasTableTitle]="false" [isLoading]="isLoading" [tableHeader]="tableHeader"
+          [tableData]="data"></app-table>
+      </ion-col>
+    </ion-row> -->
+
+    <ion-row>
+      <ion-col size="12" class="d-flex justify-center align-items-center" style="height: 50vh;"
+        *ngIf="data.length == 0">
+        <ion-text class="title-fs" style="color: gray;">Tiada data pelajar ditemui</ion-text>
+      </ion-col>
+
+      <ng-container *ngIf="data.length != 0">
+        <ion-col size="12" *ngFor="let item of data" class="mt-8">
+          <ion-card class="card-student m-0">
+
+            <div class="card-header">
+              <div class="avatar-initial">
+                {{ item.namaPelajar.charAt(0) }}
+              </div>
+              <div class="header-text">
+                <span class="student-name">{{ item.namaPelajar }}</span>
+                <span class="badge-student">{{item.noKP}}</span>
+              </div>
+            </div>
+
+            <ion-card-content>
+              <div class="detail-row">
+                <ion-icon name="location-outline" class="detail-icon"></ion-icon>
+                <div class="detail-text">
+                  <span class="label">Alamat Rumah</span>
+                  <p class="value">{{ item.alamat }}</p>
+                </div>
+              </div>
+
+              <div class="divider"></div>
+
+              <ion-row>
+                <ion-col size="6">
+                  <div class="parent-info">
+                    <span class="label">Nama Bapa</span>
+                    <p class="value">{{ item.namaBapa }}</p>
+                  </div>
+                </ion-col>
+                <ion-col size="6">
+                  <div class="parent-info">
+                    <span class="label">Nama Ibu</span>
+                    <p class="value">{{ item.namaIbu }}</p>
+                  </div>
+                </ion-col>
+              </ion-row>
+
+              <ion-row>
+
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ng-container>
+    </ion-row>
+  </ion-grid>
+</ion-content>

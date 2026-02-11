@@ -48,20 +48,21 @@
         </ng-container>
       </ion-row>
 
-      <ion-row class="ion-margin-top section-wrapper d-flex justify-center">
+      <ion-row class="ion-margin-top section-wrapper" *ngFor="let menu of menuConfig">
         <ion-col size="12">
           <div class="section-header">
-            <span class="section-title">Pautan Pantas</span>
+            <span class="section-title">{{menu.label}}</span>
           </div>
         </ion-col>
 
-        <ng-container *ngFor="let item of menuConfig">
-          <ion-col sizeMd="6" size="12">
+        <ng-container *ngFor="let item of menu.items">
+          <ion-col sizeMd="4" size="12">
             <div class="action-tile ion-activatable ripple-parent" (click)="onClickBtn(item.url)">
               <div class="tile-icon-box">
                 <ion-icon [name]="item.icon"></ion-icon>
               </div>
               <span class="tile-label">{{ item.title }}</span>
+              <span class="tile-desc" *ngIf="item?.desc">{{ item?.desc }}</span>
               <ion-ripple-effect></ion-ripple-effect>
             </div>
           </ion-col>

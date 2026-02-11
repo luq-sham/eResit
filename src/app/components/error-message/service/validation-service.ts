@@ -35,6 +35,32 @@ export class ValidationService {
           }
         }
 
+      case 'tambah-pelajar':
+        return validations = {
+          namaPelajar: [
+            { label: 'Nama Pelajar', error: 'required', message: 'Sila masukkan nama pelajar' }
+          ],
+
+          noKP: [
+            { label: 'No. KP', error: 'required', message: 'Sila masukkan nombor KP' },
+            { label: 'No. KP', error: 'pattern', message: 'Nombor KP mesti 12 digit tanpa sengkang' },
+            { label: 'No. KP', error: 'minLength', message: 'Nombor KP mesti 12 digit tanpa sengkang' },
+            { label: 'No. KP', error: 'maxLength', message: 'Nombor KP mesti 12 digit tanpa sengkang' }
+          ],
+
+          namaBapa: [
+            { label: 'Nama Bapa', error: 'required', message: 'Sila masukkan nama bapa' }
+          ],
+
+          namaIbu: [
+            { label: 'Nama Ibu', error: 'required', message: 'Sila masukkan nama ibu' }
+          ],
+
+          alamat: [
+            { label: 'Alamat', error: 'required', message: 'Sila masukkan alamat' }
+          ]
+        };
+
       default:
         return validations = []
     }

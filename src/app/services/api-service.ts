@@ -39,4 +39,14 @@ export class ApiService {
     return this.http.post(url, data);
   }
 
+  getStudent(data: any): Observable<any> {
+    const url = this.apiUrl + 'api/getStudents?search=' + data.search + '&category=' + data.category;
+    return this.http.get(url);
+  }
+
+  postAddStudent(data: any): Observable<any> {
+    const url = this.apiUrl + 'api/postAddStudent';
+    return this.http.post(url, data);
+  }
+
 }
