@@ -134,7 +134,7 @@ export class RekodPembayaranPage implements OnInit {
     const { data } = await modal.onDidDismiss()
 
     if (data) {
-      this.alert.successAlert('Berjaya', 'Maklumat pelajar berjaya dipilih')
+      this.alert.successAlert('Berjaya', 'Maklumat pelajar berjaya dipilih', 'Tutup')
       this.paymentForm.get('namaPelajar')?.setValue(data.namaPelajar)
       this.paymentForm.get('kelas')?.setValue(data.kelas)
     }
