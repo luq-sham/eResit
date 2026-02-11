@@ -12,7 +12,10 @@
     </ion-row>
 
     <ion-row>
-      <ion-col class="d-flex justify-end">
+      <ion-col class="d-flex justify-between align-items-center">
+        <ion-text style="font-style: italic; color: gray;" class="body-fs">
+          Jumlah pelajar berdaftar: <span class="fw-semibold" style="color: #000;">{{ data.length }}</span>
+        </ion-text>
         <ion-button color="tertiary" fill="outline" (click)="onTambah()">
           <ion-icon slot="start" name="add"></ion-icon>
           <ion-text class="mt-4">
@@ -61,6 +64,14 @@
                 <div class="detail-text">
                   <span class="label">Alamat Rumah</span>
                   <p class="value">{{ item.alamat }}</p>
+                </div>
+              </div>
+
+              <div class="detail-row">
+                <ion-icon name="business-outline" class="detail-icon"></ion-icon>
+                <div class="detail-text">
+                  <span class="label">Kelas</span>
+                  <p class="value">{{ item.kelas }}</p>
                 </div>
               </div>
 

@@ -36,6 +36,7 @@ export class ModalLihatPelajarComponent implements OnInit {
     this.form = this.fb.group({
       namaPelajar: ['', Validators.required],
       noKP: ['', [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.minLength(12), Validators.maxLength(12)]],
+      kelas: ['', [Validators.required]],
       namaBapa: ['', Validators.required],
       namaIbu: ['', Validators.required],
       alamat: ['', Validators.required]
@@ -43,12 +44,12 @@ export class ModalLihatPelajarComponent implements OnInit {
   }
 
   async onSimpan(isSimpan: any) {
-    this.isSubmitted = true
-
     if (!isSimpan) {
       this.modalCtrl.dismiss();
       return
     }
+
+    this.isSubmitted = true
 
     if (this.form.valid) {
       const res = await this.alertService.confirmAlert("Perhatian", "Adakah anda pasti untuk simpan maklumat ini?", "YA", "TIDAK", "warning")
@@ -56,6 +57,7 @@ export class ModalLihatPelajarComponent implements OnInit {
         const param = {
           ...this.form.getRawValue(),
           namaPelajar: this.form.value.namaPelajar?.toUpperCase(),
+          kelas: this.form.value.kelas?.toUpperCase(),
           namaBapa: this.form.value.namaBapa?.toUpperCase(),
           namaIbu: this.form.value.namaIbu?.toUpperCase()
         };

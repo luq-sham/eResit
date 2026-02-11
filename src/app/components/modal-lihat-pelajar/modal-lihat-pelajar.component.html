@@ -28,10 +28,20 @@
           <ion-icon name="id-card" color="medium" class="body-fs me-4"></ion-icon>
           <ion-label class="form-label required">No. Kad Pengenalan (Tanpa simbol '-')</ion-label>
           <ion-input type="text" class="form-control" formControlName="noKP"> </ion-input>
+
+          <app-error-message *ngFor="let val of validations?.noKP" [field]="form.get('noKP')" [error]="val.error"
+            [message]="val.message" [submitted]="isSubmitted"></app-error-message>
         </ion-col>
 
-        <app-error-message *ngFor="let val of validations?.noKP" [field]="form.get('noKP')" [error]="val.error"
-          [message]="val.message" [submitted]="isSubmitted"></app-error-message>
+        <ion-col size="12">
+          <ion-icon name="business" color="medium" class="body-fs me-4"></ion-icon>
+          <ion-label class="form-label required">Kelas</ion-label>
+          <ion-input type="text" class="form-control" formControlName="kelas" style="text-transform: uppercase;">
+          </ion-input>
+
+          <app-error-message *ngFor="let val of validations?.kelas" [field]="form.get('kelas')" [error]="val.error"
+            [message]="val.message" [submitted]="isSubmitted"></app-error-message>
+        </ion-col>
       </ion-row>
 
       <ion-row class="mt-32 input-form-row ion-padding-horizontal">

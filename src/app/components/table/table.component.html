@@ -73,6 +73,15 @@
                     {{ badgeText }}
                   </div>
 
+                  <ion-checkbox *ngSwitchCase="'checkbox'" [checked]="item[header.dataParam]"
+                    (ionChange)="onCheckboxChange($event.detail.checked, item, header.dataParam)">
+                  </ion-checkbox>
+
+                  <ion-radio-group *ngSwitchCase="'radio'" [value]="selectedRadio"
+                    (ionChange)="onRadioSelect($event.detail.value)">
+                    <ion-radio [value]="item"></ion-radio>
+                  </ion-radio-group>
+
                   <ion-button *ngSwitchCase="'buttons'" size="small" fill="solid" [color]="header?.color || 'primary'"
                     class="ion-no-margin" (click)="onClickBtn(item)">
                     {{ header?.btnLabel }}

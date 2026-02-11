@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { ModalController } from '@ionic/angular';
 import * as moment from 'moment';
 import { AlertService } from 'src/app/components/alert-modal/service/alert-service';
 import { ValidationService } from 'src/app/components/error-message/service/validation-service';
+import { ModalPilihPelajarComponent } from 'src/app/components/modal-pilih-pelajar/modal-pilih-pelajar.component';
 import { ApiService } from 'src/app/services/api-service';
 import { LoadingService } from 'src/app/services/loading-service';
 
@@ -27,7 +29,8 @@ export class RekodPembayaranPage implements OnInit {
     private alert: AlertService,
     private api: ApiService,
     private loader: LoadingService,
-    private validationService: ValidationService
+    private validationService: ValidationService,
+    private modalCtrl: ModalController
   ) { }
 
   ngOnInit() {
@@ -118,6 +121,23 @@ export class RekodPembayaranPage implements OnInit {
         jumlah: item.jumlah || 0
       }))
     };
+  }
+
+  async onPilih() {
+    const modal = await this.modalCtrl.create({
+      component: ModalPilihPelajarComponent,
+      cssClass: 'lihat-pelajar-modal'
+    })
+
+    await modal.present()
+
+    const { data } = await modal.onDidDismiss()
+
+    if (data) {
+      this.alert.successAlert('Berjaya', 'Maklumat pelajar berjaya dipilih')
+      this.paymentForm.get('namaPelajar')?.setValue(data.namaPelajar)
+      this.paymentForm.get('kelas')?.setValue(data.kelas)
+    }
   }
 
 }

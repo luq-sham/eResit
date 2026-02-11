@@ -17,6 +17,7 @@ export class SenaraiPelajarPage implements OnInit {
   category: any[] = [
     { value: 1, label: 'Nama Pelajar' },
     { value: 2, label: 'No. Kad Pengenalan' },
+    { value: 3, label: 'Kelas' },
   ]
 
   search: any = ''

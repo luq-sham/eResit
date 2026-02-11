@@ -48,6 +48,10 @@ export class ValidationService {
             { label: 'No. KP', error: 'maxLength', message: 'Nombor KP mesti 12 digit tanpa sengkang' }
           ],
 
+          kelas: [
+            { label: 'Kelas', error: 'required', message: 'Sila masukkan kelas' }
+          ],
+
           namaBapa: [
             { label: 'Nama Bapa', error: 'required', message: 'Sila masukkan nama bapa' }
           ],
