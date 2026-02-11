@@ -1,0 +1,35 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="secondary">
+    <ion-title class="ion-text-center">Pilih Pelajar</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-margin ion-padding">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <app-search-bar (onSearchEvent)="onSearch($event)" [categoryList]="categories"></app-search-bar>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <app-table [tableHeader]="tableHeader" [isLoading]="isLoading" [tableData]="tableData" [showPaging]="false"
+          [showBilangan]="false" (radioChange)="onRadioChange($event)"></app-table>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button color="medium" (click)="onSimpan(false)">
+        Tutup
+      </ion-button>
+      <ion-button color="secondary" fill="solid" class="px-4" (click)="onSimpan(true)" [disabled]="selectedData == null">
+        Simpan Maklumat
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

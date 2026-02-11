@@ -22,6 +22,10 @@ const routes: Routes = [
   {
     path: 'senarai-pembayaran',
     loadChildren: () => import('./page/senarai-pembayaran/senarai-pembayaran.module').then( m => m.SenaraiPembayaranPageModule)
+  },
+  {
+    path: 'senarai-pelajar',
+    loadChildren: () => import('./page/senarai-pelajar/senarai-pelajar.module').then( m => m.SenaraiPelajarPageModule)
   }
 ];
 

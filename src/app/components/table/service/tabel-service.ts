@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 export interface TableHeader {
   label: string;
+  align?: string
   type: string;
   dataParam?: string;
   btnLabel?: string;
@@ -43,6 +44,22 @@ export class TabelService {
           { label: 'Kaedah Bayaran', type: 'display', dataParam: 'jenisBayaran', class: 'ion-text-capitalize' },
           { label: 'Status Resit', type: 'badge', dataParam: 'generated_receipt', class: 'ion-text-capitalize' },
           { label: 'Tindakan', type: 'buttons', btnLabel: 'Lihat', color: 'tertiary' }
+        ]
+
+      case 'Senarai-pelajar':
+        return [
+          { label: 'Nama Pelajar', type: 'display', dataParam: 'namaPelajar', class: 'ion-text-uppercase' },
+          { label: 'Alamat', type: 'display', dataParam: 'alamat', class: 'ion-text-capitalize' },
+          { label: 'Nama Bapa', type: 'display', dataParam: 'namaBapa', class: 'ion-text-capitalize' },
+          { label: 'Nama Ibu', type: 'display', dataParam: 'namaIbu', class: 'ion-text-capitalize' },
+        ]
+
+      case 'pilih-pelajar':
+        return [
+          { label: 'Nama Pelajar', type: 'display', dataParam: 'namaPelajar', class: 'ion-text-uppercase' },
+          { label: 'No. IC', type: 'display', dataParam: 'noKP', class: 'ion-text-capitalize' },
+          { label: 'Kelas', type: 'display', dataParam: 'kelas', class: 'ion-text-capitalize' },
+          { label: 'Tindakan', type: 'radio', dataParam: 'total', class: 'ion-text-center', align: 'center' },
         ]
 
       default:

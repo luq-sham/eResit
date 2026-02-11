@@ -23,10 +23,14 @@ export class TableComponent implements OnInit {
   @Output() recordChange = new EventEmitter<number>();
   @Output() onButtonClick = new EventEmitter();
 
+  @Output() radioChange = new EventEmitter<any>();
+  @Output() checkboxChange = new EventEmitter<any[]>();
+
   today: Date = new Date();
   recordOptions = [5, 10, 20, 50];
   badgeText = '';
-
+  selectedRadio: any = null;
+  selectedCheckboxes: any[] = [];
 
   ngOnInit() { }
 
@@ -64,10 +68,22 @@ export class TableComponent implements OnInit {
     return this.tablePaging.record;
   }
 
-
   onRecordChange(record: number) {
     this.tablePaging.record = record;
     this.tablePaging.currentPage = 1;
     this.recordChange.emit(record);
+  }
+
+  onCheckboxChange(checked: boolean, item: any, field: string) {
+    item[field] = checked;
+
+    const selectedItems = this.tableData.filter(row => row[field]);
+
+    this.checkboxChange.emit(selectedItems);
+  }
+
+  onRadioSelect(value: any) {
+    this.selectedRadio = value;
+    this.radioChange.emit(value);
   }
 }
