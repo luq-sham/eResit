@@ -3,16 +3,8 @@
   <form [formGroup]="paymentForm">
     <div class="main-container ion-padding">
       <ion-grid fixed>
-        <ion-row>
-          <ion-col>
-            <header class="page-title-section ion-margin-bottom ion-padding-horizontal">
-              <ion-text color="dark">
-                <h1 class="fw-bold">Borang Maklumat Pembayaran</h1>
-                <p class="text-muted">Sila lengkapkan butiran pembayaran di bawah.</p>
-              </ion-text>
-            </header>
-          </ion-col>
-        </ion-row>
+        <app-header-title [title]="'Borang Maklumat Pembayaran'"
+          [subtitle]="'Sila lengkapkan butiran pembayaran di bawah.'"></app-header-title>
       </ion-grid>
 
       <ion-grid fixed>
@@ -27,7 +19,7 @@
               </ion-col>
               <ion-col class="ion-text-end" sizeMd="6" size="12">
                 <ion-button size="small" fill="outline" color="tertiary" (click)="onPilih()" class="add-btn">
-                  <ion-icon slot="start" name="add-outline"></ion-icon>
+                  <ion-icon slot="start" name="person-add-outline"></ion-icon>
                   Pilih Pelajar
                 </ion-button>
               </ion-col>
@@ -38,8 +30,7 @@
             <ion-row class="input-form-row">
               <ion-col sizeLg="6" size="12">
                 <ion-label class="form-label required">Nama Pelajar</ion-label>
-                <ion-input class="form-control" placeholder="Nama penuh pelajar"
-                  formControlName="namaPelajar"></ion-input>
+                <ion-input class="form-control" formControlName="namaPelajar" readonly></ion-input>
 
                 <app-error-message *ngFor="let val of validations?.namaPelajar" [field]="paymentForm.get('namaPelajar')"
                   [error]="val.error" [message]="val.message" [submitted]="isSubmitted"></app-error-message>
@@ -47,9 +38,17 @@
 
               <ion-col sizeLg="6" size="12">
                 <ion-label class="form-label required">Kelas</ion-label>
-                <ion-input class="form-control" placeholder="Contoh: 5 Amanah" formControlName="kelas"></ion-input>
+                <ion-input class="form-control" formControlName="kelas" readonly></ion-input>
 
                 <app-error-message *ngFor="let val of validations?.kelas" [field]="paymentForm.get('kelas')"
+                  [error]="val.error" [message]="val.message" [submitted]="isSubmitted"></app-error-message>
+              </ion-col>
+
+              <ion-col sizeLg="6" size="12">
+                <ion-label class="form-label required">No Kad Pengenalan</ion-label>
+                <ion-input class="form-control" formControlName="noKP" readonly></ion-input>
+
+                <app-error-message *ngFor="let val of validations?.noKP" [field]="paymentForm.get('noKP')"
                   [error]="val.error" [message]="val.message" [submitted]="isSubmitted"></app-error-message>
               </ion-col>
             </ion-row>
@@ -81,7 +80,7 @@
 
                   <ion-col sizeMd="8" size="12">
                     <ion-label class="form-label">Butiran</ion-label>
-                    <ion-input class="form-control" placeholder="Contoh: Yuran PIBG" formControlName="butiran">
+                    <ion-input class="form-control" formControlName="butiran">
                     </ion-input>
 
                     <app-error-message *ngFor="let val of validations?.detailsBayaran.items.butiran"

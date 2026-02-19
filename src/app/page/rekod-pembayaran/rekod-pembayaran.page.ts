@@ -42,6 +42,7 @@ export class RekodPembayaranPage implements OnInit {
     this.paymentForm = this.fb.group({
       namaPelajar: ['', Validators.required],
       kelas: ['', Validators.required],
+      noKP: ['', Validators.required],
       jenisBayaran: ['', Validators.required],
       tarikhBayaran: ['', Validators.required],
       detailsBayaran: this.fb.array([this.createItem()])
@@ -114,8 +115,6 @@ export class RekodPembayaranPage implements OnInit {
 
     return {
       ...raw,
-      // jumlahBayaran: this.getTotal(),
-      namaPelajar: raw.namaPelajar?.toUpperCase() || '',
       detailsBayaran: raw.detailsBayaran.map((item: any) => ({
         butiran: item.butiran?.toUpperCase() || '',
         jumlah: item.jumlah || 0
@@ -134,9 +133,12 @@ export class RekodPembayaranPage implements OnInit {
     const { data } = await modal.onDidDismiss()
 
     if (data) {
+      console.log(data);
+
       this.alert.successAlert('Berjaya', 'Maklumat pelajar berjaya dipilih', 'Tutup')
       this.paymentForm.get('namaPelajar')?.setValue(data.namaPelajar)
       this.paymentForm.get('kelas')?.setValue(data.kelas)
+      this.paymentForm.get('noKP')?.setValue(data.noKP)
     }
   }
 

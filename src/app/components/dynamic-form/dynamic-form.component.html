@@ -1,0 +1,24 @@
+<form [formGroup]="form">
+  <ion-row>
+    <ng-container *ngFor="let formItem of formConfig">
+      <ion-col [size]="formItem?.size || 12">
+        <ion-item lines="none" class="input-item mt-10">
+          <ion-icon [name]="formItem.icon" slot="start"></ion-icon>
+          <ion-label position="stacked">{{formItem.label}}</ion-label>
+
+          <ng-container *ngIf="formItem.type != 'textarea'">
+            <ion-input [type]="formItem.type" [formControlName]='formItem.formControl'>
+            </ion-input>
+          </ng-container>
+          <ng-container *ngIf="formItem.type == 'textarea'">
+            <ion-textarea rows="4" [formControlName]="formItem.formControl"></ion-textarea>
+          </ng-container>
+        </ion-item>
+
+        <app-error-message *ngFor="let val of validations[formItem.formControl]"
+          [field]="form.get(formItem.formControl)" [error]="val.error" [message]="val.message"
+          [submitted]="submitted"></app-error-message>
+      </ion-col>
+    </ng-container>
+  </ion-row>
+</form>

@@ -26,7 +26,19 @@ const routes: Routes = [
   {
     path: 'senarai-pelajar',
     loadChildren: () => import('./page/senarai-pelajar/senarai-pelajar.module').then( m => m.SenaraiPelajarPageModule)
+  },  {
+    path: 'senarai-kakitangan',
+    loadChildren: () => import('./page/senarai-kakitangan/senarai-kakitangan.module').then( m => m.SenaraiKakitanganPageModule)
+  },
+  {
+    path: 'jana-slip-gaji',
+    loadChildren: () => import('./page/jana-slip-gaji/jana-slip-gaji.module').then( m => m.JanaSlipGajiPageModule)
+  },
+  {
+    path: 'senarai-slip-gaji',
+    loadChildren: () => import('./page/senarai-slip-gaji/senarai-slip-gaji.module').then( m => m.SenaraiSlipGajiPageModule)
   }
+
 ];
 
 @NgModule({

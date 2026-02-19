@@ -1,0 +1,156 @@
+.text-muted {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+
+.card-student {
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    background: #ffffff;
+    margin-bottom: 18px;
+    overflow: hidden;
+    /* Changed from visible to hidden to contain child elements */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* Ensures cards in the same row stretch to equal height */
+}
+
+/* Header Styling */
+.card-header {
+    display: flex;
+    align-items: center;
+    padding: 14px;
+    background: #f4f4f4;
+    border-bottom: 1px solid #eeeeee;
+    /* Border radius handled by card overflow */
+}
+
+.avatar-initial {
+    flex-shrink: 0;
+    /* Prevents avatar from squishing on tiny screens */
+    width: 45px;
+    height: 45px;
+    background: var(--ion-color-tertiary, #3880ff);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-right: 12px;
+}
+
+.header-text {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    /* Helper for text truncation */
+}
+
+.student-name {
+    margin-bottom: 4px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #333;
+    // white-space: nowrap;
+    /* Keeps name on one line */
+    // overflow: hidden;
+    /* Hides overflow */
+    // text-overflow: ellipsis;
+    /* Adds "..." if name is too long */
+}
+
+.badge-student {
+    font-size: 12px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Content Styling */
+.detail-row {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.detail-icon {
+    flex-shrink: 0;
+    /* Keeps icon size constant */
+    font-size: 18px;
+    color: var(--ion-color-primary, #3880ff);
+    margin-right: 12px;
+    margin-top: 3px;
+}
+
+.detail-text {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.label {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.value {
+    margin: 0;
+    font-size: 14px;
+    color: #222;
+    font-family: 'Roboto';
+    line-height: 1.4;
+    word-break: break-word;
+    /* Important: Prevents long addresses from breaking layout */
+}
+
+.divider {
+    height: 1px;
+    background-color: #f0f0f0;
+    margin: 12px 0;
+}
+
+.parent-info {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* Aligns content if one parent name is longer */
+}
+
+/* ---------------------------------------------------------
+   RESPONSIVE ADJUSTMENTS (Tablet & Desktop)
+   Targeting screens wider than 768px
+--------------------------------------------------------- */
+@media (min-width: 768px) {
+    .card-student {
+        margin-bottom: 0;
+        /* Grid handles spacing on desktop */
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    /* Hover effect for desktop users */
+    .card-student:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    .card-header {
+        padding: 20px;
+        /* More breathing room on big screens */
+    }
+
+    .student-name {
+        font-size: 1.25rem;
+        /* Larger title on desktop */
+    }
+
+    .detail-icon {
+        font-size: 20px;
+    }
+}

@@ -14,7 +14,7 @@ export class ModalPilihPelajarComponent implements OnInit {
 
   categories = [
     { value: 1, label: 'Nama Pelajar' },
-    { value: 2, label: 'No. Kad Pengenalan' },
+    { value: 2, label: 'No. KP / Passport' },
     { value: 3, label: 'Kelas' },
   ]
   search: any = ''
@@ -25,6 +25,8 @@ export class ModalPilihPelajarComponent implements OnInit {
   isLoading = true
 
   selectedData: any
+
+  isKakitangan: any = false
 
   constructor(
     private tableService: TabelService,
@@ -39,25 +41,46 @@ export class ModalPilihPelajarComponent implements OnInit {
   }
 
   initTable() {
-    this.tableHeader = this.tableService.getTableHeader('pilih-pelajar')
+    let module = 'pilih-pelajar'
+    if (this.isKakitangan) {
+      module = 'pilih-kakitangan'
+    }
+    this.tableHeader = this.tableService.getTableHeader(module)
   }
 
   initData() {
+    let apiName;
     const param = {
       search: this.search,
       category: this.selectedCategory
+    };
+
+
+    if (this.isKakitangan) {
+      this.apiService.getStaff(param).subscribe({
+        next: (res) => {
+          this.tableData = res.return_value_set_1
+          this.isLoading = false
+        },
+        error: (err) => {
+          console.log(err);
+          this.alertService.apiErrorAlert()
+          this.isLoading = false
+        }
+      })
+    } else {
+      this.apiService.getStudent(param).subscribe({
+        next: (res) => {
+          this.tableData = res.return_value_set_1
+          this.isLoading = false
+        },
+        error: (err) => {
+          console.log(err);
+          this.alertService.apiErrorAlert()
+          this.isLoading = false
+        }
+      })
     }
-    this.apiService.getStudent(param).subscribe({
-      next: (res) => {
-        this.tableData = res.return_value_set_1
-        this.isLoading = false
-      },
-      error: (err) => {
-        console.log(err);
-        this.alertService.apiErrorAlert()
-        this.isLoading = false
-      }
-    })
   }
 
   onRadioChange(item: any) {

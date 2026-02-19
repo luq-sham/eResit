@@ -1,14 +1,13 @@
 <ion-content>
-  <app-header [title]="'Senarai Pembayaran'" [showBackBtn]="true"></app-header>
+  <app-header [title]="'Senarai Slip Gaji'" [showBackBtn]="true"></app-header>
 
-  <ion-grid class="ion-padding" fixed>
-
-    <app-header-title [title]="'Senarai Rekod Pembayaran'"
-      [subtitle]="'Berikut adalah senarai bagi pembayaran yang telah direkod.'"></app-header-title>
+  <ion-grid fixed class="ion-padding">
+    <app-header-title [title]="'Senarai Slip Gaji'"
+      [subtitle]="'Berikut merupakan senarai slip gaji yang telah dijana dalam sistem'"></app-header-title>
 
     <ion-row class="">
       <ion-col size="12">
-        <app-search-bar (onSearchEvent)="onSearch($event)"></app-search-bar>
+        <app-search-bar (onSearchEvent)="onSearch($event)" [categoryList]="categories"></app-search-bar>
       </ion-col>
     </ion-row>
 
@@ -19,8 +18,5 @@
           (onButtonClick)="onLihat($event)"></app-table>
       </ion-col>
     </ion-row>
-  </ion-grid>
-
-  <ion-grid fixed>
   </ion-grid>
 </ion-content>

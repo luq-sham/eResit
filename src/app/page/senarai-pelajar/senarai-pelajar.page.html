@@ -2,20 +2,17 @@
   <app-header [title]="'Senarai Pelajar'" [showBackBtn]="true"></app-header>
 
   <ion-grid class="ion-padding" fixed>
-    <ion-row>
-      <ion-col>
-        <ion-text color="dark">
-          <h1 class="fw-bold">Senarai Pejalar</h1>
-          <p class="text-muted">Berikut senarai pelajar yang dikemaskini dari sistem.</p>
-        </ion-text>
-      </ion-col>
-    </ion-row>
+    <app-header-title [title]="'Senarai Pejalar'"
+      [subtitle]="'Berikut senarai pelajar yang dikemaskini di dalam sistem.'"></app-header-title>
 
     <ion-row>
-      <ion-col class="d-flex justify-between align-items-center">
+      <ion-col sizeMd="6" size="12" class="d-flex align-items-center">
         <ion-text style="font-style: italic; color: gray;" class="body-fs">
-          Jumlah pelajar berdaftar: <span class="fw-semibold" style="color: #000;">{{ data.length }}</span>
+          Jumlah pelajar: <span class="fw-semibold" style="color: #000;">{{ total_pelajar }}</span>
         </ion-text>
+      </ion-col>
+
+      <ion-col sizeMd="6" size="12" class="d-flex align-items-center justify-end">
         <ion-button color="tertiary" fill="outline" (click)="onTambah()">
           <ion-icon slot="start" name="add"></ion-icon>
           <ion-text class="mt-4">

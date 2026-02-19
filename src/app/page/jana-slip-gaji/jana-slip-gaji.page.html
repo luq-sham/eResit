@@ -1,0 +1,243 @@
+<ion-content>
+  <app-header [title]="'Jana Slip Gaji'" [showBackBtn]="true"></app-header>
+
+  <ion-grid fixed class="p-16">
+    <app-header-title [title]="'Borang Jana Slip Gaji'"
+      [subtitle]="'Sila isi semua maklumat dibawah untuk menjana slip gaji bagi kakitangan'">
+    </app-header-title>
+
+    <form [formGroup]="form">
+      <ion-row>
+        <ion-col>
+
+          <ion-card class="m-0 form-card">
+            <ion-card-header>
+              <ion-row class="ion-align-items-center ion-no-padding">
+                <ion-col class="d-flex align-items-center" sizeMd="6" size="12">
+                  <div class="icon-badge">
+                    <ion-icon name="person-outline"></ion-icon>
+                  </div>
+                  <ion-card-title class="fw-bold">Maklumat Kakitangan</ion-card-title>
+                </ion-col>
+                <ion-col class="ion-text-end" sizeMd="6" size="12">
+                  <ion-button size="small" fill="outline" color="tertiary" (click)="onPilih()">
+                    <ion-icon slot="start" name="person-add-outline"></ion-icon>
+                    Pilih Kakitangan
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-card-header>
+
+            <ion-card-content>
+              <ion-row class="input-form-row">
+                <ion-col sizeLg="6" size="12">
+                  <ion-label class="form-label required">Nama Kakitangan</ion-label>
+                  <ion-input class="form-control" formControlName="namaKakitangan" readonly></ion-input>
+
+                  <app-error-message *ngFor="let val of validations?.namaKakitangan"
+                    [field]="form.get('namaKakitangan')" [error]="val.error" [message]="val.message"
+                    [submitted]="isSubmitted"></app-error-message>
+                </ion-col>
+
+                <ion-col sizeLg="6" size="12">
+                  <ion-label class="form-label required">No Kad Pengenalan</ion-label>
+                  <ion-input class="form-control" formControlName="noKP" readonly></ion-input>
+
+                  <app-error-message *ngFor="let val of validations?.noKP" [field]="form.get('noKP')"
+                    [error]="val.error" [message]="val.message" [submitted]="isSubmitted"></app-error-message>
+                </ion-col>
+
+                <ion-col sizeLg="6" size="12">
+                  <ion-label class="form-label required">No Telefon</ion-label>
+                  <ion-input class="form-control" formControlName="noTel" readonly></ion-input>
+
+                  <app-error-message *ngFor="let val of validations?.noTel" [field]="form.get('noTel')"
+                    [error]="val.error" [message]="val.message" [submitted]="isSubmitted"></app-error-message>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+
+          <ion-card class="m-0 mt-16 form-card">
+            <ion-card-header>
+              <ion-row class="ion-align-items-center ion-no-padding">
+                <ion-col class="d-flex align-items-center" sizeMd="6" size="12">
+                  <div class="icon-badge">
+                    <ion-icon name="documents-outline"></ion-icon>
+                  </div>
+                  <ion-card-title class="fw-bold">Maklumat Gaji</ion-card-title>
+                </ion-col>
+              </ion-row>
+            </ion-card-header>
+
+            <ion-card-content>
+
+              <div formArrayName="earning">
+                <ion-row class="ion-align-items-center mb-2">
+                  <ion-col size="6">
+                    <h6 class="fw-semibold">Senarai Pendapatan</h6>
+                  </ion-col>
+                  <ion-col size="6" class="ion-text-end">
+                    <ion-button size="small" fill="outline" color="success" (click)="addEarning()">
+                      <ion-icon slot="start" name="add-outline"></ion-icon>
+                      Tambah
+                    </ion-button>
+                  </ion-col>
+                </ion-row>
+
+                <div *ngFor="let item of earningItems.controls; let i = index" [formGroupName]="i">
+                  <ion-row class="input-form-row">
+                    <ion-col sizeLg="8" size="12">
+                      <ion-label class="form-label required">Butiran</ion-label>
+                      <ion-input formControlName="butiran" class="form-control"></ion-input>
+
+                      <app-error-message *ngFor="let val of validations?.detailsBayaran.items.butiran"
+                        [field]="item.get('butiran')" [error]="val.error" [message]="val.message"
+                        [submitted]="isSubmitted"></app-error-message>
+                    </ion-col>
+
+                    <ion-col sizeLg="3" size="12">
+                      <ion-label class="form-label required">Jumlah (RM)</ion-label>
+                      <ion-input type="number" formControlName="jumlah" class="form-control"
+                        placeholder="0.00"></ion-input>
+
+                      <app-error-message *ngFor="let val of validations?.detailsBayaran.items.jumlah"
+                        [field]="item.get('jumlah')" [error]="val.error" [message]="val.message"
+                        [submitted]="isSubmitted"></app-error-message>
+                    </ion-col>
+
+                    <ion-col sizeLg="1" size="12" class="d-flex align-items-end">
+                      <ion-button fill="clear" color="danger" *ngIf="earningItems.length > 1"
+                        (click)="earningItems.removeAt(i)">
+                        <ion-icon name="trash-outline"></ion-icon>
+                      </ion-button>
+                    </ion-col>
+                  </ion-row>
+                </div>
+              </div>
+
+              <div formArrayName="deduction" class="mt-32">
+                <ion-row class="ion-align-items-center mb-2">
+                  <ion-col size="6">
+                    <h6 class="fw-semibold text-danger">Senarai Potongan</h6>
+                  </ion-col>
+                  <ion-col size="6" class="ion-text-end">
+                    <ion-button size="small" fill="outline" color="danger" (click)="addDeduction()">
+                      <ion-icon slot="start" name="add-outline"></ion-icon>
+                      Tambah
+                    </ion-button>
+                  </ion-col>
+                </ion-row>
+
+                <div *ngFor="let item of deductionItems.controls; let i = index" [formGroupName]="i">
+                  <ion-row class="input-form-row">
+                    <ion-col sizeLg="8" size="12">
+                      <ion-label class="form-label required">Butiran</ion-label>
+                      <ion-input formControlName="butiran" class="form-control"></ion-input>
+
+                      <app-error-message *ngFor="let val of validations?.detailsBayaran.items.butiran"
+                        [field]="item.get('butiran')" [error]="val.error" [message]="val.message"
+                        [submitted]="isSubmitted"></app-error-message>
+                    </ion-col>
+
+                    <ion-col sizeLg="3" size="12">
+                      <ion-label class="form-label required">Jumlah (RM)</ion-label>
+                      <ion-input type="number" formControlName="jumlah" class="form-control"
+                        placeholder="0.00"></ion-input>
+
+                      <app-error-message *ngFor="let val of validations?.detailsBayaran.items.jumlah"
+                        [field]="item.get('jumlah')" [error]="val.error" [message]="val.message"
+                        [submitted]="isSubmitted"></app-error-message>
+                    </ion-col>
+
+                    <ion-col sizeLg="1" size="12" class="d-flex align-items-end">
+                      <ion-button fill="clear" color="danger" *ngIf="deductionItems.length > 1"
+                        (click)="deductionItems.removeAt(i)">
+                        <ion-icon name="trash-outline"></ion-icon>
+                      </ion-button>
+                    </ion-col>
+                  </ion-row>
+                </div>
+              </div>
+
+              <ion-row class="input-form-row mt-4">
+                <ion-col sizeLg="6" size="12">
+                  <ion-label class="form-label required">Bayaran Bulan</ion-label>
+
+                  <ion-datetime-button datetime="datetime1" class="mt-12"></ion-datetime-button>
+
+                  <ion-modal [keepContentsMounted]="true">
+                    <ng-template>
+                      <ion-datetime id="datetime1" presentation="month-year" [showDefaultButtons]="true"
+                        (ionChange)="form.get('paymentMonth')?.setValue($event.detail.value)" locale="en-GB">
+                      </ion-datetime>
+                    </ng-template>
+                  </ion-modal>
+
+                  <app-error-message *ngFor="let val of validations?.paymentMonth" [field]="form.get('paymentMonth')"
+                    [error]="val.error" [message]="val.message" [submitted]="isSubmitted"></app-error-message>
+                </ion-col>
+
+                <ion-col sizeLg="6" size="12">
+                  <ion-label class="form-label required">Tarikh Pembayaran</ion-label>
+
+                  <ion-datetime-button datetime="datetime2" class="mt-12" disabled></ion-datetime-button>
+
+                  <ion-modal [keepContentsMounted]="true">
+                    <ng-template>
+                      <ion-datetime id="datetime2" presentation="date" [showDefaultButtons]="true"
+                        (ionChange)="form.get('paymentDate')?.setValue($event.detail.value)" locale="en-GB"
+                        [formatOptions]="{date: {day: '2-digit',month: '2-digit',year: 'numeric'}}">
+                      </ion-datetime>
+                    </ng-template>
+                  </ion-modal>
+
+                  <app-error-message *ngFor="let val of validations?.paymentDate" [field]="form.get('paymentDate')"
+                    [error]="val.error" [message]="val.message" [submitted]="isSubmitted"></app-error-message>
+                </ion-col>
+              </ion-row>
+
+              <ion-card class="mt-4 summary-card">
+                <ion-card-content>
+                  <ion-row>
+                    <ion-col size="6">Jumlah Pendapatan</ion-col>
+                    <ion-col size="6" class="ion-text-end text-success fw-bold">
+                      RM {{ totalEarning | number:'1.2-2' }}
+                    </ion-col>
+                  </ion-row>
+
+                  <ion-row>
+                    <ion-col size="6">Jumlah Potongan</ion-col>
+                    <ion-col size="6" class="ion-text-end text-danger fw-bold">
+                      RM {{ totalDeduction | number:'1.2-2' }}
+                    </ion-col>
+                  </ion-row>
+
+                  <hr>
+
+                  <ion-row>
+                    <ion-col size="6" class="fw-bold">Gaji Bersih</ion-col>
+                    <ion-col size="6" class="ion-text-end fw-bold text-primary">
+                      RM {{ netSalary | number:'1.2-2' }}
+                    </ion-col>
+                  </ion-row>
+                </ion-card-content>
+              </ion-card>
+
+              <ion-row class="mt-4">
+                <ion-col class="ion-text-end">
+                  <ion-button color="tertiary" (click)="onSubmit()">
+                    <ion-icon slot="start" name="document-text-outline"></ion-icon>
+                    Jana Slip Gaji
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+
+            </ion-card-content>
+          </ion-card>
+
+        </ion-col>
+      </ion-row>
+    </form>
+  </ion-grid>
+</ion-content>

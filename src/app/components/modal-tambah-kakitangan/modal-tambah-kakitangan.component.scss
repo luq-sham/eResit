@@ -1,0 +1,16 @@
+ion-content {
+    --background: #fff !important;
+}
+
+.input-item {
+    align-items: center;
+    margin-top: 0px;
+    --background: #f5f5f5;
+    border-radius: 10px;
+    border: 1px solid rgb(207, 207, 207);
+
+    ion-icon {
+        margin-top: 12px;
+        color: var(--ion-color-secondary);
+    }
+}
