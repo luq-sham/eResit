@@ -1,6 +1,6 @@
 <ion-header class="ion-no-border">
   <ion-toolbar color="main">
-    <ion-title class="ion-text-center">Pilih Pelajar</ion-title>
+    <ion-title class="ion-text-center">{{title}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -16,7 +16,7 @@
       <ion-col>
         <div class="mb-8">
           <ion-text style="font-size: 12px;color: gray;font-style: italic;">
-            Berikut senarai pelajar yang didaftar dalam sistem
+            Berikut senarai {{isKakitangan ? 'kakitangan':'pelajar'}} yang didaftar dalam sistem
           </ion-text>
         </div>
 

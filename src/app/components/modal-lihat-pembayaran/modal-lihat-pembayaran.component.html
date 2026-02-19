@@ -75,7 +75,31 @@
 
     <ion-row *ngIf="isLihat && data.generated_receipt" class="ion-justify-content-center">
       <ion-col sizeMd="8" size="12" class="ion-text-center">
-        <ion-text class="body-fs">Tarikh Resit Dijana: {{data.receiptDate | date:'dd/MM/yyyy'}}</ion-text>
+        <ion-card class="receipt-card">
+          <div class="card-section">
+            <ion-row>
+              <ion-col size="12">
+                <p class="label-muted mb-1">No. Resit</p>
+                <div class="info-badge">
+                  <ion-icon name="information-circle-outline"></ion-icon>
+                  <span>{{ data?.noReceipt}}</span>
+                </div>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col size="12">
+                <p class="label-muted mb-1">Tarikh Resit Dijana</p>
+                <div class="info-badge">
+                  <ion-icon name="calendar-outline"></ion-icon>
+                  <span>{{data.receiptDate | date:'dd/MM/yyyy'}}</span>
+                </div>
+              </ion-col>
+            </ion-row>
+
+          </div>
+        </ion-card>
+        <!-- <ion-text class="body-fs">Tarikh Resit Dijana: {{data.receiptDate | date:'dd/MM/yyyy'}}</ion-text> -->
       </ion-col>
     </ion-row>
 

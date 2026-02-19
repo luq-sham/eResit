@@ -116,7 +116,7 @@ export class JanaSlipGajiPage implements OnInit {
   async onPilih() {
     const category = [
       { value: 1, label: 'Nama Kakitangan' },
-      { value: 2, label: 'No Kad Pengenalan' },
+      { value: 2, label: 'No KP / Passport' },
     ]
 
     const modal = await this.modalCtrl.create({

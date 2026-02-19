@@ -27,6 +27,7 @@ export class ModalPilihPelajarComponent implements OnInit {
   selectedData: any
 
   isKakitangan: any = false
+  title: any = "Pilih Pelajar"
 
   constructor(
     private tableService: TabelService,
@@ -44,6 +45,7 @@ export class ModalPilihPelajarComponent implements OnInit {
     let module = 'pilih-pelajar'
     if (this.isKakitangan) {
       module = 'pilih-kakitangan'
+      this.title = "Pilih Kakitangan"
     }
     this.tableHeader = this.tableService.getTableHeader(module)
   }
