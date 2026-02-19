@@ -2,16 +2,9 @@
   <app-header [title]="'Senarai Pembayaran'" [showBackBtn]="true"></app-header>
 
   <ion-grid class="ion-padding" fixed>
-    <ion-row>
-      <ion-col>
-        <header class="page-title-section ion-margin-bottom ">
-          <ion-text color="dark">
-            <h1 class="fw-bold">Senarai Rekod Pembayaran</h1>
-            <p class="text-muted">Berikut adalah senarai bagi pembayaran yang telah direkod.</p>
-          </ion-text>
-        </header>
-      </ion-col>
-    </ion-row>
+
+    <app-header-title [title]="'Senarai Rekod Pembayaran'"
+      [subtitle]="'Berikut adalah senarai bagi pembayaran yang telah direkod.'"></app-header-title>
 
     <ion-row class="">
       <ion-col size="12">
@@ -22,8 +15,8 @@
     <ion-row class="">
       <ion-col size="12">
         <app-table [isLoading]="isLoading" [tableData]="tableData" [tablePaging]="tablePaging"
-          [tableHeader]="tableHeader" (pageChange)="onPageChange($event)"
-          (recordChange)="onRecordChange($event)" (onButtonClick)="onLihat($event)"></app-table>
+          [tableHeader]="tableHeader" (pageChange)="onPageChange($event)" (recordChange)="onRecordChange($event)"
+          (onButtonClick)="onLihat($event)"></app-table>
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -16,13 +16,14 @@ export class SenaraiPelajarPage implements OnInit {
 
   category: any[] = [
     { value: 1, label: 'Nama Pelajar' },
-    { value: 2, label: 'No. Kad Pengenalan' },
+    { value: 2, label: 'No. KP / Passport' },
     { value: 3, label: 'Kelas' },
   ]
 
   search: any = ''
   selectedCategory: any = 1
   data: any[] = []
+  total_pelajar: any = 0
 
   isLoading = true
 
@@ -42,7 +43,7 @@ export class SenaraiPelajarPage implements OnInit {
 
   async initData() {
     let param = {
-      search: this.search,
+      search: this.search.trim(),
       category: this.selectedCategory
     }
 
@@ -50,13 +51,12 @@ export class SenaraiPelajarPage implements OnInit {
     this.apiService.getStudent(param).subscribe({
       next: (res) => {
         this.data = res.return_value_set_1
-        // this.isLoading = false
+        this.total_pelajar = res.total_student
         this.loadingService.dismiss()
       },
       error: (err) => {
         console.log(err);
         this.alertService.apiErrorAlert()
-        // this.isLoading = false
         this.loadingService.dismiss()
       }
     })

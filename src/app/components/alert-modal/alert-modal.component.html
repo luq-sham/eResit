@@ -34,13 +34,13 @@
 
       <ion-col [size]="hasConfirm?6:12">
         <ion-button expand="block" fill="outline" color="medium" class="action-btn" (click)="dismiss()">
-          {{cancelBtn||'Cancel'}}
+          {{cancelBtn||'Tutup'}}
         </ion-button>
       </ion-col>
 
       <ion-col size="6" *ngIf="hasConfirm">
         <ion-button expand="block" fill="solid" color="primary" class="action-btn" (click)="confirm()">
-          {{confirmBtn||'Confirm'}}
+          {{confirmBtn||'Ya'}}
         </ion-button>
       </ion-col>
 

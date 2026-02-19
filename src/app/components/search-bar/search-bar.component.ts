@@ -23,7 +23,7 @@ export class SearchBarComponent implements OnInit {
   ngOnInit() { }
 
   onSearch() {
-    this.onSearchEvent.emit({ category: this.category, searchText: this.searchText })
+    this.onSearchEvent.emit({ category: this.category, searchText: this.searchText.trim() })
   }
 
 }

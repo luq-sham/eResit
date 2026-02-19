@@ -19,6 +19,11 @@ export class ApiService {
     return this.http.get(url);
   }
 
+  getCardValueStaff(): Observable<any> {
+    const url = this.apiUrl + 'api/getCardsValueStaff';
+    return this.http.get(url);
+  }
+
   getPaymentDetails(data?: any): Observable<any> {
     const url = this.apiUrl + 'api/getPaymentDetails?page=' + data.page + '&record=' + data.record;
     return this.http.get(url);
@@ -49,4 +54,23 @@ export class ApiService {
     return this.http.post(url, data);
   }
 
+  postAddStaff(data: any): Observable<any> {
+    const url = this.apiUrl + 'api/postAddStaff';
+    return this.http.post(url, data);
+  }
+
+  getStaff(data: any): Observable<any> {
+    const url = this.apiUrl + 'api/getStaff?search=' + data.search + '&category=' + data.category;
+    return this.http.get(url);
+  }
+
+  postCreatePayslip(data: any): Observable<any> {
+    const url = this.apiUrl + 'api/postCreatePayslip';
+    return this.http.post(url, data);
+  }
+
+  getPaySlipFIltered(data: any): Observable<any> {
+    const url = this.apiUrl + 'api/getPaySlipDetailsFiltered?page=' + data.page + '&record=' + data.record + '&search=' + data.search + '&category=' + data.category;
+    return this.http.get(url);
+  }
 }

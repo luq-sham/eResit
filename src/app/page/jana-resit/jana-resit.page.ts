@@ -45,7 +45,7 @@ export class JanaResitPage implements OnInit {
       page: this.tablePaging.currentPage,
       table_type: 1,
       record: this.tablePaging.record,
-      search: this.searchText,
+      search: this.searchText.trim(),
       category: this.category
     };
 

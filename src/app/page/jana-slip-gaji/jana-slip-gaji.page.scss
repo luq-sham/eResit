@@ -1,0 +1,29 @@
+.form-card {
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    background: #ffffff;
+    --padding-start: 16px;
+    --padding-end: 16px;
+}
+
+.icon-badge {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    font-size: 20px;
+    background: rgba(56, 128, 255, 0.1);
+    color: var(--ion-color-secondary);
+}
+
+.summary-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+}
+
+.input-form-row {
+    margin-bottom: 12px;
+}

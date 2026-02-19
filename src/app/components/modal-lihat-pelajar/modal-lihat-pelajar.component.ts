@@ -5,6 +5,7 @@ import { AlertService } from '../alert-modal/service/alert-service';
 import { ApiService } from 'src/app/services/api-service';
 import { LoadingService } from 'src/app/services/loading-service';
 import { ValidationService } from '../error-message/service/validation-service';
+import { FormConfig } from '../dynamic-form/services/form-config';
 
 @Component({
   selector: 'app-modal-lihat-pelajar',
@@ -15,6 +16,7 @@ import { ValidationService } from '../error-message/service/validation-service';
 export class ModalLihatPelajarComponent implements OnInit {
 
   form!: FormGroup
+  formConfig: any
   isSubmitted = false
   validations: any
 
@@ -24,23 +26,26 @@ export class ModalLihatPelajarComponent implements OnInit {
     private alertService: AlertService,
     private loadingService: LoadingService,
     private fb: FormBuilder,
-    private validationService: ValidationService
+    private validationService: ValidationService,
+    private formConfigService: FormConfig
   ) { }
 
   ngOnInit() {
     this.initForm()
-    this.validations = this.validationService.validations('tambah-pelajar')
   }
 
   initForm() {
     this.form = this.fb.group({
       namaPelajar: ['', Validators.required],
-      noKP: ['', [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.minLength(12), Validators.maxLength(12)]],
+      noKP: ['', [Validators.required, Validators.pattern(/^[0-9]*$/)]],
       kelas: ['', [Validators.required]],
       namaBapa: ['', Validators.required],
       namaIbu: ['', Validators.required],
       alamat: ['', Validators.required]
     });
+
+    this.validations = this.validationService.validations('tambah-pelajar')
+    this.formConfig = this.formConfigService.getFormConfig('tambah-pelajar')
   }
 
   async onSimpan(isSimpan: any) {

@@ -1,0 +1,33 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="main">
+    <ion-title class="ion-text-center">Tambah Kakitangan</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="p-12">
+    <ion-row>
+      <ion-col size="12" class="d-flex justify-center">
+        <ion-text class="italic" style="font-size: 14px; color: gray;">Sila isi semua maklumat dibawah</ion-text>
+      </ion-col>
+
+      <ion-col>
+        <app-dynamic-form [form]="form" [formConfig]="formConfig" [validations]="validations"
+          [submitted]="submitted"></app-dynamic-form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button color="medium" (click)="onSimpan(false)">
+        Tutup
+      </ion-button>
+      <ion-button color="secondary" fill="solid" class="px-4" (click)="onSimpan(true)">
+        Simpan Maklumat
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

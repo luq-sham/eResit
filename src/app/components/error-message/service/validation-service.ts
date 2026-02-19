@@ -16,6 +16,14 @@ export class ValidationService {
           kelas: [
             { label: 'Kelas', error: 'required', message: 'Sila masukkan kelas' }
           ],
+
+          noKP: [
+            { label: 'No. KP', error: 'required', message: 'Sila masukkan Nombor KP / Passport' },
+            { label: 'No. KP', error: 'pattern', message: 'Nombor KP / Passport mesti digit tanpa simbol' },
+            // { label: 'No. KP', error: 'min', message: 'Nombor KP mesti 12 digit tanpa sengkang' },
+            // { label: 'No. KP', error: 'max', message: 'Nombor KP mesti 12 digit tanpa sengkang' }
+          ],
+
           jenisBayaran: [
             { label: 'Jenis Bayaran', error: 'required', message: 'Sila pilih jenis bayaran' }
           ],
@@ -42,10 +50,10 @@ export class ValidationService {
           ],
 
           noKP: [
-            { label: 'No. KP', error: 'required', message: 'Sila masukkan nombor KP' },
-            { label: 'No. KP', error: 'pattern', message: 'Nombor KP mesti 12 digit tanpa sengkang' },
-            { label: 'No. KP', error: 'minLength', message: 'Nombor KP mesti 12 digit tanpa sengkang' },
-            { label: 'No. KP', error: 'maxLength', message: 'Nombor KP mesti 12 digit tanpa sengkang' }
+            // { label: 'No. KP', error: 'required', message: 'Sila masukkan Nombor KP / Passport' },
+            { label: 'No. KP', error: 'pattern', message: 'Nombor KP / Passport mesti digit tanpa simbol' },
+            // { label: 'No. KP', error: 'maxlength', message: 'Nombor KP mesti 12 digit tanpa - simbol' },
+            // { label: 'No. KP', error: 'minlength', message: 'Nombor KP mesti 12 digit tanpa - simbol' }
           ],
 
           kelas: [
@@ -63,6 +71,71 @@ export class ValidationService {
           alamat: [
             { label: 'Alamat', error: 'required', message: 'Sila masukkan alamat' }
           ]
+        };
+
+      case 'tambah-kakitangan':
+        return validations = {
+          namaKakitangan: [
+            { label: 'Nama Penu', error: 'required', message: 'Sila masukkan nama penuh' }
+          ],
+
+          noKP: [
+            { label: 'No. KP', error: 'required', message: 'Sila masukkan Nombor KP / Passport' },
+            { label: 'No. KP', error: 'pattern', message: 'Nombor KP / Passport mesti digit tanpa - simbol' },
+            // { label: 'No. KP', error: 'maxlength', message: 'Nombor KP mesti 12 digit tanpa - simbol' },
+            // { label: 'No. KP', error: 'minlength', message: 'Nombor KP mesti 12 digit tanpa - simbol' }
+          ],
+
+          noTel: [
+            { label: 'Kelas', error: 'required', message: 'Sila masukkan no telefon' }
+          ],
+
+          emel: [
+            { label: 'Nama Bapa', error: 'required', message: 'Sila masukkan emel' },
+            { label: 'Nama Bapa', error: 'email', message: 'Sila masukkan format emel yang betul' }
+          ],
+
+          alamat: [
+            { label: 'Alamat', error: 'required', message: 'Sila masukkan alamat' }
+          ]
+        };
+
+      case 'jana-slip-gaji':
+        return validations = {
+          namaKakitangan: [
+            { label: 'Nama Penu', error: 'required', message: 'Sila masukkan nama penuh' }
+          ],
+
+          noKP: [
+            { label: 'No. KP', error: 'required', message: 'Sila masukkan Nombor KP / Passport' },
+            { label: 'No. KP', error: 'pattern', message: 'Nombor KP / Passport mesti 12 digit tanpa - simbol' },
+            // { label: 'No. KP', error: 'maxlength', message: 'Nombor KP mesti 12 digit tanpa - simbol' },
+            // { label: 'No. KP', error: 'minlength', message: 'Nombor KP mesti 12 digit tanpa - simbol' }
+          ],
+
+          noTel: [
+            { label: 'Kelas', error: 'required', message: 'Sila masukkan no telefon' }
+          ],
+
+          detailsBayaran: {
+            items: {
+              butiran: [
+                { label: 'Butiran Bayaran', error: 'required', message: 'Sila masukkan butiran bayaran' }
+              ],
+              jumlah: [
+                { label: 'Jumlah Bayaran', error: 'required', message: 'Sila masukkan jumlah bayaran' },
+                { label: 'Jumlah Bayaran', error: 'min', message: 'Jumlah mestilah 1 atau lebih' }
+              ]
+            }
+          },
+
+          paymentMonth: [
+            { label: 'Bulan Bayaran', error: 'required', message: 'Sila pilih tarikh bulan' }
+          ],
+
+          paymentDate: [
+            { label: 'Tarikh Bayaran', error: 'required', message: 'Sila pilih tarikh tarikh bayaran' }
+          ],
         };
 
       default:

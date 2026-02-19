@@ -1,91 +1,134 @@
-<ion-content>
-  <!-- <app-header [title]="'Menu Utama'"></app-header> -->
-
+<ion-content class="dashboard-content">
   <div class="dashboard-container">
-
-    <div class="welcome-header ion-padding-horizontal ion-padding-top">
+    <div class="welcome-header">
       <ion-text color="dark">
         <h1 class="welcome-title">Selamat Kembali</h1>
         <p class="welcome-subtitle">{{ today | date:'EEEE, d MMMM y':'':'ms-MY' }}</p>
       </ion-text>
     </div>
 
-    <ion-grid class="ion-padding">
+    <ion-grid class="dashboard-grid">
+      <ion-row class="ion-justify-content-center">
+        <ion-col size="12" sizeMd="6">
+          <ion-segment [(ngModel)]="segmentValue" (ionChange)="onSegmentChange()" color="primary"
+            class="dashboard-segment" color="tertiary">
+            <ion-segment-button value="pelajar">
+              <ion-icon name="school"></ion-icon>
+              <ion-label>Pelajar</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="kakitangan">
+              <ion-icon name="briefcase"></ion-icon>
+              <ion-label>Kakitangan</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+        </ion-col>
+      </ion-row>
 
-      <ion-row>
-        <ng-container *ngFor="let card of cardConfig">
-          <ion-col sizeLg="4" sizeMd="6" size="12">
-            <div class="stat-card" [ngClass]="'accent-' + (card?.iconColor || 'primary')">
-              <div class="stat-content">
-                <div class="stat-text">
-                  <span class="stat-label">{{ card.title }}</span>
-                  <div class="stat-value">
-                    <ng-container [ngSwitch]="card.type">
-
-                      <ng-container *ngIf="isLoading">
-                        <ion-skeleton-text [animated]="true" style="width: 100px; height: 30px;"></ion-skeleton-text>
+      <div class="content-wrapper">
+        <ng-container *ngIf="segmentValue === 'pelajar'">
+          <ion-row>
+            <ng-container *ngFor="let card of cardConfig">
+              <ion-col size="12" sizeMd="4">
+                <div class="stat-card">
+                  <div class="stat-icon-wrapper" [ngClass]="'icon-' + (card?.iconColor || 'primary')">
+                    <ion-icon [name]="card.icon"></ion-icon>
+                  </div>
+                  <div class="stat-text">
+                    <span class="stat-label">{{ card.title }}</span>
+                    <div class="stat-value">
+                      <ng-container *ngIf="isLoading; else dataBlock">
+                        <ion-skeleton-text [animated]="true" class="skeleton-value"></ion-skeleton-text>
                       </ng-container>
-
-                      <ng-container *ngIf="!isLoading">
-                        <span *ngSwitchCase="'currency'">
-                          {{ card.count | currency:'RM ' }}
-                        </span>
-
-                        <span *ngSwitchDefault>
-                          {{ card.count }}
-                        </span>
-                      </ng-container>
-
-                    </ng-container>
+                      <ng-template #dataBlock>
+                        {{ card.type === 'currency' ? (card.count | currency:'RM ') : card.count }}
+                      </ng-template>
+                    </div>
                   </div>
                 </div>
-                <div class="stat-icon" [style.color]="'var(--ion-color-' + (card?.iconColor || 'primary') + ')'">
-                  <ion-icon [name]="card.icon"></ion-icon>
+              </ion-col>
+            </ng-container>
+          </ion-row>
+
+          <ion-row class="section-row" *ngFor="let menu of menuConfig">
+            <ion-col size="12">
+              <div class="section-header">
+                <span class="section-title">{{menu.label}}</span>
+              </div>
+            </ion-col>
+            <ng-container *ngFor="let item of menu.items">
+              <ion-col size="6" sizeMd="3">
+                <div class="action-tile ion-activatable ripple-parent" (click)="onClickBtn(item.url)">
+                  <div class="tile-icon-box" [ngClass]="'tile-' + (item.color || 'primary')">
+                    <ion-icon [name]="item.icon"></ion-icon>
+                  </div>
+                  <span class="tile-label">{{ item.title }}</span>
+                  <ion-ripple-effect></ion-ripple-effect>
                 </div>
-              </div>
-            </div>
-          </ion-col>
-        </ng-container>
-      </ion-row>
+              </ion-col>
+            </ng-container>
+          </ion-row>
 
-      <ion-row class="ion-margin-top section-wrapper" *ngFor="let menu of menuConfig">
+          <ion-row class="table-row">
+            <ion-col size="12">
+              <app-table [isLoading]="isLoading" [tableHeader]="tableHeader" [tableData]="tableData"
+                [tableTitle]="'Senarai Pembayaran Terkini'" [tablePaging]="paging" [showPaging]="false">
+              </app-table>
+            </ion-col>
+          </ion-row>
+        </ng-container>
+
+        <ng-container *ngIf="segmentValue === 'kakitangan'">
+          <ion-row>
+            <ng-container *ngFor="let card of cardConfig2">
+              <ion-col size="12" sizeMd="6">
+                <div class="stat-card">
+                  <div class="stat-icon-wrapper" [ngClass]="'icon-' + (card?.iconColor || 'primary')">
+                    <ion-icon [name]="card.icon"></ion-icon>
+                  </div>
+                  <div class="stat-text">
+                    <span class="stat-label">{{ card.title }}</span>
+                    <div class="stat-value">
+                      <ng-container *ngIf="isLoading; else dataBlock">
+                        <ion-skeleton-text [animated]="true" class="skeleton-value"></ion-skeleton-text>
+                      </ng-container>
+                      <ng-template #dataBlock>
+                        {{ card.type === 'currency' ? (card.count | currency:'RM ') : card.count }}
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+              </ion-col>
+            </ng-container>
+          </ion-row>
+
+          <ion-row class="section-row" *ngFor="let menu of menuConfig2">
+            <ion-col size="12">
+              <div class="section-header">
+                <span class="section-title">{{menu.label}}</span>
+              </div>
+            </ion-col>
+            <ng-container *ngFor="let item of menu.items">
+              <ion-col size="6" sizeMd="3">
+                <div class="action-tile ion-activatable ripple-parent" (click)="onClickBtn(item.url)">
+                  <div class="tile-icon-box" [ngClass]="'tile-' + (item.color || 'primary')">
+                    <ion-icon [name]="item.icon"></ion-icon>
+                  </div>
+                  <span class="tile-label">{{ item.title }}</span>
+                  <ion-ripple-effect></ion-ripple-effect>
+                </div>
+              </ion-col>
+            </ng-container>
+          </ion-row>
+        </ng-container>
+      </div>
+
+      <ion-row class="footer-row">
         <ion-col size="12">
-          <div class="section-header">
-            <span class="section-title">{{menu.label}}</span>
+          <div class="footer-content">
+            <ion-text class="footer-text">© 2026 myResit Sekolah. Hak cipta terpelihara.</ion-text>
           </div>
         </ion-col>
-
-        <ng-container *ngFor="let item of menu.items">
-          <ion-col sizeMd="4" size="12">
-            <div class="action-tile ion-activatable ripple-parent" (click)="onClickBtn(item.url)">
-              <div class="tile-icon-box">
-                <ion-icon [name]="item.icon"></ion-icon>
-              </div>
-              <span class="tile-label">{{ item.title }}</span>
-              <span class="tile-desc" *ngIf="item?.desc">{{ item?.desc }}</span>
-              <ion-ripple-effect></ion-ripple-effect>
-            </div>
-          </ion-col>
-        </ng-container>
       </ion-row>
-
-      <ion-row class="ion-margin-top">
-        <ion-col size="12">
-          <app-table [isLoading]="isLoading" [tableHeader]="tableHeader" [tableData]="tableData"
-            [tableTitle]="'Senarai Pembayaran Terkini'" [tablePaging]="paging" [showPaging]="false"
-            (pageChange)="onPageChange($event)" (recordChange)="onRecordChange($event)">
-          </app-table>
-        </ion-col>
-      </ion-row>
-
-      <ion-row class="ion-margin-top">
-        <ion-col size="12">
-          <div class="ion-text-center">
-            <ion-text style="color: grey;" class="body-fs">© 2026 Hak cipta terpelihara. myResit Sekolah</ion-text>
-          </div>
-        </ion-col>
-      </ion-row>
-
     </ion-grid>
   </div>
 </ion-content>

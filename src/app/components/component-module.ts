@@ -10,6 +10,9 @@ import { ErrorMessageComponent } from './error-message/error-message.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { ModalLihatPelajarComponent } from './modal-lihat-pelajar/modal-lihat-pelajar.component';
 import { ModalPilihPelajarComponent } from './modal-pilih-pelajar/modal-pilih-pelajar.component';
+import { HeaderTitleComponent } from './header-title/header-title.component';
+import { ModalTambahKakitanganComponent } from './modal-tambah-kakitangan/modal-tambah-kakitangan.component';
+import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
 
 
 
@@ -23,6 +26,9 @@ import { ModalPilihPelajarComponent } from './modal-pilih-pelajar/modal-pilih-pe
     SearchBarComponent,
     ModalLihatPelajarComponent,
     ModalPilihPelajarComponent,
+    HeaderTitleComponent,
+    ModalTambahKakitanganComponent,
+    DynamicFormComponent,
   ],
   imports: [
     CommonModule,
@@ -39,6 +45,9 @@ import { ModalPilihPelajarComponent } from './modal-pilih-pelajar/modal-pilih-pe
     SearchBarComponent,
     ModalLihatPelajarComponent,
     ModalPilihPelajarComponent,
+    HeaderTitleComponent,
+    ModalTambahKakitanganComponent,
+    DynamicFormComponent,
   ]
 })
 export class ComponentModule { }

@@ -6,7 +6,8 @@ import localeMs from '@angular/common/locales/ms';
 import { TabelService } from 'src/app/components/table/service/tabel-service';
 import { ApiService } from 'src/app/services/api-service';
 import { AlertService } from 'src/app/components/alert-modal/service/alert-service';
-import { firstValueFrom } from 'rxjs';
+import { count, firstValueFrom } from 'rxjs';
+import { MenuButtonServices } from './services/menu-button-services';
 
 registerLocaleData(localeMs, 'ms-MY');
 
@@ -19,30 +20,13 @@ registerLocaleData(localeMs, 'ms-MY');
 export class MenuUtamaPage {
   today = new Date();
   isLoading = true
+  segmentValue = 'pelajar'
 
-  menuConfig = [
-    {
-      label: 'Urusan Pelajar',
-      items: [
-        { title: 'Senarai Pelajar', icon: 'people', url: 'senarai-pelajar', desc: '' },
-      ]
-    },
-    {
-      label: 'Urusan Resit',
-      items: [
-        { title: 'Tambah Rekod Pembayaran', icon: 'calculator', url: 'rekod-pembayaran', desc: '' },
-        { title: 'Jana Resit Pembayaran', icon: 'print', url: 'jana-resit', desc: '' },
-        { title: 'Senarai Pembayaran', icon: 'folder-open', url: 'senarai-pembayaran', desc: '' },
-      ]
-    },
+  menuConfig: any[] = [];
+  cardConfig: any[] = [];
 
-  ];
-
-  cardConfig = [
-    { icon: 'file-tray-full', title: 'Bilangan Pembayaran', count: 0, type: 'display' },
-    { icon: 'document-text', title: 'Bilangan Resit Dijana', count: 0, type: 'display', iconColor: 'warning' },
-    { icon: 'cash', title: 'Jumlah Pembayaran', count: 0, type: 'currency', iconColor: 'success' },
-  ];
+  menuConfig2: any[] = [];
+  cardConfig2: any[] = [];
 
   paging = { currentPage: 1, record: 10, totalPages: 10 };
 
@@ -54,63 +38,96 @@ export class MenuUtamaPage {
     private router: Router,
     private apiService: ApiService,
     private alertService: AlertService,
+    private menuBtnService: MenuButtonServices,
   ) { }
 
   ngOnInit() {
     this.loadTableHeader();
+    this.initConfig()
   }
 
-  ionViewWillEnter() {
-    this.resetPaging();
-    this.loadData();
+  initConfig() {
+    this.menuConfig = this.menuBtnService.getMenuButtonConfig('pelajar-dashboard')
+    this.cardConfig = this.menuBtnService.getCardConfig('pelajar-dashboard')
+
+    this.menuConfig2 = this.menuBtnService.getMenuButtonConfig('kakitangan-dashboard')
+    this.cardConfig2 = this.menuBtnService.getCardConfig('kakitangan-dashboard')
   }
 
   loadTableHeader() {
     this.tableHeader = this.tableHeaderService.getTableHeader('main-menu');
   }
 
-  async loadData() {
-    await this.loadTableData();
-    await this.loadCardData();
+  async ionViewWillEnter() {
+    await this.loadBySegment();
+  }
 
-    this.isLoading = false
+  async onSegmentChange() {
+    await this.loadBySegment();
+  }
+
+  private async loadBySegment() {
+    this.isLoading = true;
+
+    try {
+      switch (this.segmentValue) {
+        case 'pelajar':
+          await Promise.all([
+            this.loadTableData(),
+            this.loadCardData()
+          ]);
+          break;
+        case 'kakitangan':
+          await Promise.all([
+            this.loadCardDataStaff(),
+            this.loadTableData()
+          ]);
+          break;
+      }
+    } finally {
+      this.isLoading = false; // ALWAYS runs
+    }
   }
 
   async loadCardData() {
-    try {
-      const res: any = await firstValueFrom(this.apiService.getCardValue());
+    const res: any = await firstValueFrom(this.apiService.getCardValue());
 
-      this.cardConfig[0].count = res.return_value_set_1.bilanganBayaran;
-      this.cardConfig[1].count = res.return_value_set_1.bilanganResitDijana;
-      this.cardConfig[2].count = res.return_value_set_1.jumlahBayaran;
-    } catch {
-      this.alertService.apiErrorAlert();
-    }
+    const data = res.return_value_set_1;
+
+    this.cardConfig = [
+      { ...this.cardConfig[0], count: data.bilanganBayaran },
+      { ...this.cardConfig[1], count: data.bilanganResitDijana },
+      { ...this.cardConfig[2], count: data.jumlahBayaran }
+    ];
   }
 
   async loadTableData() {
-    try {
-      const param = {
-        page: this.paging.currentPage,
-        record: this.paging.record
-      };
+    const param = {
+      page: this.paging.currentPage,
+      record: this.paging.record
+    };
 
-      const res: any = await firstValueFrom(this.apiService.getPaymentDetails(param));
+    const res: any = await firstValueFrom(this.apiService.getPaymentDetails(param));
 
-      this.tableData = res.return_value_set_1.map((item: any) => {
-        const total = item.detailsBayaran.reduce(
-          (acc: number, curr: any) => acc + (curr.jumlah || 0),
-          0
-        );
-        return { ...item, total };
-      });
-
-      this.paging.totalPages = res.total_pages;
-    } catch {
-      this.alertService.apiErrorAlert();
-    }
+    this.tableData = res.return_value_set_1;
+    this.paging.totalPages = res.total_pages;
   }
 
+  async loadCardDataStaff() {
+
+    try {
+      const res: any = await firstValueFrom(this.apiService.getCardValueStaff());
+      const data = res.return_value_set_1;
+
+      this.cardConfig2 = [
+        { ...this.cardConfig2[0], count: data.bilanganStaff },
+        { ...this.cardConfig2[1], count: data.bilanganPayslip },
+      ]
+    } catch (err) {
+      this.alertService.apiErrorAlert()
+    }
+
+  }
 
   onClickBtn(url: string) {
     if (url.length < 1) {
@@ -118,20 +135,5 @@ export class MenuUtamaPage {
       return
     }
     this.router.navigate([url]);
-  }
-
-  onPageChange(page: number) {
-    this.paging.currentPage = page;
-    this.loadTableData();
-  }
-
-  onRecordChange(record: number) {
-    this.paging.record = record;
-    this.paging.currentPage = 1;
-    this.loadTableData();
-  }
-
-  private resetPaging() {
-    this.paging.currentPage = 1;
   }
 }
