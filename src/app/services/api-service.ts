@@ -54,9 +54,29 @@ export class ApiService {
     return this.http.post(url, data);
   }
 
+  postUpdateStudent(data: any, id: any): Observable<any> {
+    const url = this.apiUrl + 'api/postUpdateStudent/' + id;
+    return this.http.post(url, data);
+  }
+
+  postDeleteStudent(id: any): Observable<any> {
+    const url = this.apiUrl + 'api/postDeleteStudent/' + id;
+    return this.http.post(url, {});
+  }
+
   postAddStaff(data: any): Observable<any> {
     const url = this.apiUrl + 'api/postAddStaff';
     return this.http.post(url, data);
+  }
+
+  postUpdateStaff(data: any, id: any): Observable<any> {
+    const url = this.apiUrl + 'api/postUpdateStaff/' + id;
+    return this.http.post(url, data);
+  }
+
+  postDeleteStaff(id: any): Observable<any> {
+    const url = this.apiUrl + 'api/postDeleteStaff/' + id;
+    return this.http.post(url, {});
   }
 
   getStaff(data: any): Observable<any> {

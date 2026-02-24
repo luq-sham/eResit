@@ -1,7 +1,7 @@
 <form [formGroup]="form">
   <ion-row>
     <ng-container *ngFor="let formItem of formConfig">
-      <ion-col [size]="formItem?.size || 12">
+      <ion-col [sizeMd]="formItem?.size || 12" [size]="12">
         <ion-item lines="none" class="input-item mt-10">
           <ion-icon [name]="formItem.icon" slot="start"></ion-icon>
           <ion-label position="stacked">{{formItem.label}}</ion-label>

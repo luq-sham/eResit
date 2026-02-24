@@ -1,6 +1,6 @@
 <ion-header class="ion-no-border">
   <ion-toolbar color="main">
-    <ion-title class="ion-text-center">Maklumat Pelajar</ion-title>
+    <ion-title class="ion-text-center">{{isEdit?'Kemaskini Maklumat Pelajar':'Maklumat Pelajar'}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -23,13 +23,18 @@
 </ion-content>
 
 <ion-footer class="ion-no-border">
-  <ion-toolbar>
+  <ion-toolbar class="px-12">
+    <ion-buttons slot="start" *ngIf="isEdit">
+      <ion-button fill="clear" color="danger" (click)="onDelete(dataEdit)">
+        Hapus
+      </ion-button>
+    </ion-buttons>
     <ion-buttons slot="end">
       <ion-button color="medium" (click)="onSimpan(false)">
         Tutup
       </ion-button>
       <ion-button color="secondary" fill="solid" class="px-4" (click)="onSimpan(true)">
-        Simpan Maklumat
+        {{isEdit?'Kemaskini Maklumat':'Simpan Maklumat'}}
       </ion-button>
     </ion-buttons>
   </ion-toolbar>

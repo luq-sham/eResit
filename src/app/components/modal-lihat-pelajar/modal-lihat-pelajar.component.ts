@@ -6,6 +6,7 @@ import { ApiService } from 'src/app/services/api-service';
 import { LoadingService } from 'src/app/services/loading-service';
 import { ValidationService } from '../error-message/service/validation-service';
 import { FormConfig } from '../dynamic-form/services/form-config';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-modal-lihat-pelajar',
@@ -19,6 +20,9 @@ export class ModalLihatPelajarComponent implements OnInit {
   formConfig: any
   isSubmitted = false
   validations: any
+
+  isEdit: any
+  dataEdit: any
 
   constructor(
     private apiService: ApiService,
@@ -46,6 +50,17 @@ export class ModalLihatPelajarComponent implements OnInit {
 
     this.validations = this.validationService.validations('tambah-pelajar')
     this.formConfig = this.formConfigService.getFormConfig('tambah-pelajar')
+
+    if (this.isEdit) {
+      this.form.patchValue({
+        namaPelajar: this.dataEdit.namaPelajar,
+        noKP: this.dataEdit.noKP,
+        kelas: this.dataEdit.kelas,
+        namaBapa: this.dataEdit.namaBapa,
+        namaIbu: this.dataEdit.namaIbu,
+        alamat: this.dataEdit.alamat
+      })
+    }
   }
 
   async onSimpan(isSimpan: any) {
@@ -57,31 +72,57 @@ export class ModalLihatPelajarComponent implements OnInit {
     this.isSubmitted = true
 
     if (this.form.valid) {
-      const res = await this.alertService.confirmAlert("Perhatian", "Adakah anda pasti untuk simpan maklumat ini?", "YA", "TIDAK", "warning")
+      let msg = "Adakah anda pasti untuk " + (this.isEdit ? 'kemaskini' : 'simpan') + " maklumat ini"
+      const res = await this.alertService.confirmAlert("Perhatian", msg, "YA", "TIDAK", "warning")
       if (res) {
+        const formValues = this.form.getRawValue();
         const param = {
-          ...this.form.getRawValue(),
-          namaPelajar: this.form.value.namaPelajar?.toUpperCase(),
-          kelas: this.form.value.kelas?.toUpperCase(),
-          namaBapa: this.form.value.namaBapa?.toUpperCase(),
-          namaIbu: this.form.value.namaIbu?.toUpperCase()
+          ...formValues,
+          namaPelajar: formValues.namaPelajar?.toUpperCase(),
+          kelas: formValues.kelas?.toUpperCase(),
+          namaBapa: formValues.namaBapa?.toUpperCase(),
+          namaIbu: formValues.namaIbu?.toUpperCase(),
         };
 
-        await this.loadingService.showDefaultMessage()
-        this.apiService.postAddStudent(param).subscribe({
+        await this.loadingService.showDefaultMessage();
+
+        const request = this.isEdit
+          ? this.apiService.postUpdateStudent(param, this.dataEdit.id)
+          : this.apiService.postAddStudent(param);
+
+        request.subscribe({
           next: (res) => {
             this.modalCtrl.dismiss(true);
-            this.loadingService.dismiss()
+            this.loadingService.dismiss();
           },
           error: (err) => {
-            console.log(err);
-            this.loadingService.dismiss()
+            console.error(err);
+            this.loadingService.dismiss();
           }
-        })
+        });
       }
     } else {
       this.alertService.warningAlert('Perhatian', 'Sia isi/semak semua maklumat yang diminta', 'Tutup')
     }
 
+  }
+
+  async onDelete(item: any) {
+    const msg = 'Adakah anda pasti untuk menghapuskan maklumat pelajar ini?<br><small>Tindakan ini tidak boleh dibatalkan selepas diteruskan.</small>';
+    const confirmed = await this.alertService.confirmAlert('Perhatian', msg, 'Ya, Teruskan', 'Batal', 'danger');
+
+    if (confirmed) {
+      await this.loadingService.showDefaultMessage();
+      try {
+        await firstValueFrom(this.apiService.postDeleteStudent(item.id));
+        this.alertService.successAlert('Berjaya', 'Maklumat pelajar berjaya dihapuskan');
+        this.modalCtrl.dismiss(true,'Delete')
+      } catch (err) {
+        console.error(err);
+        this.alertService.apiErrorAlert();
+      } finally {
+        this.loadingService.dismiss();
+      }
+    }
   }
 }

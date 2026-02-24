@@ -26,12 +26,20 @@
           <ion-card class="card-student m-0">
 
             <div class="card-header">
-              <div class="avatar-initial">
-                {{ item.namaKakitangan.charAt(0) }}
+              <div class="header-main">
+                <div class="avatar-initial">
+                  {{ item.namaKakitangan.charAt(0) }}
+                </div>
+                <div class="header-text">
+                  <span class="student-name">{{ item.namaKakitangan }}</span>
+                  <span class="badge-student">{{item.noKP}}</span>
+                </div>
               </div>
-              <div class="header-text">
-                <span class="student-name">{{ item.namaKakitangan }}</span>
-                <span class="badge-student">{{item.noKP}}</span>
+
+              <div class="header-actions">
+                <ion-button fill="clear" color="primary" (click)="onEdit(item)" title="Kemaskini">
+                  <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+                </ion-button>
               </div>
             </div>
 

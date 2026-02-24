@@ -26,6 +26,9 @@ export class ModalTambahKakitanganComponent implements OnInit {
   validations: any
   submitted: any = false
 
+  isEdit: any
+  dataEdit: any
+
 
   constructor(
     private modalCtrl: ModalController,
@@ -44,7 +47,7 @@ export class ModalTambahKakitanganComponent implements OnInit {
   initForm() {
     this.form = this.fb.group({
       namaKakitangan: ['', Validators.required],
-      noKP: ['', [Validators.required, Validators.pattern(/^[0-9]*$/), Validators.minLength(12), Validators.maxLength(12)]],
+      noKP: ['', [Validators.required]],
       noTel: ['', Validators.required],
       emel: ['', [Validators.required, Validators.email]],
       alamat: ['', Validators.required],
@@ -53,6 +56,15 @@ export class ModalTambahKakitanganComponent implements OnInit {
     this.validations = this.validationService.validations('tambah-kakitangan')
     this.formConfig = this.formConfigService.getFormConfig('tambah-kakitangan')
 
+    if (this.isEdit) {
+      this.form.patchValue({
+        namaKakitangan: this.dataEdit.namaKakitangan,
+        noKP: this.dataEdit.noKP,
+        noTel: this.dataEdit.noTel,
+        emel: this.dataEdit.emel,
+        alamat: this.dataEdit.alamat
+      })
+    }
   }
 
   async onSimpan(isSimpan: any) {
@@ -63,7 +75,8 @@ export class ModalTambahKakitanganComponent implements OnInit {
     this.submitted = true
 
     if (this.form.valid) {
-      const res = await this.alertService.confirmAlert('Perhatian', 'Adakah anda pasti untuk menyimpan maklumat ini?', 'Ya', 'Tidak', 'warning')
+      let msg = "Adakah anda pasti untuk " + (this.isEdit ? 'kemaskini' : 'simpan') + " maklumat ini"
+      const res = await this.alertService.confirmAlert('Perhatian', msg, 'Ya', 'Tidak', 'warning')
 
       if (res) {
         let param = {
@@ -71,23 +84,44 @@ export class ModalTambahKakitanganComponent implements OnInit {
           namaKakitangan: this.form.value.namaKakitangan.toUpperCase()
         }
 
-        await this.loadingService.showDefaultMessage()
-        this.apiService.postAddStaff(param).subscribe({
-          next: async (res) => {
-            await this.loadingService.dismiss()
-            await this.modalCtrl.dismiss(true)
+        await this.loadingService.showDefaultMessage();
 
+        const request = this.isEdit
+          ? this.apiService.postUpdateStaff(param, this.dataEdit.id)
+          : this.apiService.postAddStaff(param);
+
+        request.subscribe({
+          next: (res) => {
+            this.modalCtrl.dismiss(true, this.isEdit);
+            this.loadingService.dismiss();
           },
-          error: async (err) => {
-            await this.loadingService.dismiss()
-            this.alertService.apiErrorAlert()
+          error: (err) => {
+            console.error(err);
+            this.loadingService.dismiss();
           }
-        })
+        });
       }
     } else {
       this.alertService.warningAlert('Perhatian', 'Sila isi/semak semua maklumat yang diminta')
     }
+  }
 
-
+  async onDelete(item: any) {
+    let msg = 'Adakah anda pasti untuk menghapuskan maklumat kakitangan ini?<br><small>Tindakan ini tidak boleh dibatalkan selepas diteruskan.</small>'
+    const res = await this.alertService.confirmAlert('Perhatian', msg, 'Ya, Teruskan', 'Batal', 'danger')
+    if (res) {
+      await this.loadingService.showDefaultMessage()
+      this.apiService.postDeleteStaff(item.id).subscribe({
+        next: (res) => {
+          this.alertService.successAlert('Berjaya', 'Maklumat kakitangan berjaya dihapuskan')
+          this.modalCtrl.dismiss(true);
+          this.loadingService.dismiss();
+        },
+        error: (err) => {
+          console.error(err);
+          this.loadingService.dismiss();
+        }
+      })
+    }
   }
 }

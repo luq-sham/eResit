@@ -24,7 +24,7 @@ export class SenaraiKakitanganPage implements OnInit {
   staffData: any[] = []
 
   constructor(
-    private ModalCtrl: ModalController,
+    private modalCtrl: ModalController,
     private alertService: AlertService,
     private apiService: ApiService,
     private loadingService: LoadingService
@@ -61,7 +61,7 @@ export class SenaraiKakitanganPage implements OnInit {
   }
 
   async onTambah() {
-    const modal = await this.ModalCtrl.create({
+    const modal = await this.modalCtrl.create({
       component: ModalTambahKakitanganComponent,
       cssClass: 'lihat-pelajar-modal'
     })
@@ -76,4 +76,24 @@ export class SenaraiKakitanganPage implements OnInit {
     }
   }
 
+  async onEdit(item: any) {
+    const modal = await this.modalCtrl.create({
+      component: ModalTambahKakitanganComponent,
+      componentProps: {
+        dataEdit: item,
+        isEdit: true
+      },
+      cssClass: 'lihat-pelajar-modal'
+    })
+
+    await modal.present()
+    const { data, role } = await modal.onDidDismiss()
+
+    if (data) {
+      if (role) {
+        this.alertService.successAlert('Berjaya', 'Maklumat kakitangan berjaya ' + (role ? 'dikemaskini' : 'ditambah'))
+      }
+      this.initData()
+    }
+  }
 }

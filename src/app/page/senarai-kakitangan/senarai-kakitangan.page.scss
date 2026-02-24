@@ -21,10 +21,31 @@
 .card-header {
     display: flex;
     align-items: center;
-    padding: 14px;
-    background: #f4f4f4;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: #f8f9fa;
     border-bottom: 1px solid #eeeeee;
-    /* Border radius handled by card overflow */
+}
+
+.header-main {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    flex: 1;
+}
+
+.header-actions {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.header-actions ion-button {
+    --padding-start: 8px;
+    --padding-end: 8px;
+    height: 36px;
+    width: 36px;
+    margin: 0;
 }
 
 .avatar-initial {
@@ -52,15 +73,9 @@
 
 .student-name {
     margin-bottom: 4px;
-    font-size: 1.1rem;
-    font-weight: 700;
+    font-size: 14px;
     color: #333;
-    // white-space: nowrap;
-    /* Keeps name on one line */
-    // overflow: hidden;
-    /* Hides overflow */
-    // text-overflow: ellipsis;
-    /* Adds "..." if name is too long */
+    font-family: 'Roboto-SemiBold';
 }
 
 .badge-student {
