@@ -1,7 +1,7 @@
 :root {
     // Form tokens: one cool-gray family tinted toward the brand navy (--ion-color-main).
-    --field-border: #b9c0cc;
-    --field-border-hover: #8a93a3;
+    --field-border: #8a93a3;
+    --field-border-hover: #5a6372;
     --field-border-focus: var(--ion-color-main);
     --field-ring: rgba(var(--ion-color-main-rgb), 0.18);
     --field-readonly-bg: #f1f3f6;
@@ -68,7 +68,7 @@
             background-color 150ms ease;
 
         --color: var(--ion-color-dark) !important;
-        --placeholder-color: #6b7280;
+        --placeholder-color: #636b78;
         --placeholder-opacity: 1;
 
         // Ionic's own underline is replaced by the border + ring below.

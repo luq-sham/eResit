@@ -13,3 +13,29 @@
         margin-top: 1px;
     }
 }
+
+// Errors ease in so the layout shift reads as feedback rather than a jump.
+@media (prefers-reduced-motion: no-preference) {
+    .field-error {
+        animation: error-in 160ms var(--ease-out-strong);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .field-error {
+        animation: error-fade 160ms ease;
+    }
+}
+
+@keyframes error-in {
+    from {
+        opacity: 0;
+        transform: translateY(-2px);
+    }
+}
+
+@keyframes error-fade {
+    from {
+        opacity: 0;
+    }
+}
