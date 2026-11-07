@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { AlertService } from '../alert-modal/service/alert-service';
@@ -6,6 +6,7 @@ import { ApiService } from 'src/app/services/api-service';
 import { LoadingService } from 'src/app/services/loading-service';
 import { ValidationService } from '../error-message/service/validation-service';
 import { FormConfig } from '../dynamic-form/services/form-config';
+import { focusFirstInvalid } from '../dynamic-form/form-helpers';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
@@ -19,10 +20,14 @@ export class ModalLihatPelajarComponent implements OnInit {
   form!: FormGroup
   formConfig: any
   isSubmitted = false
+  saving = false
   validations: any
 
   isEdit: any
   dataEdit: any
+  // Set by Ionic's ModalController to the hosting <ion-modal>.
+  modal?: HTMLIonModalElement
+  private el: ElementRef<HTMLElement> = inject(ElementRef)
 
   constructor(
     private apiService: ApiService,
@@ -36,6 +41,7 @@ export class ModalLihatPelajarComponent implements OnInit {
 
   ngOnInit() {
     this.initForm()
+    this.alertService.guardUnsavedChanges(this.modal, this.form)
   }
 
   initForm() {
@@ -65,14 +71,15 @@ export class ModalLihatPelajarComponent implements OnInit {
 
   async onSimpan(isSimpan: any) {
     if (!isSimpan) {
-      this.modalCtrl.dismiss();
+      this.modalCtrl.dismiss(undefined, 'cancel');
       return
     }
+    if (this.saving) return
 
     this.isSubmitted = true
 
     if (this.form.valid) {
-      let msg = "Adakah anda pasti untuk " + (this.isEdit ? 'kemaskini' : 'simpan') + " maklumat ini"
+      let msg = "Adakah anda pasti untuk " + (this.isEdit ? 'kemaskini' : 'simpan') + " maklumat ini?"
       const res = await this.alertService.confirmAlert("Perhatian", msg, "YA", "TIDAK", "warning")
       if (res) {
         const formValues = this.form.getRawValue();
@@ -84,6 +91,7 @@ export class ModalLihatPelajarComponent implements OnInit {
           namaIbu: formValues.namaIbu?.toUpperCase(),
         };
 
+        this.saving = true
         await this.loadingService.showDefaultMessage();
 
         const request = this.isEdit
@@ -97,21 +105,25 @@ export class ModalLihatPelajarComponent implements OnInit {
           },
           error: (err) => {
             console.error(err);
+            this.saving = false
             this.loadingService.dismiss();
+            this.alertService.apiErrorAlert();
           }
         });
       }
     } else {
-      this.alertService.warningAlert('Perhatian', 'Sia isi/semak semua maklumat yang diminta', 'Tutup')
+      this.form.markAllAsTouched()
+      focusFirstInvalid(this.el.nativeElement)
     }
 
   }
 
   async onDelete(item: any) {
     const msg = 'Adakah anda pasti untuk menghapuskan maklumat pelajar ini?<br><small>Tindakan ini tidak boleh dibatalkan selepas diteruskan.</small>';
-    const confirmed = await this.alertService.confirmAlert('Perhatian', msg, 'Ya, Teruskan', 'Batal', 'danger');
+    const confirmed = await this.alertService.confirmAlert('Hapus pelajar?', msg, 'Ya, Hapus', 'Batal', 'danger');
 
     if (confirmed) {
+      this.saving = true
       await this.loadingService.showDefaultMessage();
       try {
         await firstValueFrom(this.apiService.postDeleteStudent(item.id));
@@ -119,6 +131,7 @@ export class ModalLihatPelajarComponent implements OnInit {
         this.modalCtrl.dismiss(true,'Delete')
       } catch (err) {
         console.error(err);
+        this.saving = false
         this.alertService.apiErrorAlert();
       } finally {
         this.loadingService.dismiss();

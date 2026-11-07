@@ -85,7 +85,9 @@ export class JanaResitPage implements OnInit {
   }
 
   // -------------------- SEARCH --------------------
-  onSearch() {
+  onSearch(item: { category: any, searchText: string }) {
+    this.category = item.category
+    this.searchText = item.searchText
     this.isLoading = true
     this.tablePaging.currentPage = 1;
     this.initData()
@@ -100,7 +102,6 @@ export class JanaResitPage implements OnInit {
     const modal = await this.modalCtrl.create({
       component: ModalLihatPembayaranComponent,
       componentProps: { data: item },
-      backdropDismiss: false,
       cssClass: 'lihat-pembayaran-modal'
     })
 

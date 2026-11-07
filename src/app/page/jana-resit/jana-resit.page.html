@@ -8,32 +8,11 @@
     </ion-grid>
 
     <ion-grid fixed>
-      <ion-row class="input-form-row ion-align-items-center ion-padding-horizontal"
-        style="background: #f4f5f8; border-radius: 12px;">
-        <!-- Category Select -->
-        <ion-col size="12" size-md="3">
-          <ion-select [(ngModel)]="category" interface="popover" class="w-100" labelPlacement="stacked">
-            <ion-select-option [value]="1">Nama Pelajar</ion-select-option>
-            <ion-select-option [value]="2">Kelas</ion-select-option>
-          </ion-select>
-        </ion-col>
-
-        <!-- Search Input -->
-        <ion-col size="12" size-md="7">
-          <ion-input [(ngModel)]="searchText" placeholder="Carian..." clear-input (keyup.enter)="onSearch()"
-            labelPlacement="stacked">
-            <ion-icon slot="start" name="search-outline" color="medium"></ion-icon>
-          </ion-input>
-        </ion-col>
-
-        <!-- Search Button -->
-        <ion-col size="12" size-md="2">
-          <ion-button expand="block" color="tertiary" (click)="onSearch()" style="--border-radius: 10px;">
-            <ion-icon name="search" class=""></ion-icon>
-          </ion-button>
+      <ion-row>
+        <ion-col>
+          <app-search-bar (onSearchEvent)="onSearch($event)"></app-search-bar>
         </ion-col>
       </ion-row>
-
 
       <ion-row>
         <ion-col>

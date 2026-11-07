@@ -98,7 +98,7 @@ export class ModalPilihPelajarComponent implements OnInit {
 
   async onSimpan(isSimpan: any) {
     if (!isSimpan) {
-      await this.modalCtrl.dismiss()
+      await this.modalCtrl.dismiss(undefined, 'cancel')
       return
     }
 

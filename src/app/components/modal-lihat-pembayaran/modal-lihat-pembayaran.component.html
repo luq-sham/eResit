@@ -1,16 +1,20 @@
-<ion-content color="light">
-  <ion-grid class="p-18">
-    <ion-row class="ion-justify-content-center">
-      <ion-col sizeMd="8" size="12">
+<ion-header class="modal-header ion-no-border">
+  <ion-toolbar color="main">
+    <ion-title>Ringkasan Bayaran</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onTutup()" aria-label="Tutup">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 
-        <div class="ion-text-center ion-margin-bottom">
-          <ion-text color="dark" class="fw-bold h2-fs">
-            Ringkasan Bayaran
-          </ion-text>
-          <ion-text color="medium">
-            <p class="fs-small">Sila semak butiran di bawah</p>
-          </ion-text>
-        </div>
+<ion-content color="light">
+  <ion-grid class="summary-grid">
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12">
+
+        <p class="modal-intro ion-text-center mb-12">Sila semak butiran di bawah{{isLihat ? '.' : ' sebelum menjana resit.'}}</p>
 
         <ion-card class="receipt-card">
 
@@ -61,7 +65,7 @@
           <div class="total-section">
             <div class="dashed-divider mb-12"></div>
             <div class="item-row total-row">
-              <span class="total-label">JUMLAH BAYARAN</span>
+              <span class="total-label">Jumlah Bayaran</span>
               <span class="total-amount">
                 {{ total | currency:'RM ' }}
               </span>
@@ -73,15 +77,15 @@
       </ion-col>
     </ion-row>
 
-    <ion-row *ngIf="isLihat && data.generated_receipt" class="ion-justify-content-center">
-      <ion-col sizeMd="8" size="12" class="ion-text-center">
+    <ion-row *ngIf="isLihat && data.generated_receipt" class="ion-justify-content-center mt-12">
+      <ion-col size="12">
         <ion-card class="receipt-card">
           <div class="card-section">
             <ion-row>
               <ion-col size="12">
                 <p class="label-muted mb-1">No. Resit</p>
                 <div class="info-badge">
-                  <ion-icon name="information-circle-outline"></ion-icon>
+                  <ion-icon name="document-text-outline" aria-hidden="true"></ion-icon>
                   <span>{{ data?.noReceipt}}</span>
                 </div>
               </ion-col>
@@ -91,7 +95,7 @@
               <ion-col size="12">
                 <p class="label-muted mb-1">Tarikh Resit Dijana</p>
                 <div class="info-badge">
-                  <ion-icon name="calendar-outline"></ion-icon>
+                  <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
                   <span>{{data.receiptDate | date:'dd/MM/yyyy'}}</span>
                 </div>
               </ion-col>
@@ -99,30 +103,29 @@
 
           </div>
         </ion-card>
-        <!-- <ion-text class="body-fs">Tarikh Resit Dijana: {{data.receiptDate | date:'dd/MM/yyyy'}}</ion-text> -->
       </ion-col>
     </ion-row>
 
-    <ion-row class="ion-justify-content-center mt-16">
-      <ion-col size="8" *ngIf="!isLihat">
-        <ion-button expand="block" color="tertiary" (click)="onJana()">
-          <ion-text class="fw-semibold">Jana Resit</ion-text>
-        </ion-button>
-
-        <ion-button fill="outline" expand="block" color="secondary" (click)="onTutup()">
-          <ion-text class="fw-semibold">Tutup</ion-text>
-        </ion-button>
-      </ion-col>
-
-      <ion-col size="8" *ngIf="isLihat">
-        <ion-button expand="block" color="tertiary" (click)="onLihatResit()" *ngIf="data.generated_receipt">
-          <ion-text class="fw-semibold">Lihat Resit</ion-text>
-        </ion-button>
-
-        <ion-button fill="outline" expand="block" color="secondary" (click)="onTutup()">
-          <ion-text class="fw-semibold">Tutup</ion-text>
-        </ion-button>
-      </ion-col>
-    </ion-row>
   </ion-grid>
 </ion-content>
+
+<ion-footer class="modal-footer ion-no-border">
+  <ion-toolbar>
+    <div class="modal-actions">
+      <span class="spacer"></span>
+      <ion-button fill="outline" color="medium" (click)="onTutup()" [disabled]="generating">Tutup</ion-button>
+
+      <ion-button *ngIf="!isLihat" class="primary-action" color="tertiary" (click)="onJana()" [disabled]="generating">
+        <ion-spinner *ngIf="generating" slot="start" name="crescent"></ion-spinner>
+        <ion-icon *ngIf="!generating" slot="start" name="receipt-outline" aria-hidden="true"></ion-icon>
+        {{generating ? 'Menjana...' : 'Jana Resit'}}
+      </ion-button>
+
+      <ion-button *ngIf="isLihat && data.generated_receipt" class="primary-action" color="tertiary"
+        (click)="onLihatResit()">
+        <ion-icon slot="start" name="open-outline" aria-hidden="true"></ion-icon>
+        Lihat Resit
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>

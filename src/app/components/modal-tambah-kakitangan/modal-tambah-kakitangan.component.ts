@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, inject } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidationService } from '../error-message/service/validation-service';
 import { AlertService } from '../alert-modal/service/alert-service';
 import { FormConfig } from '../dynamic-form/services/form-config';
+import { focusFirstInvalid } from '../dynamic-form/form-helpers';
 import { ApiService } from 'src/app/services/api-service';
 import { LoadingService } from 'src/app/services/loading-service';
 
@@ -16,18 +17,16 @@ import { LoadingService } from 'src/app/services/loading-service';
 export class ModalTambahKakitanganComponent implements OnInit {
 
   form!: FormGroup
-  formConfig = [
-    { icon: 'person', label: 'Nama Penuh', type: 'text', formControl: 'namaKakitangan' },
-    { icon: 'id-card', label: 'No. kad Pengenalan', type: 'text', formControl: 'noKP' },
-    { icon: 'call', label: 'No Telefon', type: 'text', formControl: 'noTel', size: 6 },
-    { icon: 'mail', label: 'emel', type: 'text', formControl: 'emel', size: 6 },
-    { icon: 'location', label: 'Alamat', type: 'textarea', formControl: 'alamat' },
-  ]
+  formConfig: any[] = []
   validations: any
   submitted: any = false
+  saving = false
 
   isEdit: any
   dataEdit: any
+  // Set by Ionic's ModalController to the hosting <ion-modal>.
+  modal?: HTMLIonModalElement
+  private el: ElementRef<HTMLElement> = inject(ElementRef)
 
 
   constructor(
@@ -42,6 +41,7 @@ export class ModalTambahKakitanganComponent implements OnInit {
 
   ngOnInit() {
     this.initForm()
+    this.alertService.guardUnsavedChanges(this.modal, this.form)
   }
 
   initForm() {
@@ -69,13 +69,14 @@ export class ModalTambahKakitanganComponent implements OnInit {
 
   async onSimpan(isSimpan: any) {
     if (!isSimpan) {
-      this.modalCtrl.dismiss()
+      this.modalCtrl.dismiss(undefined, 'cancel')
       return
     }
+    if (this.saving) return
     this.submitted = true
 
     if (this.form.valid) {
-      let msg = "Adakah anda pasti untuk " + (this.isEdit ? 'kemaskini' : 'simpan') + " maklumat ini"
+      let msg = "Adakah anda pasti untuk " + (this.isEdit ? 'kemaskini' : 'simpan') + " maklumat ini?"
       const res = await this.alertService.confirmAlert('Perhatian', msg, 'Ya', 'Tidak', 'warning')
 
       if (res) {
@@ -84,6 +85,7 @@ export class ModalTambahKakitanganComponent implements OnInit {
           namaKakitangan: this.form.value.namaKakitangan.toUpperCase()
         }
 
+        this.saving = true
         await this.loadingService.showDefaultMessage();
 
         const request = this.isEdit
@@ -97,19 +99,23 @@ export class ModalTambahKakitanganComponent implements OnInit {
           },
           error: (err) => {
             console.error(err);
+            this.saving = false
             this.loadingService.dismiss();
+            this.alertService.apiErrorAlert();
           }
         });
       }
     } else {
-      this.alertService.warningAlert('Perhatian', 'Sila isi/semak semua maklumat yang diminta')
+      this.form.markAllAsTouched()
+      focusFirstInvalid(this.el.nativeElement)
     }
   }
 
   async onDelete(item: any) {
     let msg = 'Adakah anda pasti untuk menghapuskan maklumat kakitangan ini?<br><small>Tindakan ini tidak boleh dibatalkan selepas diteruskan.</small>'
-    const res = await this.alertService.confirmAlert('Perhatian', msg, 'Ya, Teruskan', 'Batal', 'danger')
+    const res = await this.alertService.confirmAlert('Hapus kakitangan?', msg, 'Ya, Hapus', 'Batal', 'danger')
     if (res) {
+      this.saving = true
       await this.loadingService.showDefaultMessage()
       this.apiService.postDeleteStaff(item.id).subscribe({
         next: (res) => {
@@ -119,7 +125,9 @@ export class ModalTambahKakitanganComponent implements OnInit {
         },
         error: (err) => {
           console.error(err);
+          this.saving = false
           this.loadingService.dismiss();
+          this.alertService.apiErrorAlert();
         }
       })
     }

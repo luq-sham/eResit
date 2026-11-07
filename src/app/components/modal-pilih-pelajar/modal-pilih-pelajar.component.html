@@ -1,42 +1,38 @@
-<ion-header class="ion-no-border">
+<ion-header class="modal-header ion-no-border">
   <ion-toolbar color="main">
-    <ion-title class="ion-text-center">{{title}}</ion-title>
+    <ion-title>{{title}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onSimpan(false)" aria-label="Tutup">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-margin ion-padding">
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <app-search-bar (onSearchEvent)="onSearch($event)" [categoryList]="categories"></app-search-bar>
-      </ion-col>
-    </ion-row>
+<ion-content class="ion-padding">
+  <app-search-bar (onSearchEvent)="onSearch($event)" [categoryList]="categories"></app-search-bar>
 
-    <ion-row>
-      <ion-col>
-        <div class="mb-8">
-          <ion-text style="font-size: 12px;color: gray;font-style: italic;">
-            Berikut senarai {{isKakitangan ? 'kakitangan':'pelajar'}} yang didaftar dalam sistem
-          </ion-text>
-        </div>
+  <p class="modal-intro picker-hint">
+    Pilih satu {{isKakitangan ? 'kakitangan' : 'pelajar'}} daripada senarai, kemudian tekan butang Pilih.
+  </p>
 
-        <app-table [tableHeader]="tableHeader" [isLoading]="isLoading" [tableData]="tableData" [showPaging]="false"
-          [showBilangan]="false" (radioChange)="onRadioChange($event)" [hasTableTitle]="false"></app-table>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <app-table [tableHeader]="tableHeader" [isLoading]="isLoading" [tableData]="tableData" [showPaging]="false"
+    [showBilangan]="false" (radioChange)="onRadioChange($event)" [hasTableTitle]="false"></app-table>
 </ion-content>
 
-<ion-footer class="ion-no-border">
+<ion-footer class="modal-footer ion-no-border">
   <ion-toolbar>
-    <ion-buttons slot="end">
-      <ion-button color="medium" (click)="onSimpan(false)">
-        Tutup
+    <div class="modal-actions">
+      <span class="selection" aria-live="polite">
+        <ng-container *ngIf="selectedData; else none">
+          Dipilih: <strong>{{selectedData?.namaPelajar || selectedData?.namaKakitangan}}</strong>
+        </ng-container>
+        <ng-template #none>Belum ada pilihan</ng-template>
+      </span>
+      <ion-button fill="outline" color="medium" (click)="onSimpan(false)">Batal</ion-button>
+      <ion-button class="primary-action" color="tertiary" (click)="onSimpan(true)" [disabled]="selectedData == null">
+        Pilih
       </ion-button>
-      <ion-button color="secondary" fill="solid" class="px-4" (click)="onSimpan(true)"
-        [disabled]="selectedData == null">
-        Simpan Maklumat
-      </ion-button>
-    </ion-buttons>
+    </div>
   </ion-toolbar>
 </ion-footer>

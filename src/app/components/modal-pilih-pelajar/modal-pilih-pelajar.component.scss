@@ -1,3 +1,25 @@
 ion-content {
-    --background: #fff !important;
+    --background: #fff;
+}
+
+.picker-hint {
+    margin: 14px 0 10px;
+}
+
+.selection {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 13px;
+    color: var(--field-hint);
+
+    strong {
+        color: var(--ion-color-dark);
+    }
+
+    @media (max-width: 575px) {
+        flex-basis: 100%;
+    }
 }

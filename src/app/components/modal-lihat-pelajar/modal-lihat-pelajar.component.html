@@ -1,41 +1,33 @@
-<ion-header class="ion-no-border">
+<ion-header class="modal-header ion-no-border">
   <ion-toolbar color="main">
-    <ion-title class="ion-text-center">{{isEdit?'Kemaskini Maklumat Pelajar':'Maklumat Pelajar'}}</ion-title>
+    <ion-title>{{isEdit ? 'Kemaskini Maklumat Pelajar' : 'Tambah Pelajar'}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onSimpan(false)" aria-label="Tutup">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding-vertical">
-  <ion-grid>
-    <ion-row>
-      <ion-col class="ion-text-center" size="12">
-        <ion-text class="body-fs" style="color: gray;">Sila isi semua maklumat dibawah</ion-text>
-      </ion-col>
-
-      <ion-col size="12">
-        <app-dynamic-form [form]="form" [formConfig]="formConfig" [validations]="validations"
-          [submitted]="isSubmitted"></app-dynamic-form>
-      </ion-col>
-    </ion-row>
-
-
-
-  </ion-grid>
+<ion-content class="ion-padding">
+  <p class="modal-intro">Medan bertanda <span class="text-danger">*</span> wajib diisi.</p>
+  <app-dynamic-form [form]="form" [formConfig]="formConfig" [validations]="validations" [submitted]="isSubmitted"
+    (enterSubmit)="onSimpan(true)"></app-dynamic-form>
 </ion-content>
 
-<ion-footer class="ion-no-border">
-  <ion-toolbar class="px-12">
-    <ion-buttons slot="start" *ngIf="isEdit">
-      <ion-button fill="clear" color="danger" (click)="onDelete(dataEdit)">
+<ion-footer class="modal-footer ion-no-border">
+  <ion-toolbar>
+    <div class="modal-actions">
+      <ion-button *ngIf="isEdit" fill="outline" color="danger" (click)="onDelete(dataEdit)" [disabled]="saving">
+        <ion-icon slot="start" name="trash-outline" aria-hidden="true"></ion-icon>
         Hapus
       </ion-button>
-    </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button color="medium" (click)="onSimpan(false)">
-        Tutup
+      <span class="spacer"></span>
+      <ion-button fill="outline" color="medium" (click)="onSimpan(false)" [disabled]="saving">Batal</ion-button>
+      <ion-button class="primary-action" color="tertiary" (click)="onSimpan(true)" [disabled]="saving">
+        <ion-spinner *ngIf="saving" slot="start" name="crescent"></ion-spinner>
+        {{saving ? 'Menyimpan...' : (isEdit ? 'Simpan Perubahan' : 'Tambah Pelajar')}}
       </ion-button>
-      <ion-button color="secondary" fill="solid" class="px-4" (click)="onSimpan(true)">
-        {{isEdit?'Kemaskini Maklumat':'Simpan Maklumat'}}
-      </ion-button>
-    </ion-buttons>
+    </div>
   </ion-toolbar>
 </ion-footer>

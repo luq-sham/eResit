@@ -16,6 +16,7 @@ export class ModalLihatPembayaranComponent implements OnInit {
   data: any
   isLihat: any
   total: any
+  generating = false
   constructor(
     private resitService: ResitService,
     private modalCtrl: ModalController,
@@ -31,11 +32,13 @@ export class ModalLihatPembayaranComponent implements OnInit {
   }
 
   async onJana() {
+    if (this.generating) return
     const res = await this.alertService.confirmAlert('Perhatian', 'Adakah anda pasti untuk menjana resit bagi pembayaran ini?', 'YA', 'TIDAK', 'warning')
 
     if (res) {
       // Open the tab while the confirm click still counts as a user gesture.
       const win = window.open('', '_blank')
+      this.generating = true
       this.loadingService.showDefaultMessage()
       this.apiService.postCreateReceipt({ paymentID: this.data?.id }).subscribe({
         next: async (res) => {
@@ -49,6 +52,7 @@ export class ModalLihatPembayaranComponent implements OnInit {
         },
         error: (err) => {
           win?.close()
+          this.generating = false
           this.loadingService.dismiss()
           console.log(err);
 
