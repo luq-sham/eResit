@@ -80,7 +80,7 @@
                   <ion-col sizeMd="8" size="12">
                     <ion-label class="form-label required">Butiran {{items.length > 1 ? i + 1 : ''}}</ion-label>
                     <ion-input class="form-control" formControlName="butiran" [attr.aria-label]="'Butiran ' + (i + 1)"
-                      placeholder="Contoh: Yuran PIBG"></ion-input>
+                      placeholder="Contoh: Yuran PIBG" autocapitalize="sentences" enterkeyhint="done"></ion-input>
 
                     <app-error-message *ngFor="let val of validations?.detailsBayaran.items.butiran"
                       [field]="item.get('butiran')" [error]="val.error" [message]="val.message"
@@ -89,7 +89,7 @@
 
                   <ion-col sizeMd="3" size="9">
                     <ion-label class="form-label required">Jumlah (RM)</ion-label>
-                    <ion-input class="form-control tabular-nums" type="number" inputmode="decimal" placeholder="0.00"
+                    <ion-input class="form-control tabular-nums" type="number" inputmode="decimal" enterkeyhint="done" placeholder="0.00"
                       formControlName="jumlah" [attr.aria-label]="'Jumlah butiran ' + (i + 1) + ' dalam RM'"></ion-input>
 
                     <app-error-message *ngFor="let val of validations?.detailsBayaran.items.jumlah"

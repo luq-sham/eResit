@@ -6,10 +6,12 @@
       <ion-input *ngIf="formItem.type !== 'textarea'" class="form-control" [type]="formItem.type"
         [formControlName]="formItem.formControl" [attr.aria-label]="formItem.label"
         [attr.inputmode]="formItem.inputmode || null" [autocomplete]="formItem.autocomplete || 'off'"
-        [placeholder]="formItem.placeholder || ''"></ion-input>
+        [placeholder]="formItem.placeholder || ''" [autocapitalize]="formItem.autocapitalize || 'off'"
+        enterkeyhint="done"></ion-input>
 
       <ion-textarea *ngIf="formItem.type === 'textarea'" class="form-control" rows="3" [autoGrow]="true"
-        [formControlName]="formItem.formControl" [attr.aria-label]="formItem.label"></ion-textarea>
+        [formControlName]="formItem.formControl" [attr.aria-label]="formItem.label"
+        [autocapitalize]="formItem.autocapitalize || 'none'"></ion-textarea>
 
       <span class="form-hint" *ngIf="formItem.hint">{{formItem.hint}}</span>
 

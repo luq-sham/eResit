@@ -121,7 +121,7 @@
               [formGroupName]="i">
               <ion-col sizeLg="8" size="12">
                 <ion-label class="form-label required">Butiran {{earningItems.length > 1 ? i + 1 : ''}}</ion-label>
-                <ion-input formControlName="butiran" class="form-control" placeholder="Contoh: Gaji pokok"
+                <ion-input formControlName="butiran" class="form-control" placeholder="Contoh: Gaji pokok" autocapitalize="sentences" enterkeyhint="done"
                   [attr.aria-label]="'Butiran pendapatan ' + (i + 1)"></ion-input>
 
                 <app-error-message *ngFor="let val of validations?.detailsBayaran.items.butiran"
@@ -131,7 +131,7 @@
 
               <ion-col sizeLg="3" size="9">
                 <ion-label class="form-label required">Jumlah (RM)</ion-label>
-                <ion-input type="number" inputmode="decimal" formControlName="jumlah" class="form-control tabular-nums"
+                <ion-input type="number" inputmode="decimal" enterkeyhint="done" formControlName="jumlah" class="form-control tabular-nums"
                   placeholder="0.00" [attr.aria-label]="'Jumlah pendapatan ' + (i + 1) + ' dalam RM'"></ion-input>
 
                 <app-error-message *ngFor="let val of validations?.detailsBayaran.items.jumlah"
@@ -160,7 +160,7 @@
               [formGroupName]="i">
               <ion-col sizeLg="8" size="12">
                 <ion-label class="form-label required">Butiran {{deductionItems.length > 1 ? i + 1 : ''}}</ion-label>
-                <ion-input formControlName="butiran" class="form-control" placeholder="Contoh: KWSP"
+                <ion-input formControlName="butiran" class="form-control" placeholder="Contoh: KWSP" autocapitalize="sentences" enterkeyhint="done"
                   [attr.aria-label]="'Butiran potongan ' + (i + 1)"></ion-input>
 
                 <app-error-message *ngFor="let val of validations?.detailsBayaran.items.butiran"
@@ -170,7 +170,7 @@
 
               <ion-col sizeLg="3" size="9">
                 <ion-label class="form-label required">Jumlah (RM)</ion-label>
-                <ion-input type="number" inputmode="decimal" formControlName="jumlah" class="form-control tabular-nums"
+                <ion-input type="number" inputmode="decimal" enterkeyhint="done" formControlName="jumlah" class="form-control tabular-nums"
                   placeholder="0.00" [attr.aria-label]="'Jumlah potongan ' + (i + 1) + ' dalam RM'"></ion-input>
 
                 <app-error-message *ngFor="let val of validations?.detailsBayaran.items.jumlah"
