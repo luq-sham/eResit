@@ -45,19 +45,28 @@ ion-modal.lihat-pelajar-modal {
     @media (min-width: 768px) {
         --border-radius: 16px;
         --box-shadow: 0 24px 48px rgba(16, 28, 48, 0.2);
+
+        // A centred panel never touches the notch or home indicator, so its toolbars and body
+        // shouldn't inherit the screen's safe-area insets (Ionic would pad them anyway).
+        --ion-safe-area-top: 0px;
+        --ion-safe-area-right: 0px;
+        --ion-safe-area-bottom: 0px;
+        --ion-safe-area-left: 0px;
     }
 }
 
 ion-modal.lihat-pelajar-modal {
     @media (min-width: 768px) {
         --width: min(720px, 92vw);
-        --height: min(760px, 88vh);
+        // dvh, not vh: on tablets vh is the height with browser chrome hidden, so a vh-sized panel
+        // can push its sticky action footer under the toolbar while the URL bar is showing.
+        --height: min(760px, 88dvh);
     }
 }
 
 ion-modal.lihat-pembayaran-modal {
     @media (min-width: 768px) {
         --width: min(600px, 92vw);
-        --height: min(820px, 90vh);
+        --height: min(820px, 90dvh); // dvh: see .lihat-pelajar-modal
     }
 }

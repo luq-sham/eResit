@@ -52,3 +52,17 @@ body {
 ion-content {
     --background: #e9eaef;
 }
+
+// Safe areas (viewport-fit=cover lets content run under the notch and home indicator).
+// Ionic pads its header/footer toolbars, but pages here have neither: the page header lives inside
+// ion-content, so page content needs the left/right (landscape notch) and bottom (home indicator)
+// insets itself. Modal headers/footers are toolbars and already padded; their body only needs left/right.
+ion-router-outlet > .ion-page > ion-content::part(scroll),
+ion-modal ion-content::part(scroll) {
+    padding-inline-start: calc(var(--padding-start) + var(--ion-safe-area-left, 0px));
+    padding-inline-end: calc(var(--padding-end) + var(--ion-safe-area-right, 0px));
+}
+
+ion-router-outlet > .ion-page > ion-content::part(scroll) {
+    padding-bottom: calc(var(--padding-bottom) + var(--keyboard-offset, 0px) + var(--offset-bottom, 0px) + var(--ion-safe-area-bottom, 0px));
+}
