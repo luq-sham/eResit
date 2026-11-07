@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
-import { AlertModalComponent } from '../alert-modal.component';
+import { AlertModalComponent, AlertType } from '../alert-modal.component';
 
-type AlertType = 'success' | 'warning' | 'danger';
+let alertSeq = 0;
 
 @Injectable({
   providedIn: 'root',
 })
 export class AlertService {
+  // A second confirm while one is open (double-click, repeated Enter) resolves as cancel,
+  // so one submit can never send two requests.
+  private confirmOpen = false;
+
   constructor(
     public alertCtrl: AlertController,
     private modalCtrl: ModalController
@@ -15,12 +19,14 @@ export class AlertService {
 
   // Esc and backdrop clicks dismiss without data, which callers read as "cancel".
   private async present(componentProps: Record<string, unknown>) {
+    // Unique ids per dialog so stacked alerts each announce their own title and message.
+    const idBase = `alert-modal-${++alertSeq}`;
     const alert = await this.modalCtrl.create({
       component: AlertModalComponent,
-      componentProps,
+      componentProps: { ...componentProps, idBase },
       backdropDismiss: true,
       cssClass: 'alert-modal auto-height',
-      htmlAttributes: { role: 'alertdialog', 'aria-labelledby': 'alert-modal-title', 'aria-describedby': 'alert-modal-message' }
+      htmlAttributes: { role: 'alertdialog', 'aria-labelledby': `${idBase}-title`, 'aria-describedby': `${idBase}-message` }
     });
 
     await alert.present();
@@ -45,8 +51,14 @@ export class AlertService {
   }
 
   async confirmAlert(header: string, message: string, confirmBtn: string = 'Ya', cancelBtn: string = 'Batal', alertType: AlertType = 'warning') {
-    const result = await this.present({ header, message, confirmBtn, cancelBtn, alertType, hasConfirm: true });
-    return result?.data === true;
+    if (this.confirmOpen) return false;
+    this.confirmOpen = true;
+    try {
+      const result = await this.present({ header, message, confirmBtn, cancelBtn, alertType, hasConfirm: true });
+      return result?.data === true;
+    } finally {
+      this.confirmOpen = false;
+    }
   }
 
   // Esc, backdrop click or Batal on an edited form asks before throwing the input away.

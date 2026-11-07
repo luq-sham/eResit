@@ -7,8 +7,8 @@
     </ng-container>
   </div>
 
-  <h2 class="alert-title" id="alert-modal-title">{{header || 'Perhatian'}}</h2>
-  <div class="alert-message" id="alert-modal-message" [innerHTML]="message"></div>
+  <h2 class="alert-title" [id]="idBase + '-title'">{{header || 'Perhatian'}}</h2>
+  <div class="alert-message" [id]="idBase + '-message'" [innerHTML]="message"></div>
 </div>
 
 <div class="alert-actions">

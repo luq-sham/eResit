@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, inject } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import * as moment from 'moment';
@@ -16,6 +16,8 @@ import { PayslipService } from './services/payslip-service';
   standalone: false
 })
 export class JanaSlipGajiPage implements OnInit {
+  // Ionic keeps cached pages in the DOM, so error lookups stay inside this page.
+  private el: ElementRef<HTMLElement> = inject(ElementRef);
   validations: any;
   form!: FormGroup;
   isSubmitted = false;
@@ -101,7 +103,7 @@ export class JanaSlipGajiPage implements OnInit {
     this.isSubmitted = true;
     if (this.form.invalid) {
       this.form.markAllAsTouched();
-      focusFirstInvalid();
+      focusFirstInvalid(this.el.nativeElement);
       return;
     }
 

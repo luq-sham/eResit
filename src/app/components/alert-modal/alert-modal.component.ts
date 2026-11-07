@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
+export type AlertType = 'success' | 'warning' | 'danger';
+
 @Component({
   selector: 'app-alert-modal',
   templateUrl: './alert-modal.component.html',
@@ -13,7 +15,8 @@ export class AlertModalComponent implements OnInit {
   @Input() message: any = '';
   @Input() confirmBtn: any;
   @Input() cancelBtn: any;
-  @Input() alertType: 'success' | 'warning' | 'danger' = 'warning';
+  @Input() alertType: AlertType = 'warning';
+  @Input() idBase = 'alert-modal';
   @Input() hasConfirm: any;
 
   constructor(

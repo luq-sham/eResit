@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import * as moment from 'moment';
@@ -16,6 +16,8 @@ import { LoadingService } from 'src/app/services/loading-service';
   standalone: false
 })
 export class RekodPembayaranPage implements OnInit {
+  // Ionic keeps cached pages in the DOM, so error lookups stay inside this page.
+  private el: ElementRef<HTMLElement> = inject(ElementRef);
 
   paymentForm!: FormGroup;
   minDate = moment().subtract(1, 'month').format('YYYY-MM-DD');
@@ -95,7 +97,7 @@ export class RekodPembayaranPage implements OnInit {
     if (!this.paymentForm.valid) {
       this.isSubmitted = true
       this.paymentForm.markAllAsTouched();
-      focusFirstInvalid();
+      focusFirstInvalid(this.el.nativeElement);
       return;
     }
 
@@ -116,7 +118,13 @@ export class RekodPembayaranPage implements OnInit {
         await this.loader.dismiss();
         // Primary action leaves the page; Tutup, Esc or the backdrop stay here.
         const back = await this.alert.confirmAlert('Berjaya', 'Maklumat pembayaran telah disimpan.', 'Kembali ke Menu Utama', 'Tutup', 'success');
-        if (back) window.location.href = '/menu-utama';
+        if (back) {
+          window.location.href = '/menu-utama';
+          return;
+        }
+        // Staying here starts a fresh record, so the saved one cannot be sent twice.
+        this.isSubmitted = false;
+        this.initForm();
       },
       error: async () => {
         this.saving = false

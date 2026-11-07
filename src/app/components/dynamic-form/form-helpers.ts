@@ -13,6 +13,8 @@ export function focusFirstInvalid(root: ParentNode = document) {
 
 // Enter submits from single-line inputs only; textareas keep Enter for new lines.
 export function isSubmitEnter(event: Event) {
+  // Enter that confirms an IME candidate is part of typing, not a submit.
+  if ((event as KeyboardEvent).isComposing) return false;
   const target = event.target as HTMLElement;
   if (target.closest('ion-textarea, textarea') || !target.closest('ion-input, input')) return false;
   event.preventDefault();
