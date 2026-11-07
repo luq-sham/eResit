@@ -25,7 +25,7 @@ export class ValidationService {
           ],
 
           jenisBayaran: [
-            { label: 'Jenis Bayaran', error: 'required', message: 'Sila pilih jenis bayaran' }
+            { label: 'Jenis Bayaran', error: 'required', message: 'Sila pilih kaedah pembayaran' }
           ],
           tarikhBayaran: [
             { label: 'Tarikh Bayaran', error: 'required', message: 'Sila pilih tarikh bayaran' }

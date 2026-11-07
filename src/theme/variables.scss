@@ -336,17 +336,31 @@ ion-back-button.ion-focused::part(native) {
         margin-bottom: 8px;
     }
 
-    // Trash button lines up with the inputs, not the labels.
+    // Trash button lines up with the inputs. Anchored to the top behind a label-sized spacer,
+    // so it stays put when error messages grow the row underneath.
     .remove-col {
         display: flex;
-        align-items: flex-end;
-        justify-content: center;
-        padding-bottom: 6px;
+        flex-direction: column;
+        align-items: center;
+
+        &::before {
+            content: "\00a0";
+            display: block;
+            font-family: 'Roboto-SemiBold';
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
 
         ion-button {
             margin: 0;
-            min-height: 44px;
+            height: 46px; // input height incl. its 1px borders, so the icon centres on the field
             min-width: 44px;
+
+            // Disabled (only one row left): neutral grey, so it doesn't read as part of an error.
+            &.button-disabled {
+                // color="danger" paints through --ion-color-base, so swap the base itself.
+                --ion-color-base: var(--ion-color-medium) !important;
+            }
         }
     }
 
