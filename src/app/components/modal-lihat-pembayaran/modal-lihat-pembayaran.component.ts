@@ -49,7 +49,7 @@ export class ModalLihatPembayaranComponent implements OnInit {
           this.loadingService.dismiss()
           console.log(err);
 
-          if (err.error.status_id == 2) {
+          if (err.status === 400) {
             this.alertService.dangerAlert('Perhatian', 'Resit untuk pembayaran ini telah dijana', 'Tutup')
           } else {
             this.alertService.apiErrorAlert()
