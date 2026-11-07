@@ -74,7 +74,9 @@
         // Ionic's own underline is replaced by the border + ring below.
         --highlight-color: none !important;
 
-        font-size: var(--body-font-size) !important;
+        // 16px minimum: iOS Safari zooms into any focused field below 16px and doesn't zoom back.
+        // (--body-font-size was never defined, so page forms inherited 14px.)
+        font-size: 16px !important;
         min-height: 44px !important;
 
         @media (hover: hover) and (pointer: fine) {
