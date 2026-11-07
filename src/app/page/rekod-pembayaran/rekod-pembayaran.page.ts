@@ -4,6 +4,7 @@ import { ModalController } from '@ionic/angular';
 import * as moment from 'moment';
 import { AlertService } from 'src/app/components/alert-modal/service/alert-service';
 import { ValidationService } from 'src/app/components/error-message/service/validation-service';
+import { focusFirstInvalid, isSubmitEnter } from 'src/app/components/dynamic-form/form-helpers';
 import { ModalPilihPelajarComponent } from 'src/app/components/modal-pilih-pelajar/modal-pilih-pelajar.component';
 import { ApiService } from 'src/app/services/api-service';
 import { LoadingService } from 'src/app/services/loading-service';
@@ -23,6 +24,7 @@ export class RekodPembayaranPage implements OnInit {
 
   validations: any
   isSubmitted = false
+  saving = false
 
   constructor(
     private fb: FormBuilder,
@@ -74,6 +76,14 @@ export class RekodPembayaranPage implements OnInit {
     this.items.removeAt(index);
   }
 
+  get hasStudent(): boolean {
+    return !!this.paymentForm.get('namaPelajar')?.value;
+  }
+
+  onEnter(event: Event) {
+    if (isSubmitEnter(event)) this.onSimpan();
+  }
+
   getTotal(): number {
     return this.items.controls.reduce(
       (total, item) => total + (+item.get('jumlah')?.value || 0), 0
@@ -81,9 +91,11 @@ export class RekodPembayaranPage implements OnInit {
   }
 
   async onSimpan(): Promise<void> {
+    if (this.saving) return;
     if (!this.paymentForm.valid) {
       this.isSubmitted = true
-      this.alert.warningAlert('Perhatian', 'Sila pastikan semua maklumat telah diisi dengan lengkap sebelum hantar.', 'Tutup');
+      this.paymentForm.markAllAsTouched();
+      focusFirstInvalid();
       return;
     }
 
@@ -95,17 +107,21 @@ export class RekodPembayaranPage implements OnInit {
     this.paymentForm.markAllAsTouched();
     const param = this.buildPayload();
 
+    this.saving = true
     await this.loader.showDefaultMessage();
 
     this.api.postAddPayments(param).subscribe({
       next: async () => {
+        this.saving = false
         await this.loader.dismiss();
-        const back = await this.alert.confirmAlert('Berjaya', 'Maklumat pembayaran telah disimpan', 'Tutup', 'Kembali ke Menu Utama', 'success');
-        if (!back) window.location.href = '/menu-utama';
+        // Primary action leaves the page; Tutup, Esc or the backdrop stay here.
+        const back = await this.alert.confirmAlert('Berjaya', 'Maklumat pembayaran telah disimpan.', 'Kembali ke Menu Utama', 'Tutup', 'success');
+        if (back) window.location.href = '/menu-utama';
       },
       error: async () => {
+        this.saving = false
         await this.loader.dismiss();
-        this.alert.apiErrorAlert;
+        this.alert.apiErrorAlert();
       }
     });
   }
@@ -133,9 +149,6 @@ export class RekodPembayaranPage implements OnInit {
     const { data } = await modal.onDidDismiss()
 
     if (data) {
-      console.log(data);
-
-      this.alert.successAlert('Berjaya', 'Maklumat pelajar berjaya dipilih', 'Tutup')
       this.paymentForm.get('namaPelajar')?.setValue(data.namaPelajar)
       this.paymentForm.get('kelas')?.setValue(data.kelas)
       this.paymentForm.get('noKP')?.setValue(data.noKP)

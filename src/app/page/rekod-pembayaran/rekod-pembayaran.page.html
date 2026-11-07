@@ -1,6 +1,6 @@
 <ion-content>
   <app-header [title]="'Rekod Pembayaran'" [showBackBtn]="true"></app-header>
-  <form [formGroup]="paymentForm">
+  <form [formGroup]="paymentForm" class="page-form" [class.was-submitted]="isSubmitted" (keydown.enter)="onEnter($event)" novalidate>
     <div class="main-container ion-padding">
       <ion-grid fixed>
         <app-header-title [title]="'Borang Maklumat Pembayaran'"
@@ -10,70 +10,66 @@
       <ion-grid fixed>
         <ion-card class="form-card">
           <ion-card-header>
-            <ion-row class="ion-align-items-center ion-no-padding">
-              <ion-col class="d-flex align-items-center" sizeMd="6" size="12">
-                <div class="icon-badge">
+            <div class="card-head">
+              <div class="d-flex align-items-center">
+                <div class="icon-badge" aria-hidden="true">
                   <ion-icon name="person-outline"></ion-icon>
                 </div>
                 <ion-card-title class="fw-bold">Maklumat Pelajar</ion-card-title>
-              </ion-col>
-              <ion-col class="ion-text-end" sizeMd="6" size="12">
-                <ion-button size="small" fill="outline" color="tertiary" (click)="onPilih()" class="add-btn">
-                  <ion-icon slot="start" name="person-add-outline"></ion-icon>
-                  Pilih Pelajar
-                </ion-button>
-              </ion-col>
-            </ion-row>
+              </div>
+              <ion-button fill="outline" color="tertiary" (click)="onPilih()" class="head-btn">
+                <ion-icon slot="start" [name]="hasStudent ? 'swap-horizontal-outline' : 'person-add-outline'"
+                  aria-hidden="true"></ion-icon>
+                {{hasStudent ? 'Tukar Pelajar' : 'Pilih Pelajar'}}
+              </ion-button>
+            </div>
           </ion-card-header>
 
           <ion-card-content>
             <ion-row class="input-form-row">
               <ion-col sizeLg="6" size="12">
                 <ion-label class="form-label required">Nama Pelajar</ion-label>
-                <ion-input class="form-control" formControlName="namaPelajar" readonly
-                  placeholder="Pilih pelajar menggunakan butang Pilih Pelajar"></ion-input>
+                <ion-input class="form-control" formControlName="namaPelajar" readonly aria-label="Nama Pelajar"
+                  placeholder="Belum dipilih"></ion-input>
 
                 <app-error-message *ngFor="let val of validations?.namaPelajar" [field]="paymentForm.get('namaPelajar')"
                   [error]="val.error" [message]="val.message" [submitted]="isSubmitted" [submitOnly]="true"></app-error-message>
               </ion-col>
 
-              <ion-col sizeLg="6" size="12">
+              <ion-col sizeLg="3" size="6">
                 <ion-label class="form-label required">Kelas</ion-label>
-                <ion-input class="form-control" formControlName="kelas" readonly
-                  placeholder="Pilih pelajar menggunakan butang Pilih Pelajar"></ion-input>
+                <ion-input class="form-control" formControlName="kelas" readonly aria-label="Kelas"
+                  placeholder="Belum dipilih"></ion-input>
 
-                <app-error-message *ngFor="let val of validations?.kelas" [field]="paymentForm.get('kelas')"
-                  [error]="val.error" [message]="val.message" [submitted]="isSubmitted" [submitOnly]="true"></app-error-message>
+                <app-error-message *ngIf="hasStudent" [field]="paymentForm.get('kelas')" error="required"
+                  [message]="validations?.kelas?.[0]?.message" [submitted]="isSubmitted" [submitOnly]="true"></app-error-message>
               </ion-col>
 
-              <ion-col sizeLg="6" size="12">
-                <ion-label class="form-label required">No KP / Passport</ion-label>
-                <ion-input class="form-control" formControlName="noKP" readonly
-                  placeholder="Pilih pelajar menggunakan butang Pilih Pelajar"></ion-input>
+              <ion-col sizeLg="3" size="6">
+                <ion-label class="form-label required">No. KP / Passport</ion-label>
+                <ion-input class="form-control" formControlName="noKP" readonly aria-label="No. KP / Passport"
+                  placeholder="Belum dipilih"></ion-input>
 
-                <app-error-message *ngFor="let val of validations?.noKP" [field]="paymentForm.get('noKP')"
-                  [error]="val.error" [message]="val.message" [submitted]="isSubmitted" [submitOnly]="true"></app-error-message>
+                <ng-container *ngIf="hasStudent">
+                  <app-error-message *ngFor="let val of validations?.noKP" [field]="paymentForm.get('noKP')"
+                    [error]="val.error" [message]="val.message" [submitted]="isSubmitted" [submitOnly]="true"></app-error-message>
+                </ng-container>
               </ion-col>
             </ion-row>
+            <span class="form-hint ps-4" *ngIf="!hasStudent">Maklumat pelajar diisi secara automatik selepas anda memilih pelajar.</span>
           </ion-card-content>
         </ion-card>
 
         <ion-card class="form-card ion-margin-top">
           <ion-card-header>
-            <ion-row class="ion-align-items-center ion-no-padding">
-              <ion-col class="d-flex align-items-center" sizeMd="6" size="12">
-                <div class="icon-badge">
+            <div class="card-head">
+              <div class="d-flex align-items-center">
+                <div class="icon-badge" aria-hidden="true">
                   <ion-icon name="card-outline"></ion-icon>
                 </div>
                 <ion-card-title class="fw-bold">Maklumat Pembayaran</ion-card-title>
-              </ion-col>
-              <ion-col class="ion-text-end" sizeMd="6" size="12">
-                <ion-button size="small" fill="outline" color="tertiary" (click)="addItem()" class="add-btn">
-                  <ion-icon slot="start" name="add-outline"></ion-icon>
-                  Tambah
-                </ion-button>
-              </ion-col>
-            </ion-row>
+              </div>
+            </div>
           </ion-card-header>
 
           <ion-card-content>
@@ -82,27 +78,28 @@
                 <ion-row class="input-form-row item-row" [formGroupName]="i">
 
                   <ion-col sizeMd="8" size="12">
-                    <ion-label class="form-label">Butiran</ion-label>
-                    <ion-input class="form-control" formControlName="butiran">
-                    </ion-input>
+                    <ion-label class="form-label required">Butiran {{items.length > 1 ? i + 1 : ''}}</ion-label>
+                    <ion-input class="form-control" formControlName="butiran" [attr.aria-label]="'Butiran ' + (i + 1)"
+                      placeholder="Contoh: Yuran PIBG"></ion-input>
 
                     <app-error-message *ngFor="let val of validations?.detailsBayaran.items.butiran"
                       [field]="item.get('butiran')" [error]="val.error" [message]="val.message"
                       [submitted]="isSubmitted"></app-error-message>
                   </ion-col>
 
-                  <ion-col sizeMd="3" size="12">
-                    <ion-label class="form-label">Jumlah (RM)</ion-label>
-                    <ion-input class="form-control" type="number" placeholder="0.00" formControlName="jumlah">
-                    </ion-input>
+                  <ion-col sizeMd="3" size="9">
+                    <ion-label class="form-label required">Jumlah (RM)</ion-label>
+                    <ion-input class="form-control tabular-nums" type="number" inputmode="decimal" placeholder="0.00"
+                      formControlName="jumlah" [attr.aria-label]="'Jumlah butiran ' + (i + 1) + ' dalam RM'"></ion-input>
 
                     <app-error-message *ngFor="let val of validations?.detailsBayaran.items.jumlah"
                       [field]="item.get('jumlah')" [error]="val.error" [message]="val.message"
                       [submitted]="isSubmitted"></app-error-message>
                   </ion-col>
 
-                  <ion-col sizeMd="1" size="12" class="d-flex align-items-end justify-center">
-                    <ion-button fill="clear" color="danger" (click)="removeItem(i)">
+                  <ion-col sizeMd="1" size="3" class="remove-col">
+                    <ion-button fill="clear" color="danger" (click)="removeItem(i)" [disabled]="items.length === 1"
+                      [attr.aria-label]="'Buang butiran ' + (i + 1)">
                       <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
                     </ion-button>
                   </ion-col>
@@ -111,31 +108,28 @@
               </ng-container>
             </div>
 
+            <ion-button fill="clear" color="tertiary" (click)="addItem()" class="add-row-btn">
+              <ion-icon slot="start" name="add-outline" aria-hidden="true"></ion-icon>
+              Tambah butiran
+            </ion-button>
+
             <div class="summary-box ion-margin-vertical">
-              <ion-row class="ion-align-items-center">
-                <ion-col class="ion-text-end">
-                  <ion-text color="medium" class="ion-text-uppercase fw-semibold letter-spacing">
-                    Jumlah Keseluruhan
-                  </ion-text>
-                </ion-col>
-                <ion-col size="auto" class="ion-text-end">
-                  <ion-text color="dark" class="total-amount">
-                    RM {{ getTotal() | number:'1.2-2' }}
-                  </ion-text>
-                </ion-col>
-              </ion-row>
+              <ion-text color="medium" class="fw-semibold">Jumlah Keseluruhan</ion-text>
+              <ion-text color="dark" class="total-amount tabular-nums">
+                RM {{ getTotal() | number:'1.2-2' }}
+              </ion-text>
             </div>
 
             <ion-row class="input-form-row">
               <ion-col sizeLg="6" size="12">
-                <ion-label class="form-label required">Tarikh Pembayaran</ion-label>
+                <ion-label class="form-label required" id="tarikh-bayaran-label">Tarikh Pembayaran</ion-label>
 
-                <ion-datetime-button datetime="datetime" class="mt-12"></ion-datetime-button>
+                <ion-datetime-button datetime="datetime" aria-labelledby="tarikh-bayaran-label"></ion-datetime-button>
 
                 <ion-modal [keepContentsMounted]="true">
                   <ng-template>
                     <ion-datetime id="datetime" presentation="date" [min]="minDate" [max]="maxDate"
-                      [showDefaultButtons]="true"
+                      [showDefaultButtons]="true" doneText="Pilih" cancelText="Batal"
                       (ionChange)="paymentForm.get('tarikhBayaran')?.setValue($event.detail.value)" locale="en-GB"
                       [formatOptions]="{date: {day: '2-digit',month: '2-digit',year: 'numeric'}}">
                     </ion-datetime>
@@ -149,26 +143,23 @@
 
               <ion-col sizeLg="6" size="12">
                 <ion-label class="form-label required">Kaedah Pembayaran</ion-label>
-                <ion-select class="form-control" placeholder="Pilih kaedah pembayaran"
-                  [interfaceOptions]="{ header: 'Pilih Kaedah Pembayaran' }" formControlName="jenisBayaran">
+                <ion-select class="form-control" placeholder="Pilih kaedah pembayaran" aria-label="Kaedah Pembayaran"
+                  [interfaceOptions]="{ header: 'Pilih Kaedah Pembayaran' }" formControlName="jenisBayaran" cancelText="Batal" okText="Pilih">
                   <ion-select-option value="tunai">Tunai (Kaunter)</ion-select-option>
                   <ion-select-option value="Bayaran Atas Talian">Bayaran Atas Talian</ion-select-option>
                 </ion-select>
-
 
                 <app-error-message *ngFor="let val of validations?.jenisBayaran"
                   [field]="paymentForm.get('jenisBayaran')" [error]="val.error" [message]="val.message"
                   [submitted]="isSubmitted"></app-error-message>
               </ion-col>
-
             </ion-row>
 
-            <div class="ion-padding-top ion-text-end">
-              <ion-button color="tertiary" (click)="onSimpan()">
-                <div class="d-flex align-items-center">
-                  <ion-icon name="save" slot="start"></ion-icon>
-                  <ion-text class="ps-8">Simpan Pembayaran</ion-text>
-                </div>
+            <div class="form-actions">
+              <ion-button color="tertiary" (click)="onSimpan()" [disabled]="saving" class="submit-btn">
+                <ion-spinner *ngIf="saving" slot="start" name="crescent"></ion-spinner>
+                <ion-icon *ngIf="!saving" slot="start" name="save-outline" aria-hidden="true"></ion-icon>
+                {{saving ? 'Menyimpan...' : 'Simpan Pembayaran'}}
               </ion-button>
             </div>
           </ion-card-content>

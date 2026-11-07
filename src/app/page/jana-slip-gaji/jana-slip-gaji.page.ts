@@ -4,6 +4,7 @@ import { ModalController } from '@ionic/angular';
 import * as moment from 'moment';
 import { AlertService } from 'src/app/components/alert-modal/service/alert-service';
 import { ValidationService } from 'src/app/components/error-message/service/validation-service';
+import { focusFirstInvalid, isSubmitEnter } from 'src/app/components/dynamic-form/form-helpers';
 import { ModalPilihPelajarComponent } from 'src/app/components/modal-pilih-pelajar/modal-pilih-pelajar.component';
 import { ApiService } from 'src/app/services/api-service';
 import { PayslipService } from './services/payslip-service';
@@ -18,6 +19,7 @@ export class JanaSlipGajiPage implements OnInit {
   validations: any;
   form!: FormGroup;
   isSubmitted = false;
+  saving = false;
   currentDate: any = moment().format('YYYY-MM-DD');
 
   constructor(
@@ -56,6 +58,14 @@ export class JanaSlipGajiPage implements OnInit {
     });
   }
 
+  get hasStaff(): boolean {
+    return !!this.form.get('namaKakitangan')?.value;
+  }
+
+  onEnter(event: Event) {
+    if (isSubmitEnter(event)) this.onSubmit();
+  }
+
   get earningItems(): FormArray {
     return this.form.get('earning') as FormArray;
   }
@@ -87,13 +97,15 @@ export class JanaSlipGajiPage implements OnInit {
   }
 
   async onSubmit() {
+    if (this.saving) return;
     this.isSubmitted = true;
     if (this.form.invalid) {
-      this.alertService.warningAlert('Perhatian', 'Sila isi/semak maklumat yang diminta')
+      this.form.markAllAsTouched();
+      focusFirstInvalid();
       return;
     }
 
-    const res = await this.alertService.confirmAlert('Perhatian', 'Adakah anda pasti untuk menyimpan makluamt yang diberi?', 'Ya', 'Tidak')
+    const res = await this.alertService.confirmAlert('Perhatian', 'Adakah anda pasti untuk menjana slip gaji dengan maklumat ini?', 'Ya', 'Tidak')
 
     if (res) {
       // Open the tab while the confirm click still counts as a user gesture.
@@ -104,12 +116,16 @@ export class JanaSlipGajiPage implements OnInit {
         totalEarning: this.totalEarning,
       }
 
+      this.saving = true
       this.apiService.postCreatePayslip(param).subscribe({
         next: async (res) => {
+          this.saving = false
           this.payslipSerivce.generatePayslip(res.return_value_set_1, false, win)
         },
         error: async (err) => {
+          this.saving = false
           win?.close()
+          this.alertService.apiErrorAlert()
         }
       })
     }
@@ -135,7 +151,6 @@ export class JanaSlipGajiPage implements OnInit {
     const { data } = await modal.onDidDismiss()
 
     if (data) {
-      this.alertService.successAlert('Berjaya', 'Maklumat kakitangan berjaya dipilih')
       this.form.get('namaKakitangan')?.setValue(data.namaKakitangan)
       this.form.get('noKP')?.setValue(data.noKP)
       this.form.get('noTel')?.setValue(data.noTel)
