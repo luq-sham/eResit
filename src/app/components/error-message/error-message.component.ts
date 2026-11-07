@@ -13,6 +13,8 @@ export class ErrorMessageComponent implements OnInit {
   @Input() field: AbstractControl | any;
   @Input() error: any;
   @Input() submitted: boolean = false;
+  // Read-only picker fields get touched on click; only show their errors after submit.
+  @Input() submitOnly: boolean = false;
 
 
   constructor() { }
@@ -20,7 +22,7 @@ export class ErrorMessageComponent implements OnInit {
   ngOnInit() { }
 
   shouldShowError() {
-    if ((this?.field.touched && this?.field.errors?.[this.error]) || (this.submitted && this?.field.errors?.[this.error])) {
+    if ((!this.submitOnly && this?.field.touched && this?.field.errors?.[this.error]) || (this.submitted && this?.field.errors?.[this.error])) {
       return true;
     }
     return false;

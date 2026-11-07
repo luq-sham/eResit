@@ -30,26 +30,29 @@
             <ion-row class="input-form-row">
               <ion-col sizeLg="6" size="12">
                 <ion-label class="form-label required">Nama Pelajar</ion-label>
-                <ion-input class="form-control" formControlName="namaPelajar" readonly></ion-input>
+                <ion-input class="form-control" formControlName="namaPelajar" readonly
+                  placeholder="Pilih pelajar menggunakan butang Pilih Pelajar"></ion-input>
 
                 <app-error-message *ngFor="let val of validations?.namaPelajar" [field]="paymentForm.get('namaPelajar')"
-                  [error]="val.error" [message]="val.message" [submitted]="isSubmitted"></app-error-message>
+                  [error]="val.error" [message]="val.message" [submitted]="isSubmitted" [submitOnly]="true"></app-error-message>
               </ion-col>
 
               <ion-col sizeLg="6" size="12">
                 <ion-label class="form-label required">Kelas</ion-label>
-                <ion-input class="form-control" formControlName="kelas" readonly></ion-input>
+                <ion-input class="form-control" formControlName="kelas" readonly
+                  placeholder="Pilih pelajar menggunakan butang Pilih Pelajar"></ion-input>
 
                 <app-error-message *ngFor="let val of validations?.kelas" [field]="paymentForm.get('kelas')"
-                  [error]="val.error" [message]="val.message" [submitted]="isSubmitted"></app-error-message>
+                  [error]="val.error" [message]="val.message" [submitted]="isSubmitted" [submitOnly]="true"></app-error-message>
               </ion-col>
 
               <ion-col sizeLg="6" size="12">
                 <ion-label class="form-label required">No KP / Passport</ion-label>
-                <ion-input class="form-control" formControlName="noKP" readonly></ion-input>
+                <ion-input class="form-control" formControlName="noKP" readonly
+                  placeholder="Pilih pelajar menggunakan butang Pilih Pelajar"></ion-input>
 
                 <app-error-message *ngFor="let val of validations?.noKP" [field]="paymentForm.get('noKP')"
-                  [error]="val.error" [message]="val.message" [submitted]="isSubmitted"></app-error-message>
+                  [error]="val.error" [message]="val.message" [submitted]="isSubmitted" [submitOnly]="true"></app-error-message>
               </ion-col>
             </ion-row>
           </ion-card-content>

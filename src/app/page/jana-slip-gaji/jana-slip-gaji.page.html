@@ -32,27 +32,30 @@
               <ion-row class="input-form-row">
                 <ion-col sizeLg="6" size="12">
                   <ion-label class="form-label required">Nama Kakitangan</ion-label>
-                  <ion-input class="form-control" formControlName="namaKakitangan" readonly></ion-input>
+                  <ion-input class="form-control" formControlName="namaKakitangan" readonly
+                    placeholder="Pilih kakitangan menggunakan butang Pilih Kakitangan"></ion-input>
 
                   <app-error-message *ngFor="let val of validations?.namaKakitangan"
                     [field]="form.get('namaKakitangan')" [error]="val.error" [message]="val.message"
-                    [submitted]="isSubmitted"></app-error-message>
+                    [submitted]="isSubmitted" [submitOnly]="true"></app-error-message>
                 </ion-col>
 
                 <ion-col sizeLg="6" size="12">
                   <ion-label class="form-label required">No KP / Passport</ion-label>
-                  <ion-input class="form-control" formControlName="noKP" readonly></ion-input>
+                  <ion-input class="form-control" formControlName="noKP" readonly
+                    placeholder="Pilih kakitangan menggunakan butang Pilih Kakitangan"></ion-input>
 
                   <app-error-message *ngFor="let val of validations?.noKP" [field]="form.get('noKP')"
-                    [error]="val.error" [message]="val.message" [submitted]="isSubmitted"></app-error-message>
+                    [error]="val.error" [message]="val.message" [submitted]="isSubmitted" [submitOnly]="true"></app-error-message>
                 </ion-col>
 
                 <ion-col sizeLg="6" size="12">
                   <ion-label class="form-label required">No Telefon</ion-label>
-                  <ion-input class="form-control" formControlName="noTel" readonly></ion-input>
+                  <ion-input class="form-control" formControlName="noTel" readonly
+                    placeholder="Pilih kakitangan menggunakan butang Pilih Kakitangan"></ion-input>
 
                   <app-error-message *ngFor="let val of validations?.noTel" [field]="form.get('noTel')"
-                    [error]="val.error" [message]="val.message" [submitted]="isSubmitted"></app-error-message>
+                    [error]="val.error" [message]="val.message" [submitted]="isSubmitted" [submitOnly]="true"></app-error-message>
                 </ion-col>
               </ion-row>
             </ion-card-content>
