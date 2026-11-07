@@ -71,9 +71,12 @@
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.stat-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+// Touch fakes :hover on tap and leaves the card lifted; only real pointers get it.
+@media (hover: hover) and (pointer: fine) {
+    .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
 }
 
 .stat-icon-wrapper {
@@ -167,9 +170,12 @@
     gap: var(--spacing-sm);
 }
 
-.action-tile:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    border-color: var(--ion-color-tertiary);
+// Tiles are tapped to navigate; ungated, the hover border stays stuck on the tile after back.
+@media (hover: hover) and (pointer: fine) {
+    .action-tile:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        border-color: var(--ion-color-tertiary);
+    }
 }
 
 .tile-icon-box {

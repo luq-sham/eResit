@@ -150,10 +150,12 @@
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    /* Hover effect for desktop users */
-    .card-student:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+    /* Hover lift for mouse users only: on tablets a tap would leave the card stuck lifted */
+    @media (hover: hover) and (pointer: fine) {
+        .card-student:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+        }
     }
 
     .card-header {

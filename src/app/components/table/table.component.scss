@@ -1,9 +1,6 @@
 :host {
     --table-bg: #ffffff;
-    --table-header-bg: #f8fafc;
-    --table-header-text: #475569;
     --table-border: #e2e8f0;
-    --table-row-hover: #f1f5f9;
     --table-text-main: #1e293b;
     --table-text-muted: #64748b;
     --primary-color: var(--ion-color-main, #3b82f6);
@@ -36,7 +33,6 @@
 .table-responsive-wrapper {
     width: 100%;
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
 
     &::-webkit-scrollbar {
         height: 8px;
@@ -78,7 +74,6 @@ thead {
 tbody {
     tr {
         border-bottom: 1px solid var(--table-border);
-        transition: background-color 0.2s ease;
 
         &:nth-child(even) {
             background-color: #e9eaef;
@@ -148,26 +143,27 @@ tbody {
 .empty-state {
     height: 300px;
     background: #f8fafc;
+}
 
-    .empty-content {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+// Only ever rendered inside .empty-state; kept flat so each compiled selector stays short.
+.empty-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
-        ion-icon {
-            font-size: 4rem;
-            margin-bottom: 16px;
-            color: #cbd5e1;
-        }
+    ion-icon {
+        font-size: 4rem;
+        margin-bottom: 16px;
+        color: #cbd5e1;
+    }
 
-        p {
-            margin: 0;
-            font-size: 1rem;
-            font-weight: 500;
-            color: var(--table-text-muted);
-        }
+    p {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--table-text-muted);
     }
 }
 
@@ -232,11 +228,6 @@ tbody {
         --padding-end: 0;
         --border-radius: 6px;
         color: var(--table-text-muted);
-
-        &:hover:not([disabled]) {
-            color: var(--primary-color);
-            background: #f1f5f9;
-        }
     }
 }
 
@@ -272,13 +263,19 @@ tr.row-selectable {
         transition: background-color 120ms ease;
     }
 
-    @media (hover: hover) and (pointer: fine) {
-        &:hover td {
-            background: rgba(var(--ion-color-main-rgb), 0.04);
-        }
-    }
-
     &.row-selected td {
         background: rgba(var(--ion-color-main-rgb), 0.08);
+    }
+}
+
+// Touch fakes :hover on tap and leaves it stuck; only real pointers get hover styles.
+@media (hover: hover) and (pointer: fine) {
+    .pagination-actions ion-button:hover:not([disabled]) {
+        color: var(--primary-color);
+        background: #f1f5f9;
+    }
+
+    tr.row-selectable:hover td {
+        background: rgba(var(--ion-color-main-rgb), 0.04);
     }
 }
