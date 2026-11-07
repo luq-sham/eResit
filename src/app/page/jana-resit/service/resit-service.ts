@@ -20,7 +20,7 @@ export class ResitService {
     (pdfMake as any).vfs = (pdfFonts as any).pdfMake?.vfs || (pdfFonts as any).vfs;
   }
 
-  async generateReceipt(item: any, receiptInfo?: any, viewMode?: any) {
+  async generateReceipt(item: any, receiptInfo?: any, viewMode?: any, win?: Window | null) {
     const logo = await this.getBase64ImageFromURL('assets/logo-maahad.png');
     const totalAmount = item.detailsBayaran.reduce((acc: number, curr: any) => acc + (curr.jumlah || 0), 0);
 
@@ -51,8 +51,10 @@ export class ResitService {
     };
 
     const pdf = pdfMake.createPdf(docDefinition);
-    pdf.open();
-    if (!viewMode) pdf.download(`${item?.namaPelajar}-Resit.pdf`);
+    const fileName = `${item?.namaPelajar}-Resit.pdf`;
+    // Popup blockers reject window.open after async work; fall back to download.
+    pdf.open(win ?? undefined).catch(() => { if (viewMode) pdf.download(fileName); });
+    if (!viewMode) pdf.download(fileName);
   }
 
   private getHeaderPage(item: any, receipt?: any) {

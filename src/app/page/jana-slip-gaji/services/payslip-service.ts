@@ -23,7 +23,7 @@ export class PayslipService {
     (pdfMake as any).vfs = (pdfFonts as any).pdfMake?.vfs || (pdfFonts as any).vfs;
   }
 
-  async generatePayslip(data: any, viewMode?: boolean) {
+  async generatePayslip(data: any, viewMode?: boolean, win?: Window | null) {
     const item = data.return_value_set_1 || data;
     const logo = await this.getBase64ImageFromURL('assets/logo-maahad.png');
 
@@ -52,8 +52,10 @@ export class PayslipService {
     };
 
     const pdf = pdfMake.createPdf(docDefinition);
-    pdf.open();
-    if (!viewMode) pdf.download(`${item?.namaKakitangan}-Payslip.pdf`);
+    const fileName = `${item?.namaKakitangan}-Payslip.pdf`;
+    // Popup blockers reject window.open after async work; fall back to download.
+    pdf.open(win ?? undefined).catch(() => { if (viewMode) pdf.download(fileName); });
+    if (!viewMode) pdf.download(fileName);
   }
 
   private getHeaderPage(item: any) {

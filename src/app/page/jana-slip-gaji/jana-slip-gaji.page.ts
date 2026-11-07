@@ -96,6 +96,8 @@ export class JanaSlipGajiPage implements OnInit {
     const res = await this.alertService.confirmAlert('Perhatian', 'Adakah anda pasti untuk menyimpan makluamt yang diberi?', 'Ya', 'Tidak')
 
     if (res) {
+      // Open the tab while the confirm click still counts as a user gesture.
+      const win = window.open('', '_blank')
       const param = {
         ...this.form.getRawValue(),
         totalDeduction: this.totalDeduction,
@@ -104,10 +106,10 @@ export class JanaSlipGajiPage implements OnInit {
 
       this.apiService.postCreatePayslip(param).subscribe({
         next: async (res) => {
-          this.payslipSerivce.generatePayslip(res.return_value_set_1)
+          this.payslipSerivce.generatePayslip(res.return_value_set_1, false, win)
         },
         error: async (err) => {
-
+          win?.close()
         }
       })
     }
