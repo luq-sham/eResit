@@ -7,15 +7,17 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
+
+  <!-- Search stays pinned above the list so it's reachable after scrolling. -->
+  <ion-toolbar class="picker-search">
+    <app-search-bar (onSearchEvent)="onSearch($event)" [categoryList]="categories"></app-search-bar>
+    <p class="modal-intro picker-hint">
+      Pilih satu {{isKakitangan ? 'kakitangan' : 'pelajar'}} daripada senarai, kemudian tekan butang Pilih.
+    </p>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <app-search-bar (onSearchEvent)="onSearch($event)" [categoryList]="categories"></app-search-bar>
-
-  <p class="modal-intro picker-hint">
-    Pilih satu {{isKakitangan ? 'kakitangan' : 'pelajar'}} daripada senarai, kemudian tekan butang Pilih.
-  </p>
-
+<ion-content class="picker-list">
   <app-table [tableHeader]="tableHeader" [isLoading]="isLoading" [tableData]="tableData" [showPaging]="false"
     [showBilangan]="false" (radioChange)="onRadioChange($event)" [hasTableTitle]="false"></app-table>
 </ion-content>

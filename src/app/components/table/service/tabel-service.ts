@@ -57,17 +57,17 @@ export class TabelService {
       case 'pilih-pelajar':
         return [
           { label: 'Nama Pelajar', type: 'display', dataParam: 'namaPelajar', class: 'ion-text-uppercase' },
-          { label: 'No. KP / Passport', type: 'display', dataParam: 'noKP', class: 'ion-text-capitalize' },
+          { label: 'No. KP / Passport', type: 'display', dataParam: 'noKP', class: 'tabular-nums' },
           { label: 'Kelas', type: 'display', dataParam: 'kelas', class: 'ion-text-capitalize' },
-          { label: 'Tindakan', type: 'radio', dataParam: 'total', class: 'ion-text-center', align: 'center' },
+          { label: 'Pilih', type: 'radio', dataParam: 'total', class: 'ion-text-center', align: 'center' },
         ]
 
       case 'pilih-kakitangan':
         return [
           { label: 'Nama Kakitangan', type: 'display', dataParam: 'namaKakitangan', class: 'ion-text-uppercase' },
-          { label: 'No. KP / Passport', type: 'display', dataParam: 'noKP', class: 'ion-text-capitalize' },
-          { label: 'No Telefon', type: 'display', dataParam: 'noTel', class: 'ion-text-capitalize' },
-          { label: 'Tindakan', type: 'radio', dataParam: 'total', class: 'ion-text-center', align: 'center' },
+          { label: 'No. KP / Passport', type: 'display', dataParam: 'noKP', class: 'tabular-nums' },
+          { label: 'No Telefon', type: 'display', dataParam: 'noTel', class: 'tabular-nums' },
+          { label: 'Pilih', type: 'radio', dataParam: 'total', class: 'ion-text-center', align: 'center' },
         ]
 
       case 'lihat-payslip':
