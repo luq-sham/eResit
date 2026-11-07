@@ -1,93 +1,109 @@
-.white-toolbar,
-.white-content {
-    --background: #ffffff;
-    background: #ffffff;
+:host {
+    display: block;
+    background: #fff;
 }
 
-
-.content-wrapper {
+.alert-body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 20px 24px;
-    height: 100%;
+    text-align: center;
+    padding: 28px 24px 8px;
 }
-
-
-.alert-title {
-    margin-top: 16px;
-    margin-bottom: 8px;
-    font-weight: 700;
-    font-size: 1.4rem;
-    color: var(--ion-color-dark);
-}
-
-.message-box {
-    color: var(--ion-color-medium);
-    font-size: 0.95rem;
-    line-height: 1.5;
-}
-
 
 .icon-container {
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 64px;
-    height: 64px;
-    margin-bottom: 10px;
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    margin-bottom: 14px;
 
     ion-icon {
-        font-size: 48px;
-        z-index: 2;
+        font-size: 36px;
+    }
+
+    // One-shot ring on open: draws the eye once, then stays still.
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: currentColor;
+        opacity: 0;
+    }
+
+    &.warning {
+        color: var(--ion-color-warning-shade);
+        background: rgba(var(--ion-color-warning-rgb), 0.16);
+    }
+
+    &.success {
+        color: var(--ion-color-success);
+        background: rgba(var(--ion-color-success-rgb), 0.14);
+    }
+
+    &.danger {
+        color: var(--ion-color-danger);
+        background: rgba(var(--ion-color-danger-rgb), 0.12);
     }
 }
 
-
-.pulse-ring {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    opacity: 0.2;
-    z-index: 1;
-    animation: pulse-animation 2s infinite;
+@media (prefers-reduced-motion: no-preference) {
+    .icon-container::after {
+        animation: ring-once 600ms var(--ease-out-strong) 120ms 1;
+    }
 }
 
-/* Status-based colors */
-.pulse-ring.warning {
-    background: var(--ion-color-warning);
-}
-
-.pulse-ring.success {
-    background: var(--ion-color-success);
-}
-
-.pulse-ring.danger {
-    background: var(--ion-color-danger);
-}
-
-@keyframes pulse-animation {
-    0% {
-        transform: scale(0.8);
-        opacity: 0.5;
+@keyframes ring-once {
+    from {
+        transform: scale(1);
+        opacity: 0.25;
     }
 
-    100% {
-        transform: scale(1.5);
+    to {
+        transform: scale(1.6);
         opacity: 0;
     }
 }
 
-
-.action-btn {
-    --border-radius: 12px;
-    font-weight: 600;
-    height: 48px;
+.alert-title {
+    margin: 0 0 8px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    line-height: 1.3;
+    color: var(--ion-color-dark);
+    text-wrap: balance;
 }
 
-.close-btn {
-    --border-radius: 50%;
+.alert-message {
+    max-width: 36ch;
+    color: #4a5261;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    text-wrap: pretty;
+
+    ::ng-deep small {
+        display: block;
+        margin-top: 6px;
+        color: var(--field-hint);
+    }
+}
+
+.alert-actions {
+    display: flex;
+    flex-wrap: wrap-reverse;
+    gap: 8px;
+    padding: 20px 24px 24px;
+
+    ion-button {
+        flex: 1 1 140px;
+        margin: 0;
+        min-height: 46px;
+        --border-radius: 10px;
+        font-weight: 600;
+        text-transform: none;
+        letter-spacing: 0;
+    }
 }

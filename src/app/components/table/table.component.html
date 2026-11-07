@@ -43,7 +43,8 @@
               </td>
             </tr>
 
-            <tr *ngFor="let item of tableData; let i = index">
+            <tr *ngFor="let item of tableData; let i = index" [class.row-selectable]="hasRadio"
+              [class.row-selected]="hasRadio && item === selectedRadio" (click)="hasRadio && onRadioSelect(item)">
               <td *ngIf="showBilangan" class="col-bil ion-text-center">
                 {{ (tablePaging.currentPage - 1) * tablePaging.record + i + 1 }}
               </td>

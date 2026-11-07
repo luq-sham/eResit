@@ -1,0 +1,15 @@
+.field-error {
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+    margin-top: 6px;
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--ion-color-danger);
+
+    ion-icon {
+        flex: none;
+        font-size: 14px;
+        margin-top: 1px;
+    }
+}

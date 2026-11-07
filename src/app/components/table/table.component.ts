@@ -82,7 +82,13 @@ export class TableComponent implements OnInit {
     this.checkboxChange.emit(selectedItems);
   }
 
+  // Radio tables (pickers): the whole row is the hit target, not just the 20px radio.
+  get hasRadio(): boolean {
+    return this.tableHeader?.some(header => header.type === 'radio');
+  }
+
   onRadioSelect(value: any) {
+    if (value === this.selectedRadio) return;
     this.selectedRadio = value;
     this.radioChange.emit(value);
   }

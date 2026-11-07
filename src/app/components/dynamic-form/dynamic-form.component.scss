@@ -1,12 +1,9 @@
-.input-item {
-    align-items: center;
-    margin-top: 0px;
-    --background: #f5f5f5;
-    border-radius: 10px;
-    border: 1px solid rgb(207, 207, 207);
+// Cancel the column gutter so fields line up with the modal intro text.
+ion-row {
+    margin-inline: -8px;
+}
 
-    ion-icon {
-        margin-top: 12px;
-        color: var(--ion-color-secondary);
-    }
+ion-col {
+    --ion-grid-column-padding: 8px;
+    padding-bottom: 10px;
 }

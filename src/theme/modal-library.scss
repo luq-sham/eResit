@@ -23,39 +23,41 @@ ion-modal.auto-height {
     }
 }
 
-.alert-modal {
-    --width: 30vw;
-    --height: 22vh;
-    --background: var(--ion-color-light) !important;
-
-    @media (max-width: 1200px) {
-        --width: 90vw;
-    }
+// Alert / confirm dialog: sized by its content, never clipped, centred on every screen size.
+ion-modal.alert-modal {
+    --width: min(420px, calc(100% - 32px));
+    --height: auto;
+    --border-radius: 16px;
+    --background: #fff !important;
+    --box-shadow: 0 24px 48px rgba(16, 28, 48, 0.24);
 
     &::part(backdrop) {
-        --backdrop-opacity: 0.4; // default Ionic feel
+        --backdrop-opacity: 0.4;
     }
 }
 
-.lihat-pembayaran-modal {
-    --width: 55vw;
-    --height: 75vh;
-    --background: var(--ion-color-light) !important;
-    --border-radius: 14px;
+// Task modals (forms, pickers, payment summary).
+// Phones get a full-screen sheet (Ionic's default below 768px); larger screens get a centred panel.
+ion-modal.lihat-pembayaran-modal,
+ion-modal.lihat-pelajar-modal {
+    --background: #fff !important;
 
-    @media (max-width: 1200px) {
-        --width: 90vw;
+    @media (min-width: 768px) {
+        --border-radius: 16px;
+        --box-shadow: 0 24px 48px rgba(16, 28, 48, 0.2);
     }
 }
 
-.lihat-pelajar-modal {
-    --width: 45vw;
-    --height: 75vh;
-    --background: #f4f5f8 !important;
-    --border-radius: 14px;
+ion-modal.lihat-pelajar-modal {
+    @media (min-width: 768px) {
+        --width: min(720px, 92vw);
+        --height: min(760px, 88vh);
+    }
+}
 
-
-    @media (max-width: 1200px) {
-        --width: 90vw;
+ion-modal.lihat-pembayaran-modal {
+    @media (min-width: 768px) {
+        --width: min(600px, 92vw);
+        --height: min(820px, 90vh);
     }
 }

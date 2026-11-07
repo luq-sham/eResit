@@ -11,7 +11,7 @@ export class ValidationService {
       case 'rekod-pembayaran':
         return validations = {
           namaPelajar: [
-            { label: 'Nama Pelajar', error: 'required', message: 'Sila masukkan nama pelajar' }
+            { label: 'Nama Pelajar', error: 'required', message: 'Sila pilih pelajar menggunakan butang Pilih Pelajar' }
           ],
           kelas: [
             { label: 'Kelas', error: 'required', message: 'Sila masukkan kelas' }
@@ -50,7 +50,7 @@ export class ValidationService {
           ],
 
           noKP: [
-            // { label: 'No. KP', error: 'required', message: 'Sila masukkan Nombor KP / Passport' },
+            { label: 'No. KP', error: 'required', message: 'Sila masukkan Nombor KP / Passport' },
             { label: 'No. KP', error: 'pattern', message: 'Nombor KP / Passport mesti digit tanpa simbol' },
             // { label: 'No. KP', error: 'maxlength', message: 'Nombor KP mesti 12 digit tanpa - simbol' },
             // { label: 'No. KP', error: 'minlength', message: 'Nombor KP mesti 12 digit tanpa - simbol' }
@@ -103,7 +103,7 @@ export class ValidationService {
       case 'jana-slip-gaji':
         return validations = {
           namaKakitangan: [
-            { label: 'Nama Penu', error: 'required', message: 'Sila masukkan nama penuh' }
+            { label: 'Nama Penu', error: 'required', message: 'Sila pilih kakitangan menggunakan butang Pilih Kakitangan' }
           ],
 
           noKP: [
@@ -130,11 +130,11 @@ export class ValidationService {
           },
 
           paymentMonth: [
-            { label: 'Bulan Bayaran', error: 'required', message: 'Sila pilih tarikh bulan' }
+            { label: 'Bulan Bayaran', error: 'required', message: 'Sila pilih bulan bayaran' }
           ],
 
           paymentDate: [
-            { label: 'Tarikh Bayaran', error: 'required', message: 'Sila pilih tarikh tarikh bayaran' }
+            { label: 'Tarikh Bayaran', error: 'required', message: 'Sila pilih tarikh bayaran' }
           ],
         };
 

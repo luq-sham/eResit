@@ -1,24 +1,21 @@
-<form [formGroup]="form">
-  <ion-row>
-    <ng-container *ngFor="let formItem of formConfig">
-      <ion-col [sizeMd]="formItem?.size || 12" [size]="12">
-        <ion-item lines="none" class="input-item mt-10">
-          <ion-icon [name]="formItem.icon" slot="start"></ion-icon>
-          <ion-label position="stacked">{{formItem.label}}</ion-label>
+<form [formGroup]="form" [class.was-submitted]="submitted" (keydown.enter)="onEnter($event)" novalidate>
+  <ion-row class="input-form-row">
+    <ion-col *ngFor="let formItem of formConfig" size="12" [sizeMd]="formItem?.size || 12">
+      <ion-label class="form-label" [class.required]="isRequired(formItem.formControl)">{{formItem.label}}</ion-label>
 
-          <ng-container *ngIf="formItem.type != 'textarea'">
-            <ion-input [type]="formItem.type" [formControlName]='formItem.formControl'>
-            </ion-input>
-          </ng-container>
-          <ng-container *ngIf="formItem.type == 'textarea'">
-            <ion-textarea rows="4" [formControlName]="formItem.formControl"></ion-textarea>
-          </ng-container>
-        </ion-item>
+      <ion-input *ngIf="formItem.type !== 'textarea'" class="form-control" [type]="formItem.type"
+        [formControlName]="formItem.formControl" [attr.aria-label]="formItem.label"
+        [attr.inputmode]="formItem.inputmode || null" [autocomplete]="formItem.autocomplete || 'off'"
+        [placeholder]="formItem.placeholder || ''"></ion-input>
 
-        <app-error-message *ngFor="let val of validations[formItem.formControl]"
-          [field]="form.get(formItem.formControl)" [error]="val.error" [message]="val.message"
-          [submitted]="submitted"></app-error-message>
-      </ion-col>
-    </ng-container>
+      <ion-textarea *ngIf="formItem.type === 'textarea'" class="form-control" rows="3" [autoGrow]="true"
+        [formControlName]="formItem.formControl" [attr.aria-label]="formItem.label"></ion-textarea>
+
+      <span class="form-hint" *ngIf="formItem.hint">{{formItem.hint}}</span>
+
+      <app-error-message *ngFor="let val of validations?.[formItem.formControl]"
+        [field]="form.get(formItem.formControl)" [error]="val.error" [message]="val.message"
+        [submitted]="submitted"></app-error-message>
+    </ion-col>
   </ion-row>
 </form>

@@ -13,7 +13,7 @@ export class AlertModalComponent implements OnInit {
   @Input() message: any = '';
   @Input() confirmBtn: any;
   @Input() cancelBtn: any;
-  @Input() alertType: any;
+  @Input() alertType: 'success' | 'warning' | 'danger' = 'warning';
   @Input() hasConfirm: any;
 
   constructor(

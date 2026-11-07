@@ -1,7 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormConfig } from './services/form-config';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { ValidationService } from '../error-message/service/validation-service';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormGroup, Validators } from '@angular/forms';
+import { isSubmitEnter } from './form-helpers';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -9,17 +8,21 @@ import { ValidationService } from '../error-message/service/validation-service';
   styleUrls: ['./dynamic-form.component.scss'],
   standalone: false
 })
-export class DynamicFormComponent implements OnInit {
+export class DynamicFormComponent {
 
   @Input() formConfig: any[] = []
   @Input() validations: any
   @Input() submitted: any
   @Input() form!: FormGroup
 
-  constructor(
-  ) { }
+  // Enter in a single-line field asks the host to submit.
+  @Output() enterSubmit = new EventEmitter<void>()
 
-  ngOnInit() {
+  isRequired(control: string) {
+    return !!this.form.get(control)?.hasValidator(Validators.required)
   }
 
+  onEnter(event: Event) {
+    if (isSubmitEnter(event)) this.enterSubmit.emit()
+  }
 }

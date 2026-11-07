@@ -264,3 +264,21 @@ tbody {
         justify-content: center;
     }
 }
+// Picker rows: whole row selects, selected row stays highlighted.
+tr.row-selectable {
+    cursor: pointer;
+
+    td {
+        transition: background-color 120ms ease;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        &:hover td {
+            background: rgba(var(--ion-color-main-rgb), 0.04);
+        }
+    }
+
+    &.row-selected td {
+        background: rgba(var(--ion-color-main-rgb), 0.08);
+    }
+}

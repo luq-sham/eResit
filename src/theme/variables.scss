@@ -1,3 +1,16 @@
+:root {
+    // Form tokens: one cool-gray family tinted toward the brand navy (--ion-color-main).
+    --field-border: #b9c0cc;
+    --field-border-hover: #8a93a3;
+    --field-border-focus: var(--ion-color-main);
+    --field-ring: rgba(var(--ion-color-main-rgb), 0.18);
+    --field-readonly-bg: #f1f3f6;
+    --field-label: #1f2733;
+    --field-hint: #5a6372;
+    --field-radius: 8px;
+    --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
 .form-header {
     color: #000;
     margin-bottom: 12px;
@@ -20,11 +33,20 @@
 
 .input-form-row {
     .form-label {
+        display: block;
         font-family: 'Roboto-SemiBold';
-        color: #000;
+        color: var(--field-label);
         font-size: 14px;
-        margin-bottom: 12px;
+        margin-bottom: 6px;
         white-space: normal;
+    }
+
+    .form-hint {
+        display: block;
+        margin-top: 6px;
+        font-size: 12px;
+        line-height: 1.4;
+        color: var(--field-hint);
     }
 
     .form-control {
@@ -35,32 +57,41 @@
 
         --padding-top: 10px !important;
         --padding-bottom: 10px !important;
-        --padding-start: 6px !important;
-        --padding-end: 6px !important;
+        --padding-start: 12px !important;
+        --padding-end: 12px !important;
 
-        border: 1px solid gray;
-        border-radius: 4px;
+        border: 1px solid var(--field-border);
+        border-radius: var(--field-radius);
         transition:
-            border-color 0.15s ease-in-out,
-            background-color 0.15s ease-in-out;
+            border-color 150ms ease,
+            box-shadow 150ms ease,
+            background-color 150ms ease;
 
-        margin-top: 6px;
         --color: var(--ion-color-dark) !important;
+        --placeholder-color: #6b7280;
+        --placeholder-opacity: 1;
 
+        // Ionic's own underline is replaced by the border + ring below.
         --highlight-color: none !important;
 
         font-size: var(--body-font-size) !important;
-        min-height: 30px !important;
+        min-height: 44px !important;
 
-        &:focus,
+        @media (hover: hover) and (pointer: fine) {
+            &:hover {
+                border-color: var(--field-border-hover);
+            }
+        }
+
         &.has-focus,
-        &.select-expanded {
-            box-shadow: none;
-            --highlight-color-focused: transparent !important;
+        &.select-expanded,
+        &:focus-within {
+            border-color: var(--field-border-focus);
+            box-shadow: 0 0 0 3px var(--field-ring);
         }
 
         &.input-disabled {
-            background: rgb(211, 211, 211);
+            background: var(--field-readonly-bg);
             font-family: 'Roboto-SemiBold';
         }
 
@@ -70,14 +101,18 @@
         }
     }
 
+    textarea.form-control,
+    ion-textarea.form-control {
+        min-height: 96px !important;
+    }
+
     // Picker-filled fields: muted fill, dashed edge and no caret so they read as not typeable.
     ion-input.form-control[readonly] {
-        background: #f1f3f5;
+        background: var(--field-readonly-bg);
         border-style: dashed;
         cursor: not-allowed;
-        --color: #495057 !important;
-        --placeholder-color: #5c636a;
-        --placeholder-opacity: 1;
+        box-shadow: none;
+        --color: #3d4554 !important;
 
         input {
             cursor: not-allowed;
@@ -95,7 +130,7 @@
         &::part(icon) {
             margin-left: auto;
             position: absolute;
-            right: 10px;
+            right: 12px;
         }
 
         &::part(text) {
@@ -104,9 +139,253 @@
         }
     }
 
-    .required::before {
-        content: "* ";
-        color: red;
-        font-size: 0.9em;
+    .required::after {
+        content: " *";
+        color: var(--ion-color-danger);
+    }
+}
+
+// Invalid fields: red edge once the user has left a typed field, or after a submit attempt.
+// Picker-filled (readonly) fields only turn red after submit, matching their error messages.
+.input-form-row .form-control.ion-invalid.ion-touched:not([readonly]),
+.was-submitted .input-form-row .form-control.ion-invalid {
+    border-color: var(--ion-color-danger);
+
+    &.has-focus,
+    &:focus-within {
+        box-shadow: 0 0 0 3px rgba(var(--ion-color-danger-rgb), 0.16);
+    }
+}
+
+// Date fields (ion-datetime-button) sit on the same grid as text fields.
+.input-form-row ion-datetime-button {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 0 !important;
+
+    &::part(native) {
+        width: 100%;
+        margin: 0;
+        text-align: left;
+        min-height: 44px;
+        padding: 0 14px;
+        border-radius: var(--field-radius);
+        border: 1px solid var(--field-border);
+        background: #fff;
+        color: var(--ion-color-dark);
+    }
+}
+
+// Keyboard focus: visible ring on every Ionic button (ion-focused is keyboard-only).
+ion-button.ion-focused::part(native),
+ion-back-button.ion-focused::part(native) {
+    outline: 2px solid var(--ion-color-main);
+    outline-offset: 2px;
+}
+
+// Press feedback: the button acknowledges the tap before the action resolves.
+@media (prefers-reduced-motion: no-preference) {
+    ion-button::part(native) {
+        transition: transform 120ms var(--ease-out-strong);
+    }
+
+    ion-button:not(.button-disabled):active::part(native) {
+        transform: scale(0.97);
+    }
+}
+
+.text-danger {
+    color: var(--ion-color-danger) !important;
+}
+
+.text-success {
+    color: var(--ion-color-success-shade) !important;
+}
+
+.text-primary {
+    color: var(--ion-color-main) !important;
+}
+
+.tabular-nums {
+    font-variant-numeric: tabular-nums;
+}
+
+// Shared modal chrome: brand header with close button, white body, action footer.
+.modal-header ion-toolbar {
+    --padding-start: 16px;
+    --padding-end: 8px;
+
+    ion-title {
+        padding-inline: 0;
+        font-size: 17px;
+        font-family: 'Roboto-SemiBold';
+    }
+}
+
+.modal-intro {
+    margin: 0 0 4px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--field-hint);
+}
+
+.modal-footer {
+    border-top: 1px solid #e3e6ec;
+
+    ion-toolbar {
+        --background: #fff;
+        --padding-start: 16px;
+        --padding-end: 16px;
+        --padding-top: 10px;
+        --padding-bottom: 10px;
+    }
+
+    .modal-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .spacer {
+            flex: 1;
+        }
+
+        ion-button {
+            margin: 0;
+            min-height: 44px;
+            --border-radius: 10px;
+            font-weight: 600;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+    }
+
+    // Phones: primary action full width and nearest the thumb.
+    @media (max-width: 575px) {
+        .modal-actions {
+            flex-wrap: wrap;
+
+            .spacer {
+                display: none;
+            }
+
+            ion-button {
+                flex: 1 1 auto;
+            }
+
+            ion-button[type="submit"],
+            .primary-action {
+                flex-basis: 100%;
+            }
+        }
+    }
+}
+
+// Page forms (Rekod Pembayaran, Jana Slip Gaji): cards, card header, line items, actions.
+.page-form {
+    .form-card {
+        border-radius: 16px;
+        box-shadow: 0 4px 16px rgba(16, 28, 48, 0.06);
+        background: #ffffff;
+        --padding-start: 16px;
+        --padding-end: 16px;
+    }
+
+    .card-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .head-btn,
+    .add-row-btn,
+    .submit-btn {
+        margin: 0;
+        min-height: 44px;
+        --border-radius: 10px;
+        text-transform: none;
+        letter-spacing: 0;
+        font-weight: 600;
+    }
+
+    .icon-badge {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12px;
+        font-size: 20px;
+        background: rgba(var(--ion-color-main-rgb), 0.08);
+        color: var(--ion-color-main);
+    }
+
+    .summary-box {
+        background: #f1f3f6;
+        border-radius: 12px;
+        padding: 16px 20px;
+    }
+
+    .item-row {
+        border-bottom: 1px dashed #dee2e6;
+        padding-bottom: 8px;
+        margin-bottom: 8px;
+    }
+
+    // Trash button lines up with the inputs, not the labels.
+    .remove-col {
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding-bottom: 6px;
+
+        ion-button {
+            margin: 0;
+            min-height: 44px;
+            min-width: 44px;
+        }
+    }
+
+    .add-row-btn {
+        margin-bottom: 4px;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        padding-top: 8px;
+
+        @media (max-width: 575px) {
+            .submit-btn {
+                flex: 1;
+            }
+        }
+    }
+
+    .line-group {
+        margin-top: 20px;
+
+        .group-title {
+            margin: 0 0 4px;
+            padding-inline: 5px;
+            font-size: 15px;
+            font-family: 'Roboto-SemiBold';
+            color: var(--field-label);
+        }
+    }
+
+    .summary-line {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 4px 0;
+
+        &.net {
+            margin-top: 8px;
+            padding-top: 12px;
+            border-top: 1px solid #d9dde4;
+        }
     }
 }
